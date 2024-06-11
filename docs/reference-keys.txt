@@ -23,3 +23,6 @@ environment-setting
 gwas-tools
 quality-control
 an-example-of-summary-statistics
+input-files
+calculating-missing-rate
+calculating-allel-frequencies

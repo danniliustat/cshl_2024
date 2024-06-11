@@ -159,7 +159,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#environment-setting"><i class="fa fa-check"></i><b>3.1</b> Environment Setting</a></li>
 <li class="chapter" data-level="3.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools"><i class="fa fa-check"></i><b>3.2</b> GWAS Tools</a></li>
 <li class="chapter" data-level="3.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quality-control"><i class="fa fa-check"></i><b>3.3</b> Quality Control</a></li>
-<li class="chapter" data-level="3.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics"><i class="fa fa-check"></i><b>3.4</b> An Example of Summary Statistics</a></li>
+<li class="chapter" data-level="3.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics"><i class="fa fa-check"></i><b>3.4</b> An Example of Summary Statistics</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#input-files"><i class="fa fa-check"></i><b>3.4.1</b> Input files</a></li>
+<li class="chapter" data-level="3.4.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-missing-rate"><i class="fa fa-check"></i><b>3.4.2</b> Calculating missing rate</a></li>
+<li class="chapter" data-level="3.4.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-allel-frequencies"><i class="fa fa-check"></i><b>3.4.3</b> Calculating allel frequencies</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a>
 <ul>
@@ -277,20 +282,149 @@ The data used for this example is a toy genotype data containing 5 random SNPs a
 </div>
 <div id="an-example-of-summary-statistics" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> An Example of Summary Statistics<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Input files
-Input files: in folder ./Data/QC– We will use a random selected 5 SNPs as an example data:</p>
+<div id="input-files" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> Input files<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#input-files" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Input files: in folder <code>./QC</code>– We will use a random selected 5 SNPs as an example data:</p>
 <ul>
 <li>5SNPs.ped</li>
-<li>5SNPs.map
-The PED file is a white-space delimited file: the first six columns are mandatory:</li>
+<li>5SNPs.map</li>
 </ul>
-<p>Family ID
-Individual ID
-Paternal ID
-Maternal ID
-Sex (1=male; 2=female; other=unknown)
-Phenotype</p>
+<p>The PED file is a white-space delimited file: the first six columns are mandatory:</p>
+<pre><code> Family ID
+ Individual ID
+ Paternal ID
+ Maternal ID
+ Sex (1=male; 2=female; other=unknown)
+ Phenotype</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb3-1" tabindex="-1"></a><span class="co"># bash codes- run in Terminal</span></span>
+<span id="cb3-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb3-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb3-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb3-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/5SNPs.ped</span></code></pre></div>
+<pre><code>## 1 206-001 0 0 1 0 A A G G G G G G A A
+## 2 206-003 0 0 1 0 A A G G G G G G A A
+## 3 206-004 0 0 1 0 A A G G G G G G A A
+## 4 206-014 0 0 1 0 A A G G G G G G A A
+## 5 206-015 0 0 1 0 A G A G A G A G A A
+## 6 206-016 0 0 1 0 A G A G A G A G A A
+## 7 206-018 0 0 1 0 A A G G G G G G A A
+## 8 206-019 0 0 1 0 A A A G A G A G A G
+## 9 206-021 0 0 1 0 A A G G G G G G A A
+## 10 206-023 0 0 1 0 A G A G A G A G A A</code></pre>
+<p>By default, each line of the MAP file describes a single marker and must contain exactly 4 columns:</p>
+<pre><code> chromosome (1-22, X, Y or 0 if unplaced)
+ rs# or snp identifier
+ Genetic distance (morgans)
+ Base-pair position (bp units)</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb6-1" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/5SNPs.map</span></code></pre></div>
+<pre><code>## 1 rs3094315 0 752566
+## 1 rs2073813 0 753541
+## 1 rs3131969 0 754182
+## 1 rs3131967 0 754334
+## 1 rs77598327 0 757120</code></pre>
+<p>Three types of summary statistics that we are going to calculate using <code>PLINK</code>:</p>
+<ol style="list-style-type: decimal">
+<li>missingness checking</li>
+<li>allele frequencies</li>
+<li>hardy-weinberg</li>
+</ol>
+<p>All results generated from the following commands are saved in folder <code>./Data/QC</code>. You can open the files in this folder to view the data structure.</p>
+</div>
+<div id="calculating-missing-rate" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> Calculating missing rate<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-missing-rate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The following commands compute the <strong>missingness</strong> for each SNP and each subject. (The output will print all calculation progress generated by <code>PLINK</code>.)</p>
+<ol style="list-style-type: decimal">
+<li><strong>–noweb</strong>, suppress the connection to internet for version check.</li>
+<li><strong>–file</strong>, specify the input files.</li>
+<li><strong>–missing</strong>, calculate the number of missing and missing rate.</li>
+<li><strong>–out</strong>, specify the output file name.</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
+<span id="cb8-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
+<span id="cb8-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-4" tabindex="-1"></a><span class="co"># for macoS users</span></span>
+<span id="cb8-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac_20230116/plink</span> <span class="dt">\</span></span>
+<span id="cb8-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--missing</span> <span class="at">--out</span> ./Data/QC/younameit</span>
+<span id="cb8-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-8" tabindex="-1"></a><span class="co"># for windows users</span></span>
+<span id="cb8-9"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-9" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64_20230116/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb8-10"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-10" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--missing</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<p>This option creates two output files in ‘results’ folder:</p>
+<ol style="list-style-type: decimal">
+<li><strong>“younameit.imiss”</strong>, missingness by individual.</li>
+<li><strong>“younameit.lmiss”</strong>, missingness by SNP.</li>
+</ol>
+<p>For individuals “.imiss” file, the format is:</p>
+<pre><code> FID                Family ID
+ IID                Individual ID
+ MISS_PHENO         Missing phenotype? (Y/N)
+ N_MISS             Number of missing SNPs
+ N_GENO             Number of non-obligatory missing genotypes
+ F_MISS             Proportion of missing SNPs</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb10-1" tabindex="-1"></a><span class="co"># bash codes- run in Terminal</span></span>
+<span id="cb10-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb10-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb10-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb10-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.imiss</span></code></pre></div>
+<pre><code>##  FID       IID MISS_PHENO   N_MISS   N_GENO   F_MISS
+##    1   206-001          Y        0        5        0
+##    2   206-003          Y        0        5        0
+##    3   206-004          Y        0        5        0
+##    4   206-014          Y        0        5        0
+##    5   206-015          Y        0        5        0
+##    6   206-016          Y        0        5        0
+##    7   206-018          Y        0        5        0
+##    8   206-019          Y        0        5        0
+##    9   206-021          Y        0        5        0</code></pre>
+<p>For SNP “lmiss” file, the format is:</p>
+<pre><code> SNP                SNP identifier
+ CHR                Chromosome number
+ N_MISS             Number of individuals missing this SNP
+ N_GENO             Number of non-obligatory missing genotypes
+ F_MISS             Proportion of sample missing for this SNP</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb13-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb13-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb13-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb13-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb13-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.lmiss</span></code></pre></div>
+<pre><code>##  CHR         SNP   N_MISS   N_GENO   F_MISS
+##    1   rs3094315        2      344 0.005814
+##    1   rs2073813       14      344   0.0407
+##    1   rs3131969       11      344  0.03198
+##    1   rs3131967        3      344 0.008721
+##    1  rs77598327       10      344  0.02907</code></pre>
+</div>
+<div id="calculating-allel-frequencies" class="section level3 hasAnchor" number="3.4.3">
+<h3><span class="header-section-number">3.4.3</span> Calculating allel frequencies<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-allel-frequencies" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The following command computes the <strong>allele frequencies</strong>. (The output will print all calculation progress generated by <code>PLINK</code>.)
+1. <strong>–freq</strong>, calculate the allele frequencies.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
+<span id="cb15-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
+<span id="cb15-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-4" tabindex="-1"></a><span class="co"># macOS user</span></span>
+<span id="cb15-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac_20230116/plink</span> <span class="dt">\</span></span>
+<span id="cb15-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--freq</span> <span class="at">--out</span> ./Data/QC/younameit</span>
+<span id="cb15-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-7" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-8" tabindex="-1"></a><span class="co"># Windows user</span></span>
+<span id="cb15-9"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-9" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64_20230116/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb15-10"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-10" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--freq</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<p>This command will create a output file <strong>“younameit.frq”</strong> with six columns:</p>
+<pre><code> CHR       Chromosome
+ 
+ SNP       SNP identifier
+ 
+ A1        Allele 1 code (minor allele)
+ 
+ A2        Allele 2 code (major allele)
+ 
+ MAF       Minor allele frequency
+ 
+ NCHROBS   Non-missing allele count</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb17-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb17-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.frq</span></code></pre></div>
+<pre><code>##  CHR         SNP   A1   A2          MAF  NCHROBS
+##    1   rs3094315    G    A      0.07749      684
+##    1   rs2073813    A    G       0.2242      660
+##    1   rs3131969    A    G       0.2387      666
+##    1   rs3131967    A    G       0.2082      682
+##    1  rs77598327    G    A       0.1228      668</code></pre>
 
+</div>
 </div>
 </div>
             </section>
