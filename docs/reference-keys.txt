@@ -18,3 +18,8 @@ practice
 comparison-of-hoxb13-roc-curve-and-nhlh1-roc-curve
 linear-regression
 linear-regression-of-hoxb13-vs.-il17br
+gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2
+environment-setting
+gwas-tools
+quality-control
+an-example-of-summary-statistics

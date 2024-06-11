@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2 | 2024 CSHL course - GWAS Hands-on Analysis</title>
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2 | 2024 CSHL course - GWAS Hands-on Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="github-repo" content="rstudio/cshl_2024" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2 | 2024 CSHL course - GWAS Hands-on Analysis" />
+  
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  
+
+<meta name="author" content="Danni Liu - Purdue University" />
+
+
+<meta name="date" content="2024-06-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="an-overview-of-regression-with-toy-examples.html"/>
+<link rel="next" href="methods.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html"><i class="fa fa-check"></i><b>2</b> An Overview of Regression with Toy Examples</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#environment-setting-and-packages"><i class="fa fa-check"></i><b>2.1</b> Environment Setting and Packages</a></li>
+<li class="chapter" data-level="2.2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#toy-example-data"><i class="fa fa-check"></i><b>2.2</b> Toy Example Data</a></li>
+<li class="chapter" data-level="2.3" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#logistic-regression"><i class="fa fa-check"></i><b>2.3</b> Logistic Regression</a></li>
+<li class="chapter" data-level="2.4" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#roc-curve-and-auc-for-hoxb13"><i class="fa fa-check"></i><b>2.4</b> ROC curve and AUC for HOXB13</a></li>
+<li class="chapter" data-level="2.5" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#practice"><i class="fa fa-check"></i><b>2.5</b> Practice</a></li>
+<li class="chapter" data-level="2.6" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#comparison-of-hoxb13-roc-curve-and-nhlh1-roc-curve"><i class="fa fa-check"></i><b>2.6</b> Comparison of HOXB13 ROC curve and NHLH1 ROC curve</a></li>
+<li class="chapter" data-level="2.7" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression"><i class="fa fa-check"></i><b>2.7</b> Linear Regression</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression-of-hoxb13-vs.-il17br"><i class="fa fa-check"></i><b>2.7.1</b> Linear regression of HOXB13 vs. IL17BR</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><i class="fa fa-check"></i><b>3</b> GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#environment-setting"><i class="fa fa-check"></i><b>3.1</b> Environment Setting</a></li>
+<li class="chapter" data-level="3.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools"><i class="fa fa-check"></i><b>3.2</b> GWAS Tools</a></li>
+<li class="chapter" data-level="3.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quality-control"><i class="fa fa-check"></i><b>3.3</b> Quality Control</a></li>
+<li class="chapter" data-level="3.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics"><i class="fa fa-check"></i><b>3.4</b> An Example of Summary Statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="methods.html"><a href="methods.html#math-example"><i class="fa fa-check"></i><b>4.1</b> math example</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
+<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">2024 CSHL course - GWAS Hands-on Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This notebook demonstrates a standard approach to conduct the genome wide association study (GWAS) using toy example datasets. The procedures consist of four steps:</p>
+<ul>
+<li>Quality Control</li>
+<li>Imputation</li>
+<li>Population Stratification Correction</li>
+<li>Simple Association Test
+The data used for this example is a toy genotype data containing 5 random SNPs and a random phenotype data with covariates.</li>
+</ul>
+<p>We use both bash and R codes in this notebook. The type of programming language is labeled at the top of each code cell.</p>
+<div id="note" style="color: blue;">
+<p>Special notes for Windows users: Windows has two command-line shells, Command shell and Windows Powershell. Command shell is specific to Windows system and can be run from RStudio Terminal or in “Command Prompt” App, but the language it uses is NOT the same as Bash! Powershell App is the only place to run Bash commands in Windows. Therefore if you are Windows users and use RStudio for this course, you can’t run bash codes such as “head” or “awk” from RStudio Terminal, you can <strong>ONLY</strong> run PLINK program codes. If you would like to try Bash codes, please open “Windows Powershell” app and follow the same steps to set the paths. Still, Powershell App won’t run PLINK codes, so you’ll have to switch between Powershell and RStudio Terminal.</p>
+</div>
+<div id="environment-setting" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Environment Setting<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#environment-setting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before we can run any analysis, we need to set the working directory path to the downloaded “bigcare-main” folder for both Terminal and Console in RStudio. Below are the codes to setup paths at both places. These paths have to be setup correctly at first, otherwise we can’t locate the correct input files.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-1" tabindex="-1"></a><span class="co"># change the paths to where you saved &quot;bigcare-main&quot;</span></span>
+<span id="cb1-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-2" tabindex="-1"></a><span class="do">## run in Terminal</span></span>
+<span id="cb1-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-3" tabindex="-1"></a>mydir<span class="ot">=</span><span class="st">&quot;/path/to/bigcare-main&quot;</span></span>
+<span id="cb1-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-4" tabindex="-1"></a>cd <span class="sc">$</span>mydir</span>
+<span id="cb1-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-6" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb1-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-7" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/bigcare-main&quot;</span>)</span></code></pre></div>
+</div>
+<div id="gwas-tools" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> GWAS Tools<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will use two main program tools in this notebook, PLINK and IMPUTE2.</p>
+<p>PLINK is used for quality control and perform association test for large scale genotype data. You can download PLINK program using this link. Download the .zip file or find the .zip files suitable for your laptop system in “bigcare-main/Tools/PLINK” and unzip it to call the plink program in the folder.</p>
+<p>IMPUTE2 is used for genotype imputation and haplotype phasing. You can download its program using this link. IMPUTE2 program is only available to run in Linux or macOS system. You can find the zipped installation file in “bigcare-main/Tools/IMPUTE2”. If you want to perform imputation for your own data, you also need to download the required reference genome from the above link. But in this notebook will only use the example genome.</p>
+<div id="note" style="color: blue;">
+<p>Important: If you want to run these two programs on your laptop, please make sure you have unzipped the installation packages in “./bigcare-main/Tools” that is suitable for your laptop systerm. We will directly call PLINK and IMPUTE2 programs using relative path.</p>
+</div>
+<p>Instructions on installing these two tools can be found on course GitHub here.</p>
+<p>For example, my computer is macOS system so I can run both PLINK and IMPUTE2. After I downloaded “bigcare-main” folder, I open ./Tools/PLINK and unzip the plink package for macOS: “plink_mac_20230116.zip”. A folder “plink_mac_20230116” will be created which contains a program file called “plink”. Then, I can call PLINK program by specifying the absolute path of this “plink” program: /path/to/bigcare-main/Tools/PLINK/plink_mac_20230116/plink. Similar for Windows system, you need to unzip the package “plink_win64_20230116.zip” with right click-&gt;“Extract All…”. Then you can call PLINK with /path/to/bigcare-main/Tools/PLINK/plink_win64_20230116/plink.exe.</p>
+<p>Similar for IMPUTE2, I unzip “impute_v2.3.2_MacOSX_Intel.tgz” for macOS under “./bigcare-main/Tools/IMPUTE2/”. And I can call IMPUTE2 program with /path/to/bigcare-main/Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2. Note that Windows system won’t be able to run IMPUTE2.</p>
+<p>You should modify the above /path/to/bigcare to where your “bigcare-main” folder is.</p>
+<div id="note" style="color: blue;">
+<p>However, macOS users need to go through additional steps to authorize PLINK and IMPUTE2 programs before you can call them! See below.</p>
+</div>
+<p>When you try to call PLINK or IMPUTE2 with the above commands, you might get a pop-up window with the following message “plink” cannot be opened because the developer cannot be verified.. Select “Cancel” and we will authorize PLINK first. Please go to macOS “System Settings”-&gt;“Privacy &amp; Security”, and scroll down until you see a message “plink” was blocked from use because it is not from an identified developer.. Click “Allow Anyway” and you will be prompt to enter your Mac username and password. Click “Unlock” and then “Allow Anyway” again, and the previous message will disappear. Then try to run the same codes again in RStudio Terminal. You will get another pop-up window saying macOS cannot verify the developer of “plink”. Are you sure you want to open it?, select “Open” then you can see PLINK or IMPUTE2 commands options show up in Terminal.</p>
+</div>
+<div id="quality-control" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Quality Control<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quality-control" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>PLINK will generate a number of standard summary statistics that are useful for quality control (e.g. missing genotype rate, minor allele frequency, Hardy-Weinberg equilibrium test and non-Mendelian transmission rate). These can also be used as thresholds for subsequent analyses. For more detailed information about plink, please refer its website <a href="http://zzz.bwh.harvard.edu/plink/" class="uri">http://zzz.bwh.harvard.edu/plink/</a>.</p>
+<p>The following is a list of some common options that can be used to filter out individuals or SNPs on the basis of the summary statistic measures:</p>
+<table>
+<colgroup>
+<col width="37%" />
+<col width="31%" />
+<col width="31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature inclusion criteria</th>
+<th>As summary statistic</th>
+<th>As inclusion criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Missingness per individual</td>
+<td><code>--missing</code></td>
+<td><code>--mind N</code>.</td>
+</tr>
+<tr class="even">
+<td>Missingness per marker</td>
+<td>–missing</td>
+<td>–geno N</td>
+</tr>
+<tr class="odd">
+<td>Allele frequency</td>
+<td>–freq</td>
+<td>–maf N</td>
+</tr>
+<tr class="even">
+<td>Hardy-Weinberg equilibrium</td>
+<td>–hardy</td>
+<td>–hwe N</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="an-example-of-summary-statistics" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> An Example of Summary Statistics<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Input files
+Input files: in folder ./Data/QC– We will use a random selected 5 SNPs as an example data:</p>
+<ul>
+<li>5SNPs.ped</li>
+<li>5SNPs.map
+The PED file is a white-space delimited file: the first six columns are mandatory:</li>
+</ul>
+<p>Family ID
+Individual ID
+Paternal ID
+Maternal ID
+Sex (1=male; 2=female; other=unknown)
+Phenotype</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="an-overview-of-regression-with-toy-examples.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-gwastool.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["cshl_2024.pdf", "cshl_2024.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

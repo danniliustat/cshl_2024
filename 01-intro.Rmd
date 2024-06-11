@@ -47,6 +47,7 @@ library(data.table)
 library(GEOquery)
 library(plyr)
 library(ROCR)
+library(knitr)
 ```
 
 ## Toy Example Data
@@ -58,17 +59,17 @@ toy_data <- fread("./data/toy_example_data.txt")
 
 We could take a view at the data. head function prints the first 6 rows of the dataset. summary function provides summary statistics of the numeric variables. Column status is a binary variable indicating whether the sample is recurrence or non-recurrence. The last three columns are expression of three genes HOXB13, IL17BR and NHLH1, so they are continuous.
 
-```{r}
-head(toy_data)
-summary(toy_data)
+```{r results='asis'}
+kable(head(toy_data))
+kable(summary(toy_data))
 ```
 
 We can also get a summary of the continuous expression variables by status groups. Below, we used ddply function to group the data by status and calculate count,mean and sd of the 3 genes in each group. As shown in the output data.frame, the count column indicates that there are 32 samples in non-recur and 28 in recur group respectively.
 
 ```{r}
-ddply(toy_data, ~status, summarise, count=length(gene_HOXB13), mean=mean(gene_HOXB13), sd=sd(gene_HOXB13))
-ddply(toy_data, ~status, summarise, count=length(gene_IL17BR), mean=mean(gene_IL17BR), sd=sd(gene_IL17BR))
-ddply(toy_data, ~status, summarise, count=length(gene_NHLH1), mean=mean(gene_NHLH1), sd=sd(gene_NHLH1))
+kable(ddply(toy_data, ~status, summarise, count=length(gene_HOXB13), mean=mean(gene_HOXB13), sd=sd(gene_HOXB13)))
+kable(ddply(toy_data, ~status, summarise, count=length(gene_IL17BR), mean=mean(gene_IL17BR), sd=sd(gene_IL17BR)))
+kable(ddply(toy_data, ~status, summarise, count=length(gene_NHLH1), mean=mean(gene_NHLH1), sd=sd(gene_NHLH1)))
 
 ```
 
@@ -80,7 +81,7 @@ The codes below show you how to recode status into a binary variable censor. Fir
 index <- which(toy_data$status=="Status=recur")
 toy_data$censor <- rep(0,60)
 toy_data$censor[index] <- 1
-head(toy_data)
+kable(head(toy_data))
 
 ```
 
