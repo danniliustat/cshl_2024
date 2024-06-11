@@ -1,0 +1,14 @@
+
+======================
+ IMPUTE version 2.3.2 
+======================
+
+Copyright 2008 Bryan Howie, Peter Donnelly, and Jonathan Marchini
+Please see the LICENCE file included with this program for conditions of use.
+
+The seed for the random number generator is 390046687.
+
+Command-line input: /depot/bigcare/data/2021/bin/impute2 -m /home/train97/bigcare/3_gwas/3b.Demonstration_of_Data_Preprocess_and_Association_Test/Example/example.chr22.map -h /home/train97/bigcare/3_gwas/3b.Demonstration_of_Data_Preprocess_and_Association_Test/Example/example.chr22.1kG.haps -l /home/train97/bigcare/3_gwas/3b.Demonstration_of_Data_Preprocess_and_Association_Test/Example/example.chr22.1kG.legend
+
+ERROR: You must specify a valid interval for imputation using the -int argument.
+

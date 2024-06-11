@@ -1,0 +1,31 @@
+PLINK v1.90b6.21 64-bit (19 Oct 2020)
+Options in effect:
+  --file ./Data/QC/5SNPs
+  --genome
+  --noweb
+  --out ./Data/QC/younameit
+
+Hostname: a242.anvil.rcac.purdue.edu
+Working directory: /anvil/scratch/x-liu2302/gwas_workshop
+Start time: Mon Jun 26 23:54:46 2023
+
+Note: --noweb has no effect since no web check is implemented yet.
+Random number seed: 1687838086
+257520 MB RAM detected; reserving 128760 MB for main workspace.
+Scanning .ped file... done.
+Performing single-pass .bed write (5 variants, 344 people).
+--file: ./Data/QC/younameit-temporary.bed + ./Data/QC/younameit-temporary.bim +
+./Data/QC/younameit-temporary.fam written.
+5 variants loaded from .bim file.
+344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to ./Data/QC/younameit.nosex .
+Using up to 127 threads (change this with --threads).
+Before main variant filters, 344 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.976744.
+5 variants and 344 people pass filters and QC.
+Note: No phenotypes present.
+IBD calculations complete.
+Finished writing ./Data/QC/younameit.genome .
+
+End time: Mon Jun 26 23:54:46 2023

@@ -1,0 +1,52 @@
+PLINK v1.90b6.21 64-bit (19 Oct 2020)
+Options in effect:
+  --adjust
+  --all-pheno
+  --assoc
+  --file genotype_1k
+  --noweb
+  --out younameit
+  --pheno phenotype_plink.txt
+
+Hostname: a242.anvil.rcac.purdue.edu
+Working directory: /anvil/scratch/x-liu2302/gwas_workshop/Data/case_data
+Start time: Sat Jul  1 00:08:14 2023
+
+Note: --noweb has no effect since no web check is implemented yet.
+Random number seed: 1688184494
+257520 MB RAM detected; reserving 128760 MB for main workspace.
+Scanning .ped file... done.
+Performing single-pass .bed write (1000 variants, 192 people).
+--file: younameit-temporary.bed + younameit-temporary.bim +
+younameit-temporary.fam written.
+1000 variants loaded from .bim file.
+192 people (0 males, 192 females) loaded from .fam.
+192 phenotype values present after --pheno.
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 192 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Warning: Nonmissing nonmale Y chromosome genotype(s) present; many commands
+treat these as missing.
+Total genotyping rate is 0.995331.
+1000 variants and 192 people pass filters and QC.
+Phenotype data is quantitative.
+192 phenotype values present after --pheno.
+Warning: QT --assoc doesn't handle X/Y/MT/haploid variants normally (try
+--linear).
+Writing QT --assoc report to younameit.P1.qassoc ... done.
+--adjust: Genomic inflation est. lambda (based on median chisq) = 1.34221.
+--adjust values (805 variants) written to younameit.P1.qassoc.adjusted .
+192 phenotype values present after --pheno.
+Warning: QT --assoc doesn't handle X/Y/MT/haploid variants normally (try
+--linear).
+Writing QT --assoc report to younameit.P2.qassoc ... done.
+--adjust: Genomic inflation est. lambda (based on median chisq) = 1.
+--adjust values (805 variants) written to younameit.P2.qassoc.adjusted .
+192 phenotype values present after --pheno.
+Warning: QT --assoc doesn't handle X/Y/MT/haploid variants normally (try
+--linear).
+Writing QT --assoc report to younameit.P3.qassoc ... done.
+--adjust: Genomic inflation est. lambda (based on median chisq) = 1.29768.
+--adjust values (805 variants) written to younameit.P3.qassoc.adjusted .
+
+End time: Sat Jul  1 00:08:14 2023

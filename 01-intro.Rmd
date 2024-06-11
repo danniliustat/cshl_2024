@@ -1,7 +1,199 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # An Overview of Regression with Toy Examples
 
-In order to run codes in this notebook, please make sure you have downloaded the "bigcare-main" folder from GitHub and have RStudio installed on your laptop.
-> "If it weren't for my lawyer, I'd still be in prison.
->  It went a lot faster with two people digging."
->
-> `r tufte::quote_footer('--- Joe Martin')`
+::: {#note style="color: blue;"}
+Note: In order to run codes in this notebook, please make sure you have downloaded the "bigcare-main" folder from GitHub and have RStudio installed on your laptop.
+:::
+
+This notebook demonstrates two basic statistical regression models using toy examples.
+
+- case/control study by logistic regression
+- quantitative trait study by linear regression
+
+We use only R codes in this notebook.
+
+## Environment Setting and Packages
+
+Before we can run any analysis, we need to set the working directory path in RStudio Console to the downloaded "bigcare-main" folder and load the necessary R packages. To setup the working directory, make sure you run the following codes in R Terminal.
+
+```{r eval=F}
+# change the path below to where you saved "bigcare-main" folder
+setwd("/path/to/gwas")
+```
+
+In this notebook, we will use R packages "data.table", "GEOquery", "plyr" and "ROCR". You can install the R base packages using install.packages(). "GEOquery" is a BioConductor package that needs to be installed with BioManager. The codes below show you how to install these packages in R. They are commented out with # here, so if you want to run them on your own laptop, please remove # before the codes.
+
+```{r eval=F, warning=F,error=F}
+install.packages("data.table")
+install.packages("plyr")
+install.packages("ROCR")
+
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("GEOquery")
+```
+
+After installation, The list of packages are loaded with library() function.
+
+The following code might generate multiple messages when loading the packages, such as "The following objects are masked from XXX", which is normal. You can ignore them.
+
+```{r eval=T, message=F,warning=F,error=F}
+#load R packages
+library(data.table)
+library(GEOquery)
+library(plyr)
+library(ROCR)
+```
+
+## Toy Example Data
+To illustrate the statistical methods, we will use a small dataset of 60 samples with both continuous and binary variables. This dataset is a microarray expression data downloaded from GSE1378. It contains 60 patients with ER-positive primary breast cancer treated with tamoxifen monotherapy for 5 years. We only extracted the recurrent status and gene expression of 3 genes to this toy example data. You can load this extracted data as below with fread function:
+
+```{r}
+toy_data <- fread("./data/toy_example_data.txt")
+```
+
+We could take a view at the data. head function prints the first 6 rows of the dataset. summary function provides summary statistics of the numeric variables. Column status is a binary variable indicating whether the sample is recurrence or non-recurrence. The last three columns are expression of three genes HOXB13, IL17BR and NHLH1, so they are continuous.
+
+```{r}
+head(toy_data)
+summary(toy_data)
+```
+
+We can also get a summary of the continuous expression variables by status groups. Below, we used ddply function to group the data by status and calculate count,mean and sd of the 3 genes in each group. As shown in the output data.frame, the count column indicates that there are 32 samples in non-recur and 28 in recur group respectively.
+
+```{r}
+ddply(toy_data, ~status, summarise, count=length(gene_HOXB13), mean=mean(gene_HOXB13), sd=sd(gene_HOXB13))
+ddply(toy_data, ~status, summarise, count=length(gene_IL17BR), mean=mean(gene_IL17BR), sd=sd(gene_IL17BR))
+ddply(toy_data, ~status, summarise, count=length(gene_NHLH1), mean=mean(gene_NHLH1), sd=sd(gene_NHLH1))
+
+```
+
+To prepare for logistic regression, we will create a censor variable as an indicator of the status group, with 1=recur and 0=non-recur. Later, we will use this binary censor variable and the last three columns of continuous expression variables of different genes to perform the analysis.
+
+The codes below show you how to recode status into a binary variable censor. First, we get the index number of the recurrent status, and save them in index object. Then we create a new variable called censor and assign a sequence of 0 to this vector. Next, we extract from censor the elements with index number in index, and assign/recode them as 1. After this recoding finishes, we again take a look at the first 6 rows with head function.
+
+```{r}
+index <- which(toy_data$status=="Status=recur")
+toy_data$censor <- rep(0,60)
+toy_data$censor[index] <- 1
+head(toy_data)
+
+```
+
+## Logistic Regression
+Below is a simple case/control study on examining relationship between recurrence status and gene expression using logistic regression.
+
+So what is logistic regression?
+
+Logistic regression is the regression model to conduct when the dependent variable is dichotomous (binary). In this toy example, the binary dependent variable is recur/non-recur status. Similar to other regression methods, the logistic regression is a predictive analysis but it also reveals the association relationship between the dependent variable and the independent variables.
+
+Logistic regression can help us answer a variety of questions, including, but not limited to the examples below:
+
+- How does the probability of getting lung cancer (yes vs. no) change for every additional pound of overweight and for every pack of cigarettes smoked per day?
+- Do body weight, calorie intake, fat intake, and participant age have an influence on heart attacks (yes vs. no)?
+Mathematically,  the logistic regression equation can be defined as:
+
+$l = log(\frac{p}{1-p}) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ...$, where $p$ is the probability that the response $Y = 1$.
+
+More detailed explanation about logistic regression can be found at: https://en.wikipedia.org/wiki/Logistic_regression
+
+In the code below, we performed a logistic regression with a binary response `censor` and continuous expression of `gene_HOXB13`. The model is fitted with function `glm`. `cencor~gene_HOXB13` specifies the model structure, where `censor` is the response and `gene_HOCB13` is the explanatory variable. `family` argument specifies the distribution of `censor` as "binomial", and link specifies that link function for binomial response is "logit", which is why this model is called "logistic model".
+
+```{r}
+# logistic regresion, use gene HOXB13 to predict the recur/non-recur status
+# for significant gene: HOXB13
+fit.logistic.1 <- glm(censor~ gene_HOXB13,data = toy_data,family = binomial(link = 'logit'))
+summary(fit.logistic.1) # output summary of the logistic regression
+
+```
+
+The table under Coefficients contains test results. The p-value of the gene HOXB13, in the last column of this table, is 0.000764 which is way smaller than 0.05. It indicates that this gene has a significant impact on the recurrence status.
+
+## ROC curve and AUC for HOXB13
+The ROC (receiver operating characteristic) curve and AUC (area under the curve) are popular tools to check the predictive ability of the logistic regression.
+
+Roughly speaking, the AUC equals to the probability that a classifier will rank a randomly chosen positive instance higher than a randomly chosen negative one. AUC is always between 0 and 1. The closer to 1 the AUC is, the better the model fits. As shown in the following results, the AUC is 0.796 and pretty close to 1. So this model fits the data well. In other words, we can say the expression of gene HOXB13 has a great explanation power on the recur status.
+
+For more information about these two concepts, Please visit: https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve
+
+```{r}
+#plot ROC curve
+p <- predict(fit.logistic.1, type="response")
+pr <- prediction(p, toy_data$censor)
+prf <- performance(pr, measure = "tpr", x.measure = "fpr")
+prf1 <- prf
+plot(prf1,main="ROC for significant gene HOXB13")
+
+# calculate the auc
+auc <- performance(pr, measure = "auc")
+auc <- auc@y.values[[1]]
+auc # 0.796
+
+```
+
+## Practice
+**Practice 1: Logistic regression**
+We can repeat the same analysis using another gene, namely NHLH1. What can you conclude from the test results?
+
+```{r}
+# for non-significant gene NHLH1
+fit.logistic.2 <- glm(censor~ gene_NHLH1,data = toy_data,family = binomial(link = 'logit'))
+summary(fit.logistic.2)
+
+```
+
+**Practice 2: ROC curve and AUC for NHLH1**
+We draw the same ROC curve and calculate AUC for NHLH1, what can you conclude from results for NHLH1?
+
+```{r}
+#plot ROC curve
+p <- predict(fit.logistic.2, type="response")
+pr <- prediction(p, toy_data$censor)
+prf <- performance(pr, measure = "tpr", x.measure = "fpr")
+prf2 <- prf
+plot(prf2,main="ROC for non-significant gene NHLH1 ")
+
+# calculate the auc
+auc <- performance(pr, measure = "auc")
+auc <- auc@y.values[[1]]
+auc # 0.47
+
+```
+
+## Comparison of HOXB13 ROC curve and NHLH1 ROC curve
+To have a direct compare the ROC curve for these 2 genes, we can plot the two ROC curves on a single plot. The code below generate the combined plot. We first plot ROC curve for HOXB13 as normal with color blue, then add the ROC curve of NHLH1 on this plot using lines and color red. legend function specifies the plot legend which is shown at the bottom of the plot.
+
+With this combined plot, we can conclude that HOXB13 has much higher predictive probability than NHLH1, while retaining a low false positive rate.
+
+```{r}
+### two ROC curve comparison
+plot(prf1,main="ROC for HOXB13 and NHLH1",col='blue')
+lines(prf2@x.values[[1]],prf2@y.values[[1]],col='red')
+legend('bottomright',lwd=2,
+       legend=c("ROC for significant gene HOXB13 (auc=0.796)","ROC for non-significant gene NHLH1 (auc =0.47)"),
+       col=c('blue','red'))
+
+```
+
+## Linear Regression
+In statistics, linear regression is an approach for modeling the relationship between a continuous dependent variable Y and one or more explanatory variables (or independent variables) denoted by X. The explanatory variables can be either continuous (e.g. age, weight) or categorical (e.g. gender, smoke or not).
+
+In the following example, we examine the relationship between the expression of gene HOXB13 and IL17BR. Both of them are continuous variables.
+
+For more detailed explanation of linear regression, please visit: https://en.wikipedia.org/wiki/Linear_regression
+
+### Linear regression of HOXB13 vs. IL17BR
+Linear regression is fitted with lm function. The arguments in lm is very similar to those in glm, but much simpler as we don't need to specify the distribution and link function here.
+
+```{r}
+# linear model, use gene IL17BR to predict another gene HOXB13
+fit.lm <- lm(gene_HOXB13~gene_IL17BR,data = toy_data)
+summary(fit.lm) # print the summary of the fitted regression
+```
+
+The p-value for IL17BR is 0.0135<0.05, so there is a significant association between expression of HOXB13 and IL17BR.
+

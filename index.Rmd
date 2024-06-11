@@ -16,6 +16,7 @@ description: "This is the course material for the 2024 CSHL hands-on session in 
 
 Environment setup
 
+
 ```{r include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(

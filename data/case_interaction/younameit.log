@@ -1,0 +1,33 @@
+PLINK v1.90b6.21 64-bit (19 Oct 2020)
+Options in effect:
+  --covar covar_age.txt
+  --file top5SNPs
+  --gxe
+  --noweb
+  --out younameit
+  --pheno ZR.txt
+
+Hostname: a242.anvil.rcac.purdue.edu
+Working directory: /anvil/scratch/x-liu2302/gwas_workshop/Data/case_interaction
+Start time: Sat Jul  1 01:19:15 2023
+
+Note: --noweb has no effect since no web check is implemented yet.
+Random number seed: 1688188755
+257520 MB RAM detected; reserving 128760 MB for main workspace.
+Scanning .ped file... done.
+Performing single-pass .bed write (5 variants, 192 people).
+--file: younameit-temporary.bed + younameit-temporary.bim +
+younameit-temporary.fam written.
+5 variants loaded from .bim file.
+192 people (0 males, 192 females) loaded from .fam.
+192 phenotype values present after --pheno.
+Using 1 thread (no multithreaded calculations invoked).
+--covar: 1 case/control covariate loaded for --gxe.
+Before main variant filters, 192 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.998958.
+5 variants and 192 people pass filters and QC.
+Phenotype data is quantitative.
+Writing --gxe report to younameit.qassoc.gxe ... done.
+
+End time: Sat Jul  1 01:19:15 2023

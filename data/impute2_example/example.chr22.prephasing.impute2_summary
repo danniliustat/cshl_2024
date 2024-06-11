@@ -1,0 +1,129 @@
+
+======================
+ IMPUTE version 2.3.1 
+======================
+
+Copyright 2008 Bryan Howie, Peter Donnelly, and Jonathan Marchini
+Please see the LICENCE file included with this program for conditions of use.
+
+The seed for the random number generator is 1226917419.
+
+Command-line input: ./impute2 -prephase_g -m ./Example/example.chr22.map -g ./Example/example.chr22.study.gens -int 20e6 25e6 -Ne 20000 -o ./Example/example.chr22.prephasing.impute2
+
+---------------------------------
+ Nomenclature and data structure 
+---------------------------------
+
+     Panel 2: unphased study genotypes
+
+For optimal results, each successive panel (0,1,2) should contain a subset of the SNPs in the previous panel. When the data structure deviates from this ideal configuration, IMPUTE2 tries to use as much of the available information as possible; see documentation for details.
+
+-------------
+ Input files 
+-------------
+
+          Panel 2 genotypes: ./Example/example.chr22.study.gens
+                genetic map: ./Example/example.chr22.map
+
+--------------
+ Output files 
+--------------
+
+                main output: ./Example/example.chr22.prephasing.impute2
+                SNP QC info: ./Example/example.chr22.prephasing.impute2_info
+             sample QC info: ./Example/example.chr22.prephasing.impute2_info_by_sample
+                run summary: ./Example/example.chr22.prephasing.impute2_summary
+                warning log: ./Example/example.chr22.prephasing.impute2_warnings
+        Panel 2 phased haps: ./Example/example.chr22.prephasing.impute2_haps
+   Panel 2 phase confidence: ./Example/example.chr22.prephasing.impute2_haps_confidence
+
+-----------------
+ Data processing 
+-----------------
+
+-reading genetic map from -m file
+ --filename=[./Example/example.chr22.map]
+ --read 262 SNPs in the analysis interval+buffer region
+
+-reading Panel 2 genotypes from -g file
+ --filename=[./Example/example.chr22.study.gens]
+ --detected 250 individuals
+ --read 33 SNPs in the analysis interval+buffer region
+
+-removing SNPs that violate the hierarchical data requirements
+ --no SNPs removed
+
+-aligning allele labels between panels
+
+--------------
+ Data summary 
+--------------
+
+[type 0 = SNP in Panel 0 only]
+[type 1 = SNP in Panel 1]
+[type 2 = SNP in Panel 2 and all ref panels]
+[type 3 = SNP in Panel 2 only]
+
+-Upstream buffer region
+ --0 type 0 SNPs
+ --0 type 1 SNPs
+ --0 type 2 SNPs
+ --0 type 3 SNPs
+ --0 total SNPs
+
+-Downstream buffer region
+ --0 type 0 SNPs
+ --0 type 1 SNPs
+ --0 type 2 SNPs
+ --0 type 3 SNPs
+ --0 total SNPs
+
+-Analysis region (as defined by -int argument)
+ --0 type 0 SNPs
+ --0 type 1 SNPs
+ --0 type 2 SNPs
+ --33 type 3 SNPs
+ --33 total SNPs
+
+-Output file
+ --0 type 0 SNPs
+ --0 type 1 SNPs
+ --0 type 2 SNPs
+ --33 type 3 SNPs
+ --33 total SNPs
+
+-In total, 33 SNPs will be used in the analysis, including 33 Panel 2 SNPs
+
+-making initial haplotype guesses for Panel 2 by phasing hets at random and imputing missing genotypes from allele freqs
+
+-setting storage space
+-setting mutation matrices
+-setting switch rates
+
+----------------
+ Run parameters 
+----------------
+
+           study individuals: 250 [Panel 2]
+           sequence interval: [20000000,25000000]
+                      buffer: 250 kb
+                          Ne: 20000
+           input call thresh: 0.900
+     burn-in MCMC iterations: 10
+       total MCMC iterations: 30 (20 used for inference)
+      HMM states for phasing: 80 [Panel 2]
+                active flags: <-prephase_g>
+
+---------
+ Run log 
+---------
+
+RESETTING PARAMETERS FOR "SURROGATE FAMILY" MODELING
+-setting mutation matrices
+-setting switch rates
+
+diploid sampling success rate: 0.988
+
+haploid sampling success rate: (no haploid sampling performed)
+
+-generating consensus haplotype estimates (minimizing switch error)

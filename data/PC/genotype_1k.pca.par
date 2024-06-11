@@ -1,0 +1,12 @@
+genotypename: ./Data/PC/genotype_1k.ped
+snpname: ./Data/PC/genotype_1k.pedsnp
+indivname: ./Data/PC/genotype_1k.pedind
+evecoutname: ./Data/PC/genotype_1k.pca.evec
+evaloutname: ./Data/PC/genotype_1k.eval
+altnormstyle: NO
+numoutevec: 10
+numoutlieriter: 5
+numoutlierevec: 10
+outliersigmathresh: 6
+qtmode: 0
+snpweightoutname: example.snpwt

@@ -1,0 +1,37 @@
+PLINK v1.90b6.21 64-bit (19 Oct 2020)
+Options in effect:
+  --assoc
+  --file ./Data/Assoc/5SNPs
+  --noweb
+  --out ./Data/Assoc/younameit.biny
+  --pheno ./Data/Assoc/biny.txt
+
+Hostname: a242.anvil.rcac.purdue.edu
+Working directory: /anvil/scratch/x-liu2302/gwas_workshop
+Start time: Tue Jun 27 00:19:25 2023
+
+Note: --noweb has no effect since no web check is implemented yet.
+Random number seed: 1687839565
+257520 MB RAM detected; reserving 128760 MB for main workspace.
+Scanning .ped file... done.
+Performing single-pass .bed write (5 variants, 344 people).
+--file: ./Data/Assoc/younameit.biny-temporary.bed +
+./Data/Assoc/younameit.biny-temporary.bim +
+./Data/Assoc/younameit.biny-temporary.fam written.
+5 variants loaded from .bim file.
+344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to ./Data/Assoc/younameit.biny.nosex .
+344 phenotype values present after --pheno.
+Warning: Ignoring phenotypes of missing-sex samples.  If you don't want those
+phenotypes to be ignored, use the --allow-no-sex flag.
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 344 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.976744.
+5 variants and 344 people pass filters and QC.
+Among remaining phenotypes, 137 are cases and 144 are controls.  (63 phenotypes
+are missing.)
+Writing C/C --assoc report to ./Data/Assoc/younameit.biny.assoc ...
+done.
+
+End time: Tue Jun 27 00:19:25 2023

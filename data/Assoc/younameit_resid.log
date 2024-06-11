@@ -1,0 +1,35 @@
+PLINK v1.90b6.21 64-bit (19 Oct 2020)
+Options in effect:
+  --assoc
+  --file ./Data/Assoc/5SNPs
+  --noweb
+  --out ./Data/Assoc/younameit_resid
+  --pheno ./Data/Assoc/resid_phenotype_assoc.txt
+
+Hostname: a242.anvil.rcac.purdue.edu
+Working directory: /anvil/scratch/x-liu2302/gwas_workshop
+Start time: Tue Jun 27 00:19:54 2023
+
+Note: --noweb has no effect since no web check is implemented yet.
+Random number seed: 1687839594
+257520 MB RAM detected; reserving 128760 MB for main workspace.
+Scanning .ped file... done.
+Performing single-pass .bed write (5 variants, 344 people).
+--file: ./Data/Assoc/younameit_resid-temporary.bed +
+./Data/Assoc/younameit_resid-temporary.bim +
+./Data/Assoc/younameit_resid-temporary.fam written.
+5 variants loaded from .bim file.
+344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to ./Data/Assoc/younameit_resid.nosex .
+344 phenotype values present after --pheno.
+Warning: Ignoring phenotypes of missing-sex samples.  If you don't want those
+phenotypes to be ignored, use the --allow-no-sex flag.
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 344 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.976744.
+5 variants and 344 people pass filters and QC.
+Phenotype data is quantitative.
+Writing QT --assoc report to ./Data/Assoc/younameit_resid.qassoc ... done.
+
+End time: Tue Jun 27 00:19:54 2023
