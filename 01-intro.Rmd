@@ -5,9 +5,9 @@ output:
 ---
 # An Overview of Regression with Toy Examples
 
-::: {#note style="color: blue;"}
-Note: In order to run codes in this notebook, please make sure you have downloaded the "bigcare-main" folder from GitHub and have RStudio installed on your laptop.
-:::
+> <span style="color: #0064a4;">  
+**Note:** In order to run codes in this notebook, please make sure you have downloaded the "bigcare-main" folder from GitHub and have RStudio installed on your laptop.
+</span>
 
 This notebook demonstrates two basic statistical regression models using toy examples.
 

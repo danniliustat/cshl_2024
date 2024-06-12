@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 An Imputation Example | 2024 CSHL course - GWAS Hands-on Analysis</title>
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 An Imputation Example | 2024 CSHL course - GWAS Hands-on Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="github-repo" content="rstudio/cshl_2024" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 An Imputation Example | 2024 CSHL course - GWAS Hands-on Analysis" />
+  
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  
+
+<meta name="author" content="Danni Liu - Purdue University" />
+
+
+<meta name="date" content="2024-06-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"/>
+<link rel="next" href="population-stratification-correction-using-eigenstrat.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html"><i class="fa fa-check"></i><b>2</b> An Overview of Regression with Toy Examples</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#environment-setting-and-packages"><i class="fa fa-check"></i><b>2.1</b> Environment Setting and Packages</a></li>
+<li class="chapter" data-level="2.2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#toy-example-data"><i class="fa fa-check"></i><b>2.2</b> Toy Example Data</a></li>
+<li class="chapter" data-level="2.3" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#logistic-regression"><i class="fa fa-check"></i><b>2.3</b> Logistic Regression</a></li>
+<li class="chapter" data-level="2.4" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#roc-curve-and-auc-for-hoxb13"><i class="fa fa-check"></i><b>2.4</b> ROC curve and AUC for HOXB13</a></li>
+<li class="chapter" data-level="2.5" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#practice"><i class="fa fa-check"></i><b>2.5</b> Practice</a></li>
+<li class="chapter" data-level="2.6" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#comparison-of-hoxb13-roc-curve-and-nhlh1-roc-curve"><i class="fa fa-check"></i><b>2.6</b> Comparison of HOXB13 ROC curve and NHLH1 ROC curve</a></li>
+<li class="chapter" data-level="2.7" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression"><i class="fa fa-check"></i><b>2.7</b> Linear Regression</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression-of-hoxb13-vs.-il17br"><i class="fa fa-check"></i><b>2.7.1</b> Linear regression of HOXB13 vs. IL17BR</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><i class="fa fa-check"></i><b>3</b> GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#environment-setting"><i class="fa fa-check"></i><b>3.1</b> Environment Setting</a></li>
+<li class="chapter" data-level="3.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools"><i class="fa fa-check"></i><b>3.2</b> GWAS Tools</a></li>
+<li class="chapter" data-level="3.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quality-control"><i class="fa fa-check"></i><b>3.3</b> Quality Control</a></li>
+<li class="chapter" data-level="3.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics"><i class="fa fa-check"></i><b>3.4</b> An Example of Summary Statistics</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#input-files"><i class="fa fa-check"></i><b>3.4.1</b> Input files</a></li>
+<li class="chapter" data-level="3.4.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-missing-rate"><i class="fa fa-check"></i><b>3.4.2</b> Calculating missing rate</a></li>
+<li class="chapter" data-level="3.4.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-allel-frequencies"><i class="fa fa-check"></i><b>3.4.3</b> Calculating allel frequencies</a></li>
+<li class="chapter" data-level="3.4.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#hardy-weinberg-equilibrium"><i class="fa fa-check"></i><b>3.4.4</b> Hardy-Weinberg Equilibrium</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-inclusion-thresholds-for-qc"><i class="fa fa-check"></i><b>3.5</b> An Example of Inclusion Thresholds for QC</a></li>
+<li class="chapter" data-level="3.6" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#remove-closely-related-individuals"><i class="fa fa-check"></i><b>3.6</b> Remove Closely Related Individuals</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="an-imputation-example.html"><a href="an-imputation-example.html"><i class="fa fa-check"></i><b>4</b> An Imputation Example</a></li>
+<li class="chapter" data-level="5" data-path="population-stratification-correction-using-eigenstrat.html"><a href="population-stratification-correction-using-eigenstrat.html"><i class="fa fa-check"></i><b>5</b> Population Stratification Correction Using EIGENSTRAT</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="population-stratification-correction-using-eigenstrat.html"><a href="population-stratification-correction-using-eigenstrat.html#eigenstrat-input-files"><i class="fa fa-check"></i><b>5.1</b> EIGENSTRAT input files</a></li>
+<li class="chapter" data-level="5.2" data-path="population-stratification-correction-using-eigenstrat.html"><a href="population-stratification-correction-using-eigenstrat.html#run-eigenstrat-using-input-genotype-data"><i class="fa fa-check"></i><b>5.2</b> Run EIGENSTRAT Using Input Genotype Data</a></li>
+<li class="chapter" data-level="5.3" data-path="population-stratification-correction-using-eigenstrat.html"><a href="population-stratification-correction-using-eigenstrat.html#test-the-significance-of-principle-components-pcs"><i class="fa fa-check"></i><b>5.3</b> Test the Significance of Principle Components (PCs)</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="simple-association-test.html"><a href="simple-association-test.html"><i class="fa fa-check"></i><b>6</b> Simple Association Test</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="simple-association-test.html"><a href="simple-association-test.html#quantitative-trait-association-test-for-continuous-trait"><i class="fa fa-check"></i><b>6.1</b> Quantitative Trait Association Test for Continuous Trait</a></li>
+<li class="chapter" data-level="6.2" data-path="simple-association-test.html"><a href="simple-association-test.html#casecontrol-asssociation-test-for-binary-trait"><i class="fa fa-check"></i><b>6.2</b> Case/Control Asssociation Test for Binary Trait</a></li>
+<li class="chapter" data-level="6.3" data-path="simple-association-test.html"><a href="simple-association-test.html#quantitative-trait-association-test-for-continuous-trait-with-covariates"><i class="fa fa-check"></i><b>6.3</b> Quantitative Trait Association Test for Continuous Trait with Covariates</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="simple-association-test.html"><a href="simple-association-test.html#covariates-adjustments-using-r"><i class="fa fa-check"></i><b>6.3.1</b> Covariates adjustments (using R):</a></li>
+<li class="chapter" data-level="6.3.2" data-path="simple-association-test.html"><a href="simple-association-test.html#residual-phenotype-data-after-covariates-adjustments-in-unix"><i class="fa fa-check"></i><b>6.3.2</b> Residual phenotype data after covariates adjustments (in UNIX):</a></li>
+<li class="chapter" data-level="6.3.3" data-path="simple-association-test.html"><a href="simple-association-test.html#association-test-using-plink"><i class="fa fa-check"></i><b>6.3.3</b> Association test using plink</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html"><i class="fa fa-check"></i><b>7</b> Unit 3. GWAS Case Study-Continuous Trait</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-preprocessing"><i class="fa fa-check"></i><b>7.1</b> Data Preprocessing</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>8</b> Applications</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>8.1</b> Example one</a></li>
+<li class="chapter" data-level="8.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>8.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>9</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">2024 CSHL course - GWAS Hands-on Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="an-imputation-example" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> An Imputation Example<a href="an-imputation-example.html#an-imputation-example" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In many cases, raw sequence data may have missing values. Then, an imputation step will be neccessary. <strong>IMPUTE2</strong> is a popular software package for imputation. Below is a simple example for conducting imputation by IMPUTE2. For more information about IMPUTE2, please refer its website <a href="http://mathgen.stats.ox.ac.uk/impute/impute_v2.html" class="uri">http://mathgen.stats.ox.ac.uk/impute/impute_v2.html</a> and the associated publication <a href="http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1000529" class="uri">http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1000529</a></p>
+<p>Here is the example provided by <strong>IMPUTE2 package</strong>. The link is <a href="https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#ex1" class="uri">https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#ex1</a></p>
+<p>Files used for example are saved in folder <code>./Data/impute2_example</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="an-imputation-example.html#cb28-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb28-2"><a href="an-imputation-example.html#cb28-2" tabindex="-1"></a><span class="co"># IMPUTE2 only works for macOS or Linux users, Windows users can&#39;t run it</span></span>
+<span id="cb28-3"><a href="an-imputation-example.html#cb28-3" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="an-imputation-example.html#cb28-4" tabindex="-1"></a><span class="co"># macOS user only</span></span>
+<span id="cb28-5"><a href="an-imputation-example.html#cb28-5" tabindex="-1"></a><span class="co"># modify the path to &quot;impute2&quot; program</span></span>
+<span id="cb28-6"><a href="an-imputation-example.html#cb28-6" tabindex="-1"></a><span class="ex">./Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2</span> <span class="dt">\</span></span>
+<span id="cb28-7"><a href="an-imputation-example.html#cb28-7" tabindex="-1"></a>-m ./Data/impute2_example/example.chr22.map <span class="dt">\</span></span>
+<span id="cb28-8"><a href="an-imputation-example.html#cb28-8" tabindex="-1"></a>-h ./Data/impute2_example/example.chr22.1kG.haps <span class="dt">\</span></span>
+<span id="cb28-9"><a href="an-imputation-example.html#cb28-9" tabindex="-1"></a>-l ./Data/impute2_example/example.chr22.1kG.legend <span class="dt">\</span></span>
+<span id="cb28-10"><a href="an-imputation-example.html#cb28-10" tabindex="-1"></a>-g ./Data/impute2_example/example.chr22.study.gens <span class="dt">\</span></span>
+<span id="cb28-11"><a href="an-imputation-example.html#cb28-11" tabindex="-1"></a>-strand_g ./Data/impute2_example/example.chr22.study.strand <span class="dt">\</span></span>
+<span id="cb28-12"><a href="an-imputation-example.html#cb28-12" tabindex="-1"></a>-int 20.4e6 20.5e6 <span class="at">-Ne</span> 20000 <span class="dt">\</span></span>
+<span id="cb28-13"><a href="an-imputation-example.html#cb28-13" tabindex="-1"></a>-o ./Data/impute2_example/example.chr22.one.phased.impute2</span></code></pre></div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="population-stratification-correction-using-eigenstrat.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-gwastool.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["cshl_2024.pdf", "cshl_2024.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

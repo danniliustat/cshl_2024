@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Population Stratification Correction Using EIGENSTRAT | 2024 CSHL course - GWAS Hands-on Analysis</title>
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Population Stratification Correction Using EIGENSTRAT | 2024 CSHL course - GWAS Hands-on Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="github-repo" content="rstudio/cshl_2024" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Population Stratification Correction Using EIGENSTRAT | 2024 CSHL course - GWAS Hands-on Analysis" />
+  
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  
+
+<meta name="author" content="Danni Liu - Purdue University" />
+
+
+<meta name="date" content="2024-06-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="an-imputation-example.html"/>
+<link rel="next" href="simple-association-test.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html"><i class="fa fa-check"></i><b>2</b> An Overview of Regression with Toy Examples</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#environment-setting-and-packages"><i class="fa fa-check"></i><b>2.1</b> Environment Setting and Packages</a></li>
+<li class="chapter" data-level="2.2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#toy-example-data"><i class="fa fa-check"></i><b>2.2</b> Toy Example Data</a></li>
+<li class="chapter" data-level="2.3" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#logistic-regression"><i class="fa fa-check"></i><b>2.3</b> Logistic Regression</a></li>
+<li class="chapter" data-level="2.4" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#roc-curve-and-auc-for-hoxb13"><i class="fa fa-check"></i><b>2.4</b> ROC curve and AUC for HOXB13</a></li>
+<li class="chapter" data-level="2.5" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#practice"><i class="fa fa-check"></i><b>2.5</b> Practice</a></li>
+<li class="chapter" data-level="2.6" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#comparison-of-hoxb13-roc-curve-and-nhlh1-roc-curve"><i class="fa fa-check"></i><b>2.6</b> Comparison of HOXB13 ROC curve and NHLH1 ROC curve</a></li>
+<li class="chapter" data-level="2.7" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression"><i class="fa fa-check"></i><b>2.7</b> Linear Regression</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression-of-hoxb13-vs.-il17br"><i class="fa fa-check"></i><b>2.7.1</b> Linear regression of HOXB13 vs. IL17BR</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><i class="fa fa-check"></i><b>3</b> GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#environment-setting"><i class="fa fa-check"></i><b>3.1</b> Environment Setting</a></li>
+<li class="chapter" data-level="3.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools"><i class="fa fa-check"></i><b>3.2</b> GWAS Tools</a></li>
+<li class="chapter" data-level="3.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quality-control"><i class="fa fa-check"></i><b>3.3</b> Quality Control</a></li>
+<li class="chapter" data-level="3.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics"><i class="fa fa-check"></i><b>3.4</b> An Example of Summary Statistics</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#input-files"><i class="fa fa-check"></i><b>3.4.1</b> Input files</a></li>
+<li class="chapter" data-level="3.4.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-missing-rate"><i class="fa fa-check"></i><b>3.4.2</b> Calculating missing rate</a></li>
+<li class="chapter" data-level="3.4.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-allel-frequencies"><i class="fa fa-check"></i><b>3.4.3</b> Calculating allel frequencies</a></li>
+<li class="chapter" data-level="3.4.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#hardy-weinberg-equilibrium"><i class="fa fa-check"></i><b>3.4.4</b> Hardy-Weinberg Equilibrium</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-inclusion-thresholds-for-qc"><i class="fa fa-check"></i><b>3.5</b> An Example of Inclusion Thresholds for QC</a></li>
+<li class="chapter" data-level="3.6" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#remove-closely-related-individuals"><i class="fa fa-check"></i><b>3.6</b> Remove Closely Related Individuals</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="an-imputation-example.html"><a href="an-imputation-example.html"><i class="fa fa-check"></i><b>4</b> An Imputation Example</a></li>
+<li class="chapter" data-level="5" data-path="population-stratification-correction-using-eigenstrat.html"><a href="population-stratification-correction-using-eigenstrat.html"><i class="fa fa-check"></i><b>5</b> Population Stratification Correction Using EIGENSTRAT</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="population-stratification-correction-using-eigenstrat.html"><a href="population-stratification-correction-using-eigenstrat.html#eigenstrat-input-files"><i class="fa fa-check"></i><b>5.1</b> EIGENSTRAT input files</a></li>
+<li class="chapter" data-level="5.2" data-path="population-stratification-correction-using-eigenstrat.html"><a href="population-stratification-correction-using-eigenstrat.html#run-eigenstrat-using-input-genotype-data"><i class="fa fa-check"></i><b>5.2</b> Run EIGENSTRAT Using Input Genotype Data</a></li>
+<li class="chapter" data-level="5.3" data-path="population-stratification-correction-using-eigenstrat.html"><a href="population-stratification-correction-using-eigenstrat.html#test-the-significance-of-principle-components-pcs"><i class="fa fa-check"></i><b>5.3</b> Test the Significance of Principle Components (PCs)</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="simple-association-test.html"><a href="simple-association-test.html"><i class="fa fa-check"></i><b>6</b> Simple Association Test</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="simple-association-test.html"><a href="simple-association-test.html#quantitative-trait-association-test-for-continuous-trait"><i class="fa fa-check"></i><b>6.1</b> Quantitative Trait Association Test for Continuous Trait</a></li>
+<li class="chapter" data-level="6.2" data-path="simple-association-test.html"><a href="simple-association-test.html#casecontrol-asssociation-test-for-binary-trait"><i class="fa fa-check"></i><b>6.2</b> Case/Control Asssociation Test for Binary Trait</a></li>
+<li class="chapter" data-level="6.3" data-path="simple-association-test.html"><a href="simple-association-test.html#quantitative-trait-association-test-for-continuous-trait-with-covariates"><i class="fa fa-check"></i><b>6.3</b> Quantitative Trait Association Test for Continuous Trait with Covariates</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="simple-association-test.html"><a href="simple-association-test.html#covariates-adjustments-using-r"><i class="fa fa-check"></i><b>6.3.1</b> Covariates adjustments (using R):</a></li>
+<li class="chapter" data-level="6.3.2" data-path="simple-association-test.html"><a href="simple-association-test.html#residual-phenotype-data-after-covariates-adjustments-in-unix"><i class="fa fa-check"></i><b>6.3.2</b> Residual phenotype data after covariates adjustments (in UNIX):</a></li>
+<li class="chapter" data-level="6.3.3" data-path="simple-association-test.html"><a href="simple-association-test.html#association-test-using-plink"><i class="fa fa-check"></i><b>6.3.3</b> Association test using plink</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html"><i class="fa fa-check"></i><b>7</b> Unit 3. GWAS Case Study-Continuous Trait</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-preprocessing"><i class="fa fa-check"></i><b>7.1</b> Data Preprocessing</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>8</b> Applications</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>8.1</b> Example one</a></li>
+<li class="chapter" data-level="8.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>8.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>9</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">2024 CSHL course - GWAS Hands-on Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="population-stratification-correction-using-eigenstrat" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Population Stratification Correction Using EIGENSTRAT<a href="population-stratification-correction-using-eigenstrat.html#population-stratification-correction-using-eigenstrat" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The EIGENSTRAT method uses principal component analysis to explicitly model ancestry differences between cases and controls along continuous axes of variation; the resulting correction is specific to a candidate marker’s variation in frequency across ancestral populations, minimizing spurious associations while maximizing power to detect true associations. The EIGENSTRAT package has a built-in plotting script and supports multiple file formats and quantitative phenotypes. The package is based on the method described in <a href="https://www.ncbi.nlm.nih.gov/pubmed/16862161">Price et al. 2006</a>.</p>
+<p>See <a href="https://github.com/DReichLab/EIG" class="uri">https://github.com/DReichLab/EIG</a>.</p>
+<div id="eigenstrat-input-files" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> EIGENSTRAT input files<a href="population-stratification-correction-using-eigenstrat.html#eigenstrat-input-files" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>EIGENSTRAT</strong> accepts multiple types of files as input, including “ANCESTRYMAP” files, “EIGENSTRAT” files, “PED” files, “PACKEDPED” files and “PACKEDANCESTRYMAP” files. Detailed introduction of these different file formats can be found in their <a href="https://github.com/chrchang/eigensoft/blob/master/CONVERTF/README">README</a> file. We will use PED file format in this example.</p>
+<p>We will prepare three files– “genotype.ped”, “genotype.pedsnp” and “genotype.pedind”.</p>
+<ul>
+<li>The <strong>PED files</strong> format is described above. We will use genotype file: <strong>genotype.ped</strong> (saved in ./PC` folder and has size of 1.1G.)</li>
+<li>The <strong>indiv file</strong>(<code>./PC/genotype.pedind</code>) contains the first 6 or 7 columns of the genotype file.The genotype file is 1 line per individual.<br />
+The first 6 or 7 columns of the genotype file are:
+<ul>
+<li>1st column is family ID.<br />
+</li>
+<li>2nd column is sample ID.</li>
+<li>3rd and 4th column are sample IDs of parents.<br />
+</li>
+<li>5th column is gender (male is 1, female is 2)</li>
+<li>6th column is case/control status (1 is control, 2 is case) OR
+quantitative trait value OR population group label.</li>
+<li>7th column (this column is optional) is always set to 1.<br />
+In the two genotype columns for each SNP, missing data is represented by 0.</li>
+</ul></li>
+<li>The <strong>snp file</strong>(<code>./PC/genotype.pedsnp</code>) contains 1 line per SNP. There are 6 columns (last 2 optional):
+<ul>
+<li>1st column is chromosome. Use X for X chromosome.(Note: SNPs with illegal chromosome values, such as 0, will be removed)</li>
+<li>2nd column is SNP name</li>
+<li>3rd column is genetic position (in Morgans)</li>
+<li>4th column is physical position (in bases)</li>
+<li>Optional 5th and 6th columns are reference and variant alleles.(For monomorphic SNPs, the variant allele can be encoded as X.)</li>
+</ul></li>
+</ul>
+<p>The following command use the previous map file as <code>genotype.pedsnp</code> file (in Linux):</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="population-stratification-correction-using-eigenstrat.html#cb29-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb29-2"><a href="population-stratification-correction-using-eigenstrat.html#cb29-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb29-3"><a href="population-stratification-correction-using-eigenstrat.html#cb29-3" tabindex="-1"></a><span class="fu">cp</span> ./Data/PC/genotype_1k.map ./Data/PC/genotype_1k.pedsnp</span></code></pre></div>
+<p>The following command prepare the <code>genotype.pedind</code> file. Because the original data doesn’t have case/control information, we will randomly assign them to case or control group to use as an example.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="population-stratification-correction-using-eigenstrat.html#cb30-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb30-2"><a href="population-stratification-correction-using-eigenstrat.html#cb30-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb30-3"><a href="population-stratification-correction-using-eigenstrat.html#cb30-3" tabindex="-1"></a>group<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">344</span>)</span>
+<span id="cb30-4"><a href="population-stratification-correction-using-eigenstrat.html#cb30-4" tabindex="-1"></a>idx<span class="ot">&lt;-</span><span class="fu">sample</span>(<span class="dv">344</span>,<span class="dv">170</span>)</span>
+<span id="cb30-5"><a href="population-stratification-correction-using-eigenstrat.html#cb30-5" tabindex="-1"></a>group[idx]<span class="ot">&lt;-</span><span class="dv">2</span></span>
+<span id="cb30-6"><a href="population-stratification-correction-using-eigenstrat.html#cb30-6" tabindex="-1"></a><span class="fu">write.table</span>(group, <span class="st">&quot;./Data/PC/group.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>)</span>
+<span id="cb30-7"><a href="population-stratification-correction-using-eigenstrat.html#cb30-7" tabindex="-1"></a><span class="fu">head</span>(group)</span></code></pre></div>
+<pre><code>## [1] 2 1 1 1 1 1</code></pre>
+<p>Then we select the first five columns from <code>.ped</code> file (in Linux), add the group file we just generated to get the <code>genotype.pedind</code>.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="population-stratification-correction-using-eigenstrat.html#cb32-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb32-2"><a href="population-stratification-correction-using-eigenstrat.html#cb32-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb32-3"><a href="population-stratification-correction-using-eigenstrat.html#cb32-3" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;{print $1,$2,$3,$4,$5}&#39;</span> ./Data/PC/genotype_1k.ped <span class="op">&gt;</span> ./Data/PC/genotype_ind.txt</span>
+<span id="cb32-4"><a href="population-stratification-correction-using-eigenstrat.html#cb32-4" tabindex="-1"></a><span class="fu">paste</span> <span class="at">-d</span><span class="st">&#39; &#39;</span> ./Data/PC/genotype_ind.txt ./Data/PC/group.txt<span class="op">&gt;</span> ./Data/PC/genotype_1k.pedind</span></code></pre></div>
+</div>
+<div id="run-eigenstrat-using-input-genotype-data" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Run EIGENSTRAT Using Input Genotype Data<a href="population-stratification-correction-using-eigenstrat.html#run-eigenstrat-using-input-genotype-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We call <strong>smartpca.perl</strong> in EIGENSTRAT on input genotype data. (All data and results in this section are saved in <code>.PC</code> folder.)</p>
+<p>The options are:</p>
+<p><strong>-i</strong> example.ped : genotype file</p>
+<p><strong>-a</strong> example.pedsnp : snp file</p>
+<p><strong>-b</strong> example.pedind : indiv file</p>
+<p><strong>-k</strong> : (Default is 10) number of principal components to output</p>
+<p><strong>-o</strong> example.pca : output file of principal components</p>
+<p><strong>-p</strong> example.plot : prefix of output plot files of top 2 principal components. (labeling individuals according to labels in indiv file)</p>
+<p><strong>-e</strong> example.eval : output file of all eigenvalues</p>
+<p><strong>-l</strong> example.log : output logfile</p>
+<p><strong>The following code takes several minutes to run.</strong> It will generate a warning message that <code>/usr/bin/gs: /apps/spack/bell/apps/libtiff/4.0.10-gcc-9.3.0-bjzustl/lib/libtiff.so.5: no version information available (required by /lib64/libgs.so.9)</code>. This is because the libtiff module called by this command is incompatible with the system gs command. You can safely ignore it.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="population-stratification-correction-using-eigenstrat.html#cb33-1" tabindex="-1"></a><span class="co"># bash codes-can&#39;t run on either macOS or Windows</span></span>
+<span id="cb33-2"><a href="population-stratification-correction-using-eigenstrat.html#cb33-2" tabindex="-1"></a><span class="co"># this can only be run under Linux system or on computing server</span></span>
+<span id="cb33-3"><a href="population-stratification-correction-using-eigenstrat.html#cb33-3" tabindex="-1"></a><span class="ex">./Tools/eigensoft-master/bin/smartpca.perl</span> <span class="dt">\</span></span>
+<span id="cb33-4"><a href="population-stratification-correction-using-eigenstrat.html#cb33-4" tabindex="-1"></a>-i ./Data/PC/genotype_1k.ped <span class="at">-a</span> ./Data/PC/genotype_1k.pedsnp <span class="at">-b</span> ./Data/PC/genotype_1k.pedind <span class="dt">\</span></span>
+<span id="cb33-5"><a href="population-stratification-correction-using-eigenstrat.html#cb33-5" tabindex="-1"></a>-k 10 <span class="at">-o</span> ./Data/PC/genotype_1k.pca <span class="at">-p</span> ./Data/PC/genotype_1k.plot <span class="dt">\</span></span>
+<span id="cb33-6"><a href="population-stratification-correction-using-eigenstrat.html#cb33-6" tabindex="-1"></a>-e ./Data/PC/genotype_1k.eval <span class="at">-l</span> ./Data/PC/genotype_1k.log</span></code></pre></div>
+<p>The main outputs are <strong>“genotype.pca”</strong>. A PCA plot is generated in <strong>“genotype.plot.ps”</strong>.</p>
+<p>A <strong>scree plot</strong> displays the variance explained by each component. We look for the “elbow” of the plot, i.e., point where line bends. Could do formal test on derivative of scree line, but common sense approach often works fine.</p>
+<p>We first extract eigenvalues from the PCA results file <strong>“genotype.pca”</strong> to save it in <strong>“pc_eig.txt”</strong>.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="population-stratification-correction-using-eigenstrat.html#cb34-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb34-2"><a href="population-stratification-correction-using-eigenstrat.html#cb34-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb34-3"><a href="population-stratification-correction-using-eigenstrat.html#cb34-3" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;NR &gt;= 2 &amp;&amp; NR &lt;= 11 {print}&#39;</span> ./Data/PC/genotype_1k.pca <span class="op">&gt;</span> ./Data/PC/pc_eig.txt</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="population-stratification-correction-using-eigenstrat.html#cb35-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb35-2"><a href="population-stratification-correction-using-eigenstrat.html#cb35-2" tabindex="-1"></a><span class="co"># generate plot in R</span></span>
+<span id="cb35-3"><a href="population-stratification-correction-using-eigenstrat.html#cb35-3" tabindex="-1"></a>pc_eig <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;./Data/PC/pc_eig.txt&quot;</span>,<span class="at">header=</span>F) <span class="co"># read in eigenvalue</span></span>
+<span id="cb35-4"><a href="population-stratification-correction-using-eigenstrat.html#cb35-4" tabindex="-1"></a><span class="fu">names</span>(pc_eig) <span class="ot">&lt;-</span> <span class="st">&quot;eig&quot;</span></span>
+<span id="cb35-5"><a href="population-stratification-correction-using-eigenstrat.html#cb35-5" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="population-stratification-correction-using-eigenstrat.html#cb35-6" tabindex="-1"></a><span class="co"># generate scree plot-- eigenvalue vs # of PC</span></span>
+<span id="cb35-7"><a href="population-stratification-correction-using-eigenstrat.html#cb35-7" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, pc_eig<span class="sc">$</span>eig, <span class="at">type=</span><span class="st">&quot;b&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;# PCs&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Eigenvalues&quot;</span>,</span>
+<span id="cb35-8"><a href="population-stratification-correction-using-eigenstrat.html#cb35-8" tabindex="-1"></a><span class="at">main=</span><span class="st">&quot;Scree plot&quot;</span>)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Usually, we use a cut-off of eigenvalue &gt; 1. In this plot, this criteria results in an unreasonable high number of factors, because the eigenvalue for PC 10 is still &gt; 1.</p>
+</div>
+<div id="test-the-significance-of-principle-components-pcs" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Test the Significance of Principle Components (PCs)<a href="population-stratification-correction-using-eigenstrat.html#test-the-significance-of-principle-components-pcs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The following command creates a matrix from <strong>genotype.pca</strong> (in Linux)</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="population-stratification-correction-using-eigenstrat.html#cb36-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb36-2"><a href="population-stratification-correction-using-eigenstrat.html#cb36-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb36-3"><a href="population-stratification-correction-using-eigenstrat.html#cb36-3" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n+12</span> ./Data/PC/genotype_1k.pca <span class="op">&gt;</span> ./Data/PC/pc.txt</span></code></pre></div>
+<p>The following commands employ linear regression to the test the significance of PCs. P values can be found in the last column of the table: <code>Pr(&gt;|t|)</code>.</p>
+<ul>
+<li>phenotype file: r_met.txt</li>
+</ul>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="population-stratification-correction-using-eigenstrat.html#cb37-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb37-2"><a href="population-stratification-correction-using-eigenstrat.html#cb37-2" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;./Data/PC/r_met.txt&quot;</span>) <span class="co">#read phenotype data</span></span>
+<span id="cb37-3"><a href="population-stratification-correction-using-eigenstrat.html#cb37-3" tabindex="-1"></a>pc<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;./Data/PC/pc.txt&quot;</span>) <span class="co">#read pc data</span></span>
+<span id="cb37-4"><a href="population-stratification-correction-using-eigenstrat.html#cb37-4" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">as.matrix</span>(y) <span class="co">#create a matrix from phenotype data</span></span>
+<span id="cb37-5"><a href="population-stratification-correction-using-eigenstrat.html#cb37-5" tabindex="-1"></a>pc<span class="ot">=</span><span class="fu">as.matrix</span>(pc) <span class="co">#create a matrix from pc data</span></span>
+<span id="cb37-6"><a href="population-stratification-correction-using-eigenstrat.html#cb37-6" tabindex="-1"></a>fit<span class="ot">=</span><span class="fu">lm</span>(y<span class="sc">~</span>pc)</span>
+<span id="cb37-7"><a href="population-stratification-correction-using-eigenstrat.html#cb37-7" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ pc)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.93261 -0.56311 -0.00616  0.63983  2.73666 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)  9.869e-06  5.404e-02   0.000   0.9999  
+## pcV1         3.034e-01  1.002e+00   0.303   0.7623  
+## pcV2        -8.976e-01  1.002e+00  -0.895   0.3712  
+## pcV3        -8.568e-02  1.002e+00  -0.085   0.9319  
+## pcV4        -7.145e-01  1.002e+00  -0.713   0.4765  
+## pcV5        -1.805e+00  1.002e+00  -1.801   0.0727 .
+## pcV6         6.453e-01  1.002e+00   0.644   0.5202  
+## pcV7        -1.112e+00  1.002e+00  -1.109   0.2681  
+## pcV8        -4.998e-01  1.002e+00  -0.499   0.6184  
+## pcV9         5.221e-01  1.002e+00   0.521   0.6028  
+## pcV10       -8.423e-01  1.002e+00  -0.840   0.4013  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.002 on 333 degrees of freedom
+## Multiple R-squared:  0.02209,    Adjusted R-squared:  -0.007276 
+## F-statistic: 0.7522 on 10 and 333 DF,  p-value: 0.6749</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="an-imputation-example.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="simple-association-test.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-gwastool.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["cshl_2024.pdf", "cshl_2024.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
