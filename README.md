@@ -1,8 +1,8 @@
 # Welcome to the GWAS Workshop
 
-This repository is for CSHL 2023 Summer Course on GWAS analysis.
+This repository is for CSHL 2024 Summer Course on GWAS analysis.
 
-Speaker: Min Zhang, University of California, Irvine
+Speaker: Min Zhang, Danni Liu, University of California, Irvine
 
 **Before you start, please download this whole repository to your personal laptop. Click "Code"-> Select "Local" tab-> "Download ZIP". A ZIP file (likely with name "bigcare-main") will be saved to your laptop. Unzip the file to access all datasets and materials.**
 ![Download](./image/download.png)
@@ -44,7 +44,7 @@ However, Windows users need to use another "Powershell" App to run Bash codes be
 ### Required GWAS Tools
 In GWAS analysis, we also use additional command-line tools to handle large scale datasets. The primary tools we use in this course are **PLINK** and **IMPUTE2**. Participants need to install these tools on your own laptops before calling them. 
 
-Before you install, you need to check whether these tools are compatible to run on your laptop system. Usually, bioinformatics analyses are run on computational servers with Linux system given the large data volumn and high computational power required. So most bioinformatic programs are developed for Linux and only some of them are available to run on personal laptops. For the tools used in our course, **PLINK** is compatible with Windows, macOS, and Linux, while **IMPUTE2** is only available for macOS and Linux users. We also use another tool, Eigensoft, in "ch2_Summary_of_Data_Preprocess...", but this tool can only be executed on a Linux operating system. We will directly show the codes and outputs for Eigensoft so you don't have to run it.
+Before you install, you need to check whether these tools are compatible to run on your laptop system. Usually, bioinformatics analyses are run on computational servers with Linux system given the large data volumn and high computational power required. So most bioinformatic programs are developed for Linux and only some of them are available to run on personal laptops. For the tools used in our course, **PLINK** is compatible with Windows, macOS, and Linux, while **IMPUTE2** is only available for macOS and Linux users. We also use another tool, **Eigensoft**, in "ch2_Summary_of_Data_Preprocess...", but this tool can only be executed on a Linux operating system. We will directly show the codes for **Eigensoft** and provide the output file so you don't have to run it.
 
 **Installation instructions**
 

@@ -6,7 +6,7 @@
 Copyright 2008 Bryan Howie, Peter Donnelly, and Jonathan Marchini
 Please see the LICENCE file included with this program for conditions of use.
 
-The seed for the random number generator is 1586277517.
+The seed for the random number generator is 1120774186.
 
 Command-line input: ./Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2 -m ./Data/impute2_example/example.chr22.map -h ./Data/impute2_example/example.chr22.1kG.haps -l ./Data/impute2_example/example.chr22.1kG.legend -g ./Data/impute2_example/example.chr22.study.gens -strand_g ./Data/impute2_example/example.chr22.study.strand -int 20.4e6 20.5e6 -Ne 20000 -o ./Data/impute2_example/example.chr22.one.phased.impute2
 
@@ -168,8 +168,8 @@ When the masked study genotypes were imputed with reference data from Panel 0, t
   [0.2-0.3]          0          0.0         [ >= 0.2]   100.0         97.5
   [0.3-0.4]          0          0.0         [ >= 0.3]   100.0         97.5
   [0.4-0.5]          0          0.0         [ >= 0.4]   100.0         97.5
-  [0.5-0.6]         14         92.9         [ >= 0.5]   100.0         97.5
-  [0.6-0.7]          6        100.0         [ >= 0.6]    99.5         97.5
-  [0.7-0.8]          3        100.0         [ >= 0.7]    99.3         97.5
-  [0.8-0.9]         44         81.8         [ >= 0.8]    99.2         97.5
-  [0.9-1.0]       2918         97.7         [ >= 0.9]    97.8         97.7
+  [0.5-0.6]          8        100.0         [ >= 0.5]   100.0         97.5
+  [0.6-0.7]          6         83.3         [ >= 0.6]    99.7         97.5
+  [0.7-0.8]          4        100.0         [ >= 0.7]    99.5         97.5
+  [0.8-0.9]         50         88.0         [ >= 0.8]    99.4         97.5
+  [0.9-1.0]       2917         97.7         [ >= 0.9]    97.7         97.7

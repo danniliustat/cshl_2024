@@ -189,7 +189,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html"><i class="fa fa-check"></i><b>7</b> Unit 3. GWAS Case Study-Continuous Trait</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-preprocessing"><i class="fa fa-check"></i><b>7.1</b> Data Preprocessing</a></li>
+<li class="chapter" data-level="7.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#environment-setting-and-packages-1"><i class="fa fa-check"></i><b>7.1</b> Environment setting and packages</a></li>
+<li class="chapter" data-level="7.2" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#accessing-data"><i class="fa fa-check"></i><b>7.2</b> Accessing data</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-availability"><i class="fa fa-check"></i><b>7.2.1</b> Data availability</a></li>
+<li class="chapter" data-level="7.2.2" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-files-documentation"><i class="fa fa-check"></i><b>7.2.2</b> Data files documentation</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>8</b> Applications</a>
 <ul>
@@ -252,23 +257,23 @@ In the two genotype columns for each SNP, missing data is represented by 0.</li>
 </ul></li>
 </ul>
 <p>The following command use the previous map file as <code>genotype.pedsnp</code> file (in Linux):</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="population-stratification-correction-using-eigenstrat.html#cb29-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb29-2"><a href="population-stratification-correction-using-eigenstrat.html#cb29-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
-<span id="cb29-3"><a href="population-stratification-correction-using-eigenstrat.html#cb29-3" tabindex="-1"></a><span class="fu">cp</span> ./Data/PC/genotype_1k.map ./Data/PC/genotype_1k.pedsnp</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="population-stratification-correction-using-eigenstrat.html#cb40-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb40-2"><a href="population-stratification-correction-using-eigenstrat.html#cb40-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb40-3"><a href="population-stratification-correction-using-eigenstrat.html#cb40-3" tabindex="-1"></a><span class="fu">cp</span> ./Data/PC/genotype_1k.map ./Data/PC/genotype_1k.pedsnp</span></code></pre></div>
 <p>The following command prepare the <code>genotype.pedind</code> file. Because the original data doesn’t have case/control information, we will randomly assign them to case or control group to use as an example.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="population-stratification-correction-using-eigenstrat.html#cb30-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb30-2"><a href="population-stratification-correction-using-eigenstrat.html#cb30-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb30-3"><a href="population-stratification-correction-using-eigenstrat.html#cb30-3" tabindex="-1"></a>group<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">344</span>)</span>
-<span id="cb30-4"><a href="population-stratification-correction-using-eigenstrat.html#cb30-4" tabindex="-1"></a>idx<span class="ot">&lt;-</span><span class="fu">sample</span>(<span class="dv">344</span>,<span class="dv">170</span>)</span>
-<span id="cb30-5"><a href="population-stratification-correction-using-eigenstrat.html#cb30-5" tabindex="-1"></a>group[idx]<span class="ot">&lt;-</span><span class="dv">2</span></span>
-<span id="cb30-6"><a href="population-stratification-correction-using-eigenstrat.html#cb30-6" tabindex="-1"></a><span class="fu">write.table</span>(group, <span class="st">&quot;./Data/PC/group.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>)</span>
-<span id="cb30-7"><a href="population-stratification-correction-using-eigenstrat.html#cb30-7" tabindex="-1"></a><span class="fu">head</span>(group)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="population-stratification-correction-using-eigenstrat.html#cb41-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb41-2"><a href="population-stratification-correction-using-eigenstrat.html#cb41-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb41-3"><a href="population-stratification-correction-using-eigenstrat.html#cb41-3" tabindex="-1"></a>group<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">344</span>)</span>
+<span id="cb41-4"><a href="population-stratification-correction-using-eigenstrat.html#cb41-4" tabindex="-1"></a>idx<span class="ot">&lt;-</span><span class="fu">sample</span>(<span class="dv">344</span>,<span class="dv">170</span>)</span>
+<span id="cb41-5"><a href="population-stratification-correction-using-eigenstrat.html#cb41-5" tabindex="-1"></a>group[idx]<span class="ot">&lt;-</span><span class="dv">2</span></span>
+<span id="cb41-6"><a href="population-stratification-correction-using-eigenstrat.html#cb41-6" tabindex="-1"></a><span class="fu">write.table</span>(group, <span class="st">&quot;./Data/PC/group.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>)</span>
+<span id="cb41-7"><a href="population-stratification-correction-using-eigenstrat.html#cb41-7" tabindex="-1"></a><span class="fu">head</span>(group)</span></code></pre></div>
 <pre><code>## [1] 2 1 1 1 1 1</code></pre>
 <p>Then we select the first five columns from <code>.ped</code> file (in Linux), add the group file we just generated to get the <code>genotype.pedind</code>.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="population-stratification-correction-using-eigenstrat.html#cb32-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb32-2"><a href="population-stratification-correction-using-eigenstrat.html#cb32-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
-<span id="cb32-3"><a href="population-stratification-correction-using-eigenstrat.html#cb32-3" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;{print $1,$2,$3,$4,$5}&#39;</span> ./Data/PC/genotype_1k.ped <span class="op">&gt;</span> ./Data/PC/genotype_ind.txt</span>
-<span id="cb32-4"><a href="population-stratification-correction-using-eigenstrat.html#cb32-4" tabindex="-1"></a><span class="fu">paste</span> <span class="at">-d</span><span class="st">&#39; &#39;</span> ./Data/PC/genotype_ind.txt ./Data/PC/group.txt<span class="op">&gt;</span> ./Data/PC/genotype_1k.pedind</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb43-1"><a href="population-stratification-correction-using-eigenstrat.html#cb43-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb43-2"><a href="population-stratification-correction-using-eigenstrat.html#cb43-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb43-3"><a href="population-stratification-correction-using-eigenstrat.html#cb43-3" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;{print $1,$2,$3,$4,$5}&#39;</span> ./Data/PC/genotype_1k.ped <span class="op">&gt;</span> ./Data/PC/genotype_ind.txt</span>
+<span id="cb43-4"><a href="population-stratification-correction-using-eigenstrat.html#cb43-4" tabindex="-1"></a><span class="fu">paste</span> <span class="at">-d</span><span class="st">&#39; &#39;</span> ./Data/PC/genotype_ind.txt ./Data/PC/group.txt<span class="op">&gt;</span> ./Data/PC/genotype_1k.pedind</span></code></pre></div>
 </div>
 <div id="run-eigenstrat-using-input-genotype-data" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> Run EIGENSTRAT Using Input Genotype Data<a href="population-stratification-correction-using-eigenstrat.html#run-eigenstrat-using-input-genotype-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -283,46 +288,46 @@ In the two genotype columns for each SNP, missing data is represented by 0.</li>
 <p><strong>-e</strong> example.eval : output file of all eigenvalues</p>
 <p><strong>-l</strong> example.log : output logfile</p>
 <p><strong>The following code takes several minutes to run.</strong> It will generate a warning message that <code>/usr/bin/gs: /apps/spack/bell/apps/libtiff/4.0.10-gcc-9.3.0-bjzustl/lib/libtiff.so.5: no version information available (required by /lib64/libgs.so.9)</code>. This is because the libtiff module called by this command is incompatible with the system gs command. You can safely ignore it.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="population-stratification-correction-using-eigenstrat.html#cb33-1" tabindex="-1"></a><span class="co"># bash codes-can&#39;t run on either macOS or Windows</span></span>
-<span id="cb33-2"><a href="population-stratification-correction-using-eigenstrat.html#cb33-2" tabindex="-1"></a><span class="co"># this can only be run under Linux system or on computing server</span></span>
-<span id="cb33-3"><a href="population-stratification-correction-using-eigenstrat.html#cb33-3" tabindex="-1"></a><span class="ex">./Tools/eigensoft-master/bin/smartpca.perl</span> <span class="dt">\</span></span>
-<span id="cb33-4"><a href="population-stratification-correction-using-eigenstrat.html#cb33-4" tabindex="-1"></a>-i ./Data/PC/genotype_1k.ped <span class="at">-a</span> ./Data/PC/genotype_1k.pedsnp <span class="at">-b</span> ./Data/PC/genotype_1k.pedind <span class="dt">\</span></span>
-<span id="cb33-5"><a href="population-stratification-correction-using-eigenstrat.html#cb33-5" tabindex="-1"></a>-k 10 <span class="at">-o</span> ./Data/PC/genotype_1k.pca <span class="at">-p</span> ./Data/PC/genotype_1k.plot <span class="dt">\</span></span>
-<span id="cb33-6"><a href="population-stratification-correction-using-eigenstrat.html#cb33-6" tabindex="-1"></a>-e ./Data/PC/genotype_1k.eval <span class="at">-l</span> ./Data/PC/genotype_1k.log</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="population-stratification-correction-using-eigenstrat.html#cb44-1" tabindex="-1"></a><span class="co"># bash codes-can&#39;t run on either macOS or Windows</span></span>
+<span id="cb44-2"><a href="population-stratification-correction-using-eigenstrat.html#cb44-2" tabindex="-1"></a><span class="co"># this can only be run under Linux system or on computing server</span></span>
+<span id="cb44-3"><a href="population-stratification-correction-using-eigenstrat.html#cb44-3" tabindex="-1"></a><span class="ex">./Tools/eigensoft-master/bin/smartpca.perl</span> <span class="dt">\</span></span>
+<span id="cb44-4"><a href="population-stratification-correction-using-eigenstrat.html#cb44-4" tabindex="-1"></a>-i ./Data/PC/genotype_1k.ped <span class="at">-a</span> ./Data/PC/genotype_1k.pedsnp <span class="at">-b</span> ./Data/PC/genotype_1k.pedind <span class="dt">\</span></span>
+<span id="cb44-5"><a href="population-stratification-correction-using-eigenstrat.html#cb44-5" tabindex="-1"></a>-k 10 <span class="at">-o</span> ./Data/PC/genotype_1k.pca <span class="at">-p</span> ./Data/PC/genotype_1k.plot <span class="dt">\</span></span>
+<span id="cb44-6"><a href="population-stratification-correction-using-eigenstrat.html#cb44-6" tabindex="-1"></a>-e ./Data/PC/genotype_1k.eval <span class="at">-l</span> ./Data/PC/genotype_1k.log</span></code></pre></div>
 <p>The main outputs are <strong>“genotype.pca”</strong>. A PCA plot is generated in <strong>“genotype.plot.ps”</strong>.</p>
 <p>A <strong>scree plot</strong> displays the variance explained by each component. We look for the “elbow” of the plot, i.e., point where line bends. Could do formal test on derivative of scree line, but common sense approach often works fine.</p>
 <p>We first extract eigenvalues from the PCA results file <strong>“genotype.pca”</strong> to save it in <strong>“pc_eig.txt”</strong>.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="population-stratification-correction-using-eigenstrat.html#cb34-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb34-2"><a href="population-stratification-correction-using-eigenstrat.html#cb34-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
-<span id="cb34-3"><a href="population-stratification-correction-using-eigenstrat.html#cb34-3" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;NR &gt;= 2 &amp;&amp; NR &lt;= 11 {print}&#39;</span> ./Data/PC/genotype_1k.pca <span class="op">&gt;</span> ./Data/PC/pc_eig.txt</span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="population-stratification-correction-using-eigenstrat.html#cb35-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb35-2"><a href="population-stratification-correction-using-eigenstrat.html#cb35-2" tabindex="-1"></a><span class="co"># generate plot in R</span></span>
-<span id="cb35-3"><a href="population-stratification-correction-using-eigenstrat.html#cb35-3" tabindex="-1"></a>pc_eig <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;./Data/PC/pc_eig.txt&quot;</span>,<span class="at">header=</span>F) <span class="co"># read in eigenvalue</span></span>
-<span id="cb35-4"><a href="population-stratification-correction-using-eigenstrat.html#cb35-4" tabindex="-1"></a><span class="fu">names</span>(pc_eig) <span class="ot">&lt;-</span> <span class="st">&quot;eig&quot;</span></span>
-<span id="cb35-5"><a href="population-stratification-correction-using-eigenstrat.html#cb35-5" tabindex="-1"></a></span>
-<span id="cb35-6"><a href="population-stratification-correction-using-eigenstrat.html#cb35-6" tabindex="-1"></a><span class="co"># generate scree plot-- eigenvalue vs # of PC</span></span>
-<span id="cb35-7"><a href="population-stratification-correction-using-eigenstrat.html#cb35-7" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, pc_eig<span class="sc">$</span>eig, <span class="at">type=</span><span class="st">&quot;b&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;# PCs&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Eigenvalues&quot;</span>,</span>
-<span id="cb35-8"><a href="population-stratification-correction-using-eigenstrat.html#cb35-8" tabindex="-1"></a><span class="at">main=</span><span class="st">&quot;Scree plot&quot;</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="population-stratification-correction-using-eigenstrat.html#cb45-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb45-2"><a href="population-stratification-correction-using-eigenstrat.html#cb45-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb45-3"><a href="population-stratification-correction-using-eigenstrat.html#cb45-3" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;NR &gt;= 2 &amp;&amp; NR &lt;= 11 {print}&#39;</span> ./Data/PC/genotype_1k.pca <span class="op">&gt;</span> ./Data/PC/pc_eig.txt</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="population-stratification-correction-using-eigenstrat.html#cb46-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb46-2"><a href="population-stratification-correction-using-eigenstrat.html#cb46-2" tabindex="-1"></a><span class="co"># generate plot in R</span></span>
+<span id="cb46-3"><a href="population-stratification-correction-using-eigenstrat.html#cb46-3" tabindex="-1"></a>pc_eig <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;./Data/PC/pc_eig.txt&quot;</span>,<span class="at">header=</span>F) <span class="co"># read in eigenvalue</span></span>
+<span id="cb46-4"><a href="population-stratification-correction-using-eigenstrat.html#cb46-4" tabindex="-1"></a><span class="fu">names</span>(pc_eig) <span class="ot">&lt;-</span> <span class="st">&quot;eig&quot;</span></span>
+<span id="cb46-5"><a href="population-stratification-correction-using-eigenstrat.html#cb46-5" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="population-stratification-correction-using-eigenstrat.html#cb46-6" tabindex="-1"></a><span class="co"># generate scree plot-- eigenvalue vs # of PC</span></span>
+<span id="cb46-7"><a href="population-stratification-correction-using-eigenstrat.html#cb46-7" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, pc_eig<span class="sc">$</span>eig, <span class="at">type=</span><span class="st">&quot;b&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;# PCs&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Eigenvalues&quot;</span>,</span>
+<span id="cb46-8"><a href="population-stratification-correction-using-eigenstrat.html#cb46-8" tabindex="-1"></a><span class="at">main=</span><span class="st">&quot;Scree plot&quot;</span>)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Usually, we use a cut-off of eigenvalue &gt; 1. In this plot, this criteria results in an unreasonable high number of factors, because the eigenvalue for PC 10 is still &gt; 1.</p>
 </div>
 <div id="test-the-significance-of-principle-components-pcs" class="section level2 hasAnchor" number="5.3">
 <h2><span class="header-section-number">5.3</span> Test the Significance of Principle Components (PCs)<a href="population-stratification-correction-using-eigenstrat.html#test-the-significance-of-principle-components-pcs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The following command creates a matrix from <strong>genotype.pca</strong> (in Linux)</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="population-stratification-correction-using-eigenstrat.html#cb36-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb36-2"><a href="population-stratification-correction-using-eigenstrat.html#cb36-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
-<span id="cb36-3"><a href="population-stratification-correction-using-eigenstrat.html#cb36-3" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n+12</span> ./Data/PC/genotype_1k.pca <span class="op">&gt;</span> ./Data/PC/pc.txt</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb47-1"><a href="population-stratification-correction-using-eigenstrat.html#cb47-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb47-2"><a href="population-stratification-correction-using-eigenstrat.html#cb47-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb47-3"><a href="population-stratification-correction-using-eigenstrat.html#cb47-3" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n+12</span> ./Data/PC/genotype_1k.pca <span class="op">&gt;</span> ./Data/PC/pc.txt</span></code></pre></div>
 <p>The following commands employ linear regression to the test the significance of PCs. P values can be found in the last column of the table: <code>Pr(&gt;|t|)</code>.</p>
 <ul>
 <li>phenotype file: r_met.txt</li>
 </ul>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="population-stratification-correction-using-eigenstrat.html#cb37-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb37-2"><a href="population-stratification-correction-using-eigenstrat.html#cb37-2" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;./Data/PC/r_met.txt&quot;</span>) <span class="co">#read phenotype data</span></span>
-<span id="cb37-3"><a href="population-stratification-correction-using-eigenstrat.html#cb37-3" tabindex="-1"></a>pc<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;./Data/PC/pc.txt&quot;</span>) <span class="co">#read pc data</span></span>
-<span id="cb37-4"><a href="population-stratification-correction-using-eigenstrat.html#cb37-4" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">as.matrix</span>(y) <span class="co">#create a matrix from phenotype data</span></span>
-<span id="cb37-5"><a href="population-stratification-correction-using-eigenstrat.html#cb37-5" tabindex="-1"></a>pc<span class="ot">=</span><span class="fu">as.matrix</span>(pc) <span class="co">#create a matrix from pc data</span></span>
-<span id="cb37-6"><a href="population-stratification-correction-using-eigenstrat.html#cb37-6" tabindex="-1"></a>fit<span class="ot">=</span><span class="fu">lm</span>(y<span class="sc">~</span>pc)</span>
-<span id="cb37-7"><a href="population-stratification-correction-using-eigenstrat.html#cb37-7" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="population-stratification-correction-using-eigenstrat.html#cb48-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb48-2"><a href="population-stratification-correction-using-eigenstrat.html#cb48-2" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;./Data/PC/r_met.txt&quot;</span>) <span class="co">#read phenotype data</span></span>
+<span id="cb48-3"><a href="population-stratification-correction-using-eigenstrat.html#cb48-3" tabindex="-1"></a>pc<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;./Data/PC/pc.txt&quot;</span>) <span class="co">#read pc data</span></span>
+<span id="cb48-4"><a href="population-stratification-correction-using-eigenstrat.html#cb48-4" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">as.matrix</span>(y) <span class="co">#create a matrix from phenotype data</span></span>
+<span id="cb48-5"><a href="population-stratification-correction-using-eigenstrat.html#cb48-5" tabindex="-1"></a>pc<span class="ot">=</span><span class="fu">as.matrix</span>(pc) <span class="co">#create a matrix from pc data</span></span>
+<span id="cb48-6"><a href="population-stratification-correction-using-eigenstrat.html#cb48-6" tabindex="-1"></a>fit<span class="ot">=</span><span class="fu">lm</span>(y<span class="sc">~</span>pc)</span>
+<span id="cb48-7"><a href="population-stratification-correction-using-eigenstrat.html#cb48-7" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ pc)

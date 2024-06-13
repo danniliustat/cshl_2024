@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 GWAS Case Study-Data Preparation | 2024 CSHL course - GWAS Hands-on Analysis</title>
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 GWAS Case Study-Data Preparation | 2024 CSHL course - GWAS Hands-on Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="github-repo" content="rstudio/cshl_2024" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 GWAS Case Study-Data Preparation | 2024 CSHL course - GWAS Hands-on Analysis" />
+  
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  
+
+<meta name="author" content="Danni Liu - Purdue University" />
+
+
+<meta name="date" content="2024-06-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"/>
+<link rel="next" href="gwas-with-continuous-trait-in-plink.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html"><i class="fa fa-check"></i><b>2</b> An Overview of Regression with Toy Examples</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#environment-setting-and-packages"><i class="fa fa-check"></i><b>2.1</b> Environment Setting and Packages</a></li>
+<li class="chapter" data-level="2.2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#toy-example-data"><i class="fa fa-check"></i><b>2.2</b> Toy Example Data</a></li>
+<li class="chapter" data-level="2.3" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#logistic-regression"><i class="fa fa-check"></i><b>2.3</b> Logistic Regression</a></li>
+<li class="chapter" data-level="2.4" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#roc-curve-and-auc-for-hoxb13"><i class="fa fa-check"></i><b>2.4</b> ROC curve and AUC for HOXB13</a></li>
+<li class="chapter" data-level="2.5" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#practice"><i class="fa fa-check"></i><b>2.5</b> Practice</a></li>
+<li class="chapter" data-level="2.6" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#comparison-of-hoxb13-roc-curve-and-nhlh1-roc-curve"><i class="fa fa-check"></i><b>2.6</b> Comparison of HOXB13 ROC curve and NHLH1 ROC curve</a></li>
+<li class="chapter" data-level="2.7" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression"><i class="fa fa-check"></i><b>2.7</b> Linear Regression</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression-of-hoxb13-vs.-il17br"><i class="fa fa-check"></i><b>2.7.1</b> Linear regression of HOXB13 vs. IL17BR</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><i class="fa fa-check"></i><b>3</b> GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#environment-setting"><i class="fa fa-check"></i><b>3.1</b> Environment Setting</a></li>
+<li class="chapter" data-level="3.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools"><i class="fa fa-check"></i><b>3.2</b> GWAS Tools</a></li>
+<li class="chapter" data-level="3.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quality-control"><i class="fa fa-check"></i><b>3.3</b> Quality Control</a></li>
+<li class="chapter" data-level="3.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics"><i class="fa fa-check"></i><b>3.4</b> An Example of Summary Statistics</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#input-files"><i class="fa fa-check"></i><b>3.4.1</b> Input files</a></li>
+<li class="chapter" data-level="3.4.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-missing-rate"><i class="fa fa-check"></i><b>3.4.2</b> Calculating missing rate</a></li>
+<li class="chapter" data-level="3.4.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-allel-frequencies"><i class="fa fa-check"></i><b>3.4.3</b> Calculating allel frequencies</a></li>
+<li class="chapter" data-level="3.4.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#hardy-weinberg-equilibrium"><i class="fa fa-check"></i><b>3.4.4</b> Hardy-Weinberg Equilibrium</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-inclusion-thresholds-for-qc"><i class="fa fa-check"></i><b>3.5</b> An Example of Inclusion Thresholds for QC</a></li>
+<li class="chapter" data-level="3.6" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#remove-closely-related-individuals"><i class="fa fa-check"></i><b>3.6</b> Remove Closely Related Individuals</a></li>
+<li class="chapter" data-level="3.7" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#eigenstrat-input-files"><i class="fa fa-check"></i><b>3.7</b> EIGENSTRAT input files</a></li>
+<li class="chapter" data-level="3.8" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#run-eigenstrat-using-input-genotype-data"><i class="fa fa-check"></i><b>3.8</b> Run EIGENSTRAT Using Input Genotype Data</a></li>
+<li class="chapter" data-level="3.9" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#test-the-significance-of-principle-components-pcs"><i class="fa fa-check"></i><b>3.9</b> Test the Significance of Principle Components (PCs)</a></li>
+<li class="chapter" data-level="3.10" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quantitative-trait-association-test-for-continuous-trait"><i class="fa fa-check"></i><b>3.10</b> Quantitative Trait Association Test for Continuous Trait</a></li>
+<li class="chapter" data-level="3.11" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#casecontrol-asssociation-test-for-binary-trait"><i class="fa fa-check"></i><b>3.11</b> Case/Control Asssociation Test for Binary Trait</a></li>
+<li class="chapter" data-level="3.12" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quantitative-trait-association-test-for-continuous-trait-with-covariates"><i class="fa fa-check"></i><b>3.12</b> Quantitative Trait Association Test for Continuous Trait with Covariates</a>
+<ul>
+<li class="chapter" data-level="3.12.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#covariates-adjustments-using-r"><i class="fa fa-check"></i><b>3.12.1</b> Covariates adjustments (using R):</a></li>
+<li class="chapter" data-level="3.12.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#residual-phenotype-data-after-covariates-adjustments-in-unix"><i class="fa fa-check"></i><b>3.12.2</b> Residual phenotype data after covariates adjustments (in UNIX):</a></li>
+<li class="chapter" data-level="3.12.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#association-test-using-plink"><i class="fa fa-check"></i><b>3.12.3</b> Association test using plink</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html"><i class="fa fa-check"></i><b>4</b> GWAS Case Study-Data Preparation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#environment-setting-and-packages-1"><i class="fa fa-check"></i><b>4.1</b> Environment setting and packages</a></li>
+<li class="chapter" data-level="4.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#accessing-data"><i class="fa fa-check"></i><b>4.2</b> Accessing data</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#data-availability"><i class="fa fa-check"></i><b>4.2.1</b> Data availability</a></li>
+<li class="chapter" data-level="4.2.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#data-files-documentation"><i class="fa fa-check"></i><b>4.2.2</b> Data files documentation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#preprocessing-phenotype-data"><i class="fa fa-check"></i><b>4.3</b> Preprocessing Phenotype Data</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#extracting-phenotype-data"><i class="fa fa-check"></i><b>4.3.1</b> Extracting phenotype data</a></li>
+<li class="chapter" data-level="4.3.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#summary-of-phenotypes-data"><i class="fa fa-check"></i><b>4.3.2</b> Summary of Phenotypes Data</a></li>
+<li class="chapter" data-level="4.3.3" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#histogram-of-each-trait"><i class="fa fa-check"></i><b>4.3.3</b> Histogram of each trait</a></li>
+<li class="chapter" data-level="4.3.4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#handling-the-missing-values-in-the-phenotypes-and-covariates"><i class="fa fa-check"></i><b>4.3.4</b> Handling the missing values in the phenotypes and covariates</a></li>
+<li class="chapter" data-level="4.3.5" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#checking-normality-assumptions-for-each-trait"><i class="fa fa-check"></i><b>4.3.5</b> Checking normality assumptions for each trait</a></li>
+<li class="chapter" data-level="4.3.6" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#normalize-phenotype-data"><i class="fa fa-check"></i><b>4.3.6</b> Normalize phenotype data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#covariates-adjustment"><i class="fa fa-check"></i><b>4.4</b> Covariates Adjustment</a></li>
+<li class="chapter" data-level="4.5" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#prepare-plink-data"><i class="fa fa-check"></i><b>4.5</b> Prepare PLINK data</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file"><i class="fa fa-check"></i><b>4.5.1</b> Step 1: prepare PLINK ped file</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file-1"><i class="fa fa-check"></i><b>4.6</b> Step 1: prepare PLINK ped file</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-2-prepare-plink-map-file"><i class="fa fa-check"></i><b>4.6.1</b> Step 2: prepare PLINK map file</a></li>
+<li class="chapter" data-level="4.6.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-3-prepare-plink-alternate-phenotype-file-in-linux"><i class="fa fa-check"></i><b>4.6.2</b> Step 3 : prepare PLINK alternate phenotype file (in Linux)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html"><i class="fa fa-check"></i><b>5</b> GWAS with Continuous Trait (in PLINK)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#manhattan-plot-and-q-q-plot"><i class="fa fa-check"></i><b>5.1</b> Manhattan Plot and Q-Q Plot</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#generate-manhattan-plot"><i class="fa fa-check"></i><b>5.1.1</b> Generate manhattan plot</a></li>
+<li class="chapter" data-level="5.1.2" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#generate-q-q-plot"><i class="fa fa-check"></i><b>5.1.2</b> Generate Q-Q plot</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#multiple-test-correction"><i class="fa fa-check"></i><b>5.2</b> Multiple-Test Correction</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#prepare-r-input-files-in-linux"><i class="fa fa-check"></i><b>5.2.1</b> Prepare R input files (in Linux)</a></li>
+<li class="chapter" data-level="5.2.2" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#significant-snps-after-a-multiple-test-correction-of-fdr-using-r"><i class="fa fa-check"></i><b>5.2.2</b> Significant SNPs after a multiple-test correction of FDR (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#regional-association-plot"><i class="fa fa-check"></i><b>5.3</b> Regional Association Plot</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#obtain-regional-snps-using-r"><i class="fa fa-check"></i><b>5.3.1</b> Obtain regional SNPs (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#distribution-of-z-endoxifen-ratio-for-rs8138080"><i class="fa fa-check"></i><b>5.4</b> Distribution of Z-endoxifen ratio for rs8138080</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#obtain-phenotype-data-z-endoxifen-ratio-using-r"><i class="fa fa-check"></i><b>5.4.1</b> Obtain phenotype data (Z-endoxifen ratio) (using R)</a></li>
+<li class="chapter" data-level="5.4.2" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#obtain-genotype-for-significant-snps-using-r"><i class="fa fa-check"></i><b>5.4.2</b> Obtain genotype for significant SNPs (using R)</a></li>
+<li class="chapter" data-level="5.4.3" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#create-box-plot-using-r"><i class="fa fa-check"></i><b>5.4.3</b> Create Box plot (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#proportion-of-variation-explained-by-rs8138080"><i class="fa fa-check"></i><b>5.5</b> Proportion of Variation Explained by rs8138080</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#recode-genotype-of-significant-snps-using-r"><i class="fa fa-check"></i><b>5.5.1</b> Recode genotype of significant SNPs (using R)</a></li>
+<li class="chapter" data-level="5.5.2" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#calculate-marginal-r2-using-r"><i class="fa fa-check"></i><b>5.5.2</b> Calculate marginal <span class="math inline">\(R^2\)</span> (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#practice-time"><i class="fa fa-check"></i><b>5.6</b> PRACTICE TIME</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#practice-1"><i class="fa fa-check"></i><b>5.6.1</b> Practice 1</a></li>
+<li class="chapter" data-level="5.6.2" data-path="gwas-with-continuous-trait-in-plink.html"><a href="gwas-with-continuous-trait-in-plink.html#practice-2"><i class="fa fa-check"></i><b>5.6.2</b> Practice 2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html"><i class="fa fa-check"></i><b>6</b> GWAS with Binary Trait</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#data-preparation"><i class="fa fa-check"></i><b>6.1</b> Data Preparation</a></li>
+<li class="chapter" data-level="6.2" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#genome-wide-casecontrol-association-test-in-plink"><i class="fa fa-check"></i><b>6.2</b> Genome-Wide Case/Control Association Test (in PLINK)</a></li>
+<li class="chapter" data-level="6.3" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#manhattan-plot-and-q-q-plot-1"><i class="fa fa-check"></i><b>6.3</b> Manhattan Plot and Q-Q Plot</a></li>
+<li class="chapter" data-level="6.4" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#generate-manhattan-plot-1"><i class="fa fa-check"></i><b>6.4</b> Generate Manhattan plot</a></li>
+<li class="chapter" data-level="6.5" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#generate-q-q-plot-1"><i class="fa fa-check"></i><b>6.5</b> Generate Q-Q plot</a></li>
+<li class="chapter" data-level="6.6" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#multiple-test-correction-1"><i class="fa fa-check"></i><b>6.6</b> Multiple-Test Correction</a></li>
+<li class="chapter" data-level="6.7" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#top-10-snps"><i class="fa fa-check"></i><b>6.7</b> Top 10 SNPs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">2024 CSHL course - GWAS Hands-on Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="gwas-case-study-data-preparation" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> GWAS Case Study-Data Preparation<a href="gwas-case-study-data-preparation.html#gwas-case-study-data-preparation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Here we introduce a hands-on practice of a case study on genome-wide association study with <strong>continuous traits</strong>. This breast cancer study of Polish Caucasion cohort aims to identify new CYP2D6 DNA variants associated with impaired metabolism of tamoxifen toward endoxifen, and can be used to predicting efficacy of tamoxifen treatment. In this notebook, we will use their preprocessed <strong>192 DNA samples</strong> selected from the Polish Caucasian cohort to show you a typical GWAS workflow. The selection of these 192 samples is based on ratio of the sum of two tamoxifen active metabolite ((Z)-endoxifen and (Z)-4-OH-Tam) plasma concentrations to the sum of the concentrations of tamoxifen and the remaining measured compounds. As a result, 96 samples were from patients with the highest ratio, and 96 were from those with the lowest ratio. Please refer to the following paper if you are interested in details of this data.</p>
+<p><strong>Reference paper:</strong> Hennig EE, Piatkowska M, Goryca K, Pospiech E, Paziewska A, Karczmarski J, Kluska A, Brewczynska E, Ostrowski J “<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6722498/">Non-CYP2D6 variants selected by GWAS improved the prediction of impaired tamoxifen metabolism in breast cancer patients</a>.” J Clin Med. 2019 Aug; 8(8): 1087. doi: 10.3390/jcm8081087</p>
+<blockquote>
+<p><span style="color: red;"> <strong>Important:</strong> Raw Whole Genome Sequencing data can be very large, more than 1Gb. We will show you the codes about how to download and preprocess the raw genotype data from start. But to run the analysis on laptop with limited memory, we provide the subsetted genotype data with only the first 1000 SNPs for you to practice. </span></p>
+</blockquote>
+<blockquote>
+<p><span style="color: #0064a4;">
+Special notes for Windows users: Windows has two command-line shells, Command shell and Windows Powershell. Command shell is specific to Windows system and can be run from RStudio Terminal or in “Command Prompt” App, but the language it uses is NOT the same as Bash! Powershell App is the only place to run Bash commands in Windows. Therefore if you are Windows users and use RStudio for this course, you can’t run bash codes such as “head” or “awk” from RStudio Terminal, you can <strong>ONLY</strong> run PLINK program codes. If you would like to try Bash codes, please open “Windows Powershell” app and follow the same steps to set the paths. Still, Powershell App won’t run PLINK codes, so you’ll have to switch between Powershell and RStudio Terminal.</span></p>
+</blockquote>
+<div id="environment-setting-and-packages-1" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Environment setting and packages<a href="gwas-case-study-data-preparation.html#environment-setting-and-packages-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before we can run any analysis, we need to set the working path in both R and bash and install the necessary R packages. To setup the working directory, make sure you run the following codes in R.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="gwas-case-study-data-preparation.html#cb1-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;bigcare-main&quot; folder</span></span>
+<span id="cb1-2"><a href="gwas-case-study-data-preparation.html#cb1-2" tabindex="-1"></a><span class="co">## run in R Terminal</span></span>
+<span id="cb1-3"><a href="gwas-case-study-data-preparation.html#cb1-3" tabindex="-1"></a><span class="co">#mydir=&quot;/path/to/bigcare-main/Data/case_data&quot;</span></span>
+<span id="cb1-4"><a href="gwas-case-study-data-preparation.html#cb1-4" tabindex="-1"></a><span class="va">mydir</span><span class="op">=</span><span class="st">&quot;./Data/case_data&quot;</span></span>
+<span id="cb1-5"><a href="gwas-case-study-data-preparation.html#cb1-5" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$mydir</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="gwas-case-study-data-preparation.html#cb2-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb2-2"><a href="gwas-case-study-data-preparation.html#cb2-2" tabindex="-1"></a><span class="co">#setwd(&quot;/path/to/bigcare-main/Data/case_data&quot;)</span></span>
+<span id="cb2-3"><a href="gwas-case-study-data-preparation.html#cb2-3" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;./Data/case_data&quot;</span>)</span>
+<span id="cb2-4"><a href="gwas-case-study-data-preparation.html#cb2-4" tabindex="-1"></a>mydir<span class="ot">&lt;-</span><span class="fu">getwd</span>()</span></code></pre></div>
+<p>The packages we will use in this notebook include: data.table, GEOquery (from Biocondector), GenABEL, qqman, png and QCGWAS. You will need to install these packages by yourself in R. The codes to install these packages are list below and are commented out with <code>#</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="gwas-case-study-data-preparation.html#cb3-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb3-2"><a href="gwas-case-study-data-preparation.html#cb3-2" tabindex="-1"></a><span class="co">#install.packages(&quot;data.table&quot;)</span></span>
+<span id="cb3-3"><a href="gwas-case-study-data-preparation.html#cb3-3" tabindex="-1"></a><span class="co">#install.packages(&quot;qqman&quot;)</span></span>
+<span id="cb3-4"><a href="gwas-case-study-data-preparation.html#cb3-4" tabindex="-1"></a><span class="co">#install.packages(&quot;png&quot;)</span></span>
+<span id="cb3-5"><a href="gwas-case-study-data-preparation.html#cb3-5" tabindex="-1"></a><span class="co">#install.packages(&quot;QCGWAS&quot;)</span></span>
+<span id="cb3-6"><a href="gwas-case-study-data-preparation.html#cb3-6" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="gwas-case-study-data-preparation.html#cb3-7" tabindex="-1"></a><span class="co">#if (!require(&quot;BiocManager&quot;, quietly = TRUE))</span></span>
+<span id="cb3-8"><a href="gwas-case-study-data-preparation.html#cb3-8" tabindex="-1"></a><span class="co">#    install.packages(&quot;BiocManager&quot;)</span></span>
+<span id="cb3-9"><a href="gwas-case-study-data-preparation.html#cb3-9" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="gwas-case-study-data-preparation.html#cb3-10" tabindex="-1"></a><span class="co">#BiocManager::install(&quot;GEOquery&quot;)</span></span></code></pre></div>
+<p>After installation, the list of packages are loaded with <code>library()</code> function.</p>
+<p><strong>The following code might generate multiple message when loading the packages, such as “The following objects are masked from XXX”, which is normal. You can ignore them.</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="gwas-case-study-data-preparation.html#cb4-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb4-2"><a href="gwas-case-study-data-preparation.html#cb4-2" tabindex="-1"></a><span class="co">#load R packages</span></span>
+<span id="cb4-3"><a href="gwas-case-study-data-preparation.html#cb4-3" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb4-4"><a href="gwas-case-study-data-preparation.html#cb4-4" tabindex="-1"></a><span class="fu">library</span>(GEOquery)</span>
+<span id="cb4-5"><a href="gwas-case-study-data-preparation.html#cb4-5" tabindex="-1"></a><span class="fu">library</span>(qqman)</span>
+<span id="cb4-6"><a href="gwas-case-study-data-preparation.html#cb4-6" tabindex="-1"></a><span class="fu">library</span>(png)</span>
+<span id="cb4-7"><a href="gwas-case-study-data-preparation.html#cb4-7" tabindex="-1"></a><span class="fu">library</span>(QCGWAS)</span></code></pre></div>
+</div>
+<div id="accessing-data" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Accessing data<a href="gwas-case-study-data-preparation.html#accessing-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="data-availability" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Data availability<a href="gwas-case-study-data-preparation.html#data-availability" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<blockquote>
+<p><span style="color: red;"> Important: Genotype data is too large to be uploaded to GitHub so you can’t run codes in this section directly without the data. You can follow the codes below to try download them on your own computer if you have enough storage. We will just load from our downloaded data here. </span></p>
+</blockquote>
+<p>The data for the study <strong>GSE129162</strong> can be downloaded from NCBI data warehouse website. The link is <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE129162" class="uri">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE129162</a></p>
+<p>The following code can download the pheonotype and genotype data.</p>
+<p><strong>Phenotype data:</strong><br />
+<strong>GSE129162_series_matrix.txt.gz</strong> can be downloaded using <a href="https://ftp.ncbi.nlm.nih.gov/geo/series/GSE129nnn/GSE129162/matrix/">this link</a>. You can also download by running the following bash code if you have the exact url of the download files.<code>wget</code> command is followed by the files address, meaning that we want to download the data located in this address. Then we will unzip the file using <code>gunzip</code> command.</p>
+<p><strong>The codes here are commented out, as we already have this file downloaded for you. We will read in the data from the central folder.</strong> (If you want to try them, you can remove the <code>#</code> before <code>system()</code> command.The this data will be downloaded again.)</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="gwas-case-study-data-preparation.html#cb5-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb5-2"><a href="gwas-case-study-data-preparation.html#cb5-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb5-3"><a href="gwas-case-study-data-preparation.html#cb5-3" tabindex="-1"></a><span class="co"># data_path=/path/to/bigcare-main/Data/case_data</span></span>
+<span id="cb5-4"><a href="gwas-case-study-data-preparation.html#cb5-4" tabindex="-1"></a><span class="co"># wget ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE129nnn/GSE129162/matrix/GSE129162_series_matrix.txt.gz -P $data_path</span></span>
+<span id="cb5-5"><a href="gwas-case-study-data-preparation.html#cb5-5" tabindex="-1"></a><span class="co"># gunzip $data_path/*gz #this code replaces the .gz file with an uncompressed file</span></span></code></pre></div>
+<p>The platform data <strong>GPL16104-1240.txt</strong> is used for genotype annotation and can be downloaded from link <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL16104" class="uri">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL16104</a>.</p>
+<p><strong>Genotype data:</strong><br />
+<strong>GSE129162_Plate_1_Full_Data_Table.txt.gz</strong>(96 samples) is downloaded from <a href="https://ftp.ncbi.nlm.nih.gov/geo/series/GSE129nnn/GSE129162/suppl/GSE129162%5FPlate%5F1%5FFull%5FData%5FTable%2Etxt%2Egz">this link</a><br />
+<strong>GSE129162_Plate_2_Full_Data_Table.txt.gz</strong>(96 samples) is downloaded from <a href="https://ftp.ncbi.nlm.nih.gov/geo/series/GSE129nnn/GSE129162/suppl/GSE129162%5FPlate%5F2%5FFull%5FData%5FTable%2Etxt%2Egz">this link</a></p>
+<p><strong>You don’t need to download these genotype data files to your account. They are extremely large and will take long time to finish. We have already downloaded them for you.</strong></p>
+<p>The following code is what we used to download and unzip the genotype data. You can try practice <code>wget</code> command using some small data on your own computer.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="gwas-case-study-data-preparation.html#cb6-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb6-2"><a href="gwas-case-study-data-preparation.html#cb6-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb6-3"><a href="gwas-case-study-data-preparation.html#cb6-3" tabindex="-1"></a><span class="co"># data_path=/path/to/bigcare-main/Data/case_data</span></span>
+<span id="cb6-4"><a href="gwas-case-study-data-preparation.html#cb6-4" tabindex="-1"></a><span class="co"># wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE129nnn/GSE129162/suppl/GSE129162%5FPlate%5F1%5FFull%5FData%5FTable%2Etxt%2Egz -P $data_path</span></span>
+<span id="cb6-5"><a href="gwas-case-study-data-preparation.html#cb6-5" tabindex="-1"></a><span class="co"># wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE129nnn/GSE129162/suppl/GSE129162%5FPlate%5F2%5FFull%5FData%5FTable%2Etxt%2Egz -P $data_path</span></span>
+<span id="cb6-6"><a href="gwas-case-study-data-preparation.html#cb6-6" tabindex="-1"></a><span class="co"># gunzip $data_path/*gz</span></span></code></pre></div>
+</div>
+<div id="data-files-documentation" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Data files documentation<a href="gwas-case-study-data-preparation.html#data-files-documentation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Below is a brief summary of the data information we need and their location in file. You can view the phenotype data by directly opening the file in <code>data</code> folder. But the platform and genotype data is too large to load here (genotype data is 8.2GB each, and platform data is 85.2MB). They are saved at our central folder to save space, and we will read these data from there when we start analysis.</p>
+<ul>
+<li><strong>GSE129162_series_matrix.txt</strong> (phenotype data)
+<ul>
+<li>Each column represents one sample. The first 96 samples match the genotype data in Plate 1, and the last 96 samples are on Plate 2.</li>
+<li>Row 42 is sample ID, eg. “3TX”, “23TX”, “41TX”</li>
+<li>Row 53-66 are phenotype data on 14 different metabolites</li>
+<li>Row 66 is z-endoxifen ratio(or metabolite ratio (MR)), which we’ll use in our analysis</li>
+<li>This data don’t have covariates information</li>
+</ul></li>
+<li><strong>GPL16104-1240.txt</strong> (SNP information)
+<ul>
+<li>Row 6 is the start of SNP information</li>
+<li>Col 1 is SNP ID</li>
+<li>Col 2 is chromosome</li>
+<li>Col 3 is physical position</li>
+<li>Col 4 is NCBI SNP accession</li>
+</ul></li>
+<li><strong>GSE129162_Plate_1_Full_Data_Table.txt</strong><br />
+<strong>GSE129162_Plate_2_Full_Data_Table.txt</strong><br />
+(genotype, saved at our central folder “/anvil/projects/x-tra220018/2023/datasets/GWAS_data/” because of the large size.)
+<ul>
+<li>Row 1 is header, this genotype data contains much more information that we need. We’ll clean it first in ‘5. Prepare PLINK data’</li>
+<li>Col 1 is SNP ID</li>
+<li>Statistical quality control procedures were already performed by original paper</li>
+</ul></li>
+<li><strong>sampleID.txt</strong> (Sample ID)
+<ul>
+<li>Note: sample ID of genotype data and phenotype data are in the same order</li>
+</ul></li>
+</ul>
+<p>You can open the phenotype data to check the file format directly, but the genotype data will be too large to upload to GitHub. You can download to your laptop if there’s enough storage.</p>
+<p>We have subsetted only 1000 SNPs from the raw genotype data. The subsetted data are saved as <code>GSE129162_1k_geno1.txt</code> and <code>GSE129162_1k_geno2.txt</code>. We will directly use these subsetted data for following analysis.</p>
+<p>Let’s first use <code>head</code> to print only the first several lines of the data and show you the file format.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="gwas-case-study-data-preparation.html#cb7-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb7-2"><a href="gwas-case-study-data-preparation.html#cb7-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb7-3"><a href="gwas-case-study-data-preparation.html#cb7-3" tabindex="-1"></a><span class="co">#platform</span></span>
+<span id="cb7-4"><a href="gwas-case-study-data-preparation.html#cb7-4" tabindex="-1"></a><span class="co"># head GPL16104-1240.txt</span></span></code></pre></div>
+<div class="float">
+<img src="geno_GPL.png" alt="GPL data" />
+<div class="figcaption">GPL data</div>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="gwas-case-study-data-preparation.html#cb8-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb8-2"><a href="gwas-case-study-data-preparation.html#cb8-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb8-3"><a href="gwas-case-study-data-preparation.html#cb8-3" tabindex="-1"></a><span class="co"># genotype</span></span>
+<span id="cb8-4"><a href="gwas-case-study-data-preparation.html#cb8-4" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 5 GSE129162_1k_geno1.txt</span></code></pre></div>
+<pre><code>## Index    Name    Address Chr Position    GenTrain Score  Frac A  Frac C  Frac G  Frac T  3TX.GType   3TX.Score   3TX.Theta   3TX.R   23TX.GType  23TX.Score  23TX.Theta  23TX.R  41TX.GType  41TX.Score  41TX.Theta  41TX.R  54TX.GType  54TX.Score  54TX.Theta  54TX.R  76TX.GType  76TX.Score  76TX.Theta  76TX.R  94TX.GType  94TX.Score  94TX.Theta  94TX.R  109TX.GType 109TX.Score 109TX.Theta 109TX.R 130TX.GType 130TX.Score 130TX.Theta 130TX.R 5TX.GType   5TX.Score   5TX.Theta   5TX.R   24TX.GType  24TX.Score  24TX.Theta  24TX.R  42TX.GType  42TX.Score  42TX.Theta  42TX.R  56TX.GType  56TX.Score  56TX.Theta  56TX.R  80TX.GType  80TX.Score  80TX.Theta  80TX.R  95TX.GType  95TX.Score  95TX.Theta  95TX.R  110TX.GType 110TX.Score 110TX.Theta 110TX.R 131TX.GType 131TX.Score 131TX.Theta 131TX.R 8TX.GType   8TX.Score   8TX.Theta   8TX.R   26TX.GType  26TX.Score  26TX.Theta  26TX.R  43TX.GType  43TX.Score  43TX.Theta  43TX.R  57TX.GType  57TX.Score  57TX.Theta  57TX.R  81TX.GType  81TX.Score  81TX.Theta  81TX.R  96TX.GType  96TX.Score  96TX.Theta  96TX.R  111TX.GType 111TX.Score 111TX.Theta 111TX.R 132TX.GType 132TX.Score 132TX.Theta 132TX.R 10TX.GType  10TX.Score  10TX.Theta  10TX.R  28TX.GType  28TX.Score  28TX.Theta  28TX.R  44TX.GType  44TX.Score  44TX.Theta  44TX.R  58TX.GType  58TX.Score  58TX.Theta  58TX.R  82TX.GType  82TX.Score  82TX.Theta  82TX.R  97TX.GType  97TX.Score  97TX.Theta  97TX.R  112TX.GType 112TX.Score 112TX.Theta 112TX.R 134TX.GType 134TX.Score 134TX.Theta 134TX.R 11TX.GType  11TX.Score  11TX.Theta  11TX.R  30TX.GType  30TX.Score  30TX.Theta  30TX.R  45TX.GType  45TX.Score  45TX.Theta  45TX.R  59TX.GType  59TX.Score  59TX.Theta  59TX.R  84TX.GType  84TX.Score  84TX.Theta  84TX.R  100TX.GType 100TX.Score 100TX.Theta 100TX.R 113TX.GType 113TX.Score 113TX.Theta 113TX.R 135TX.GType 135TX.Score 135TX.Theta 135TX.R 12TX.GType  12TX.Score  12TX.Theta  12TX.R  31TX.GType  31TX.Score  31TX.Theta  31TX.R  47TX.GType  47TX.Score  47TX.Theta  47TX.R  60TX.GType  60TX.Score  60TX.Theta  60TX.R  85TX.GType  85TX.Score  85TX.Theta  85TX.R  101TX.GType 101TX.Score 101TX.Theta 101TX.R 119TX.GType 119TX.Score 119TX.Theta 119TX.R 137TX.GType 137TX.Score 137TX.Theta 137TX.R 13TX.GType  13TX.Score  13TX.Theta  13TX.R  33TX.GType  33TX.Score  33TX.Theta  33TX.R  48TX.GType  48TX.Score  48TX.Theta  48TX.R  62TX.GType  62TX.Score  62TX.Theta  62TX.R  86TX.GType  86TX.Score  86TX.Theta  86TX.R  102TX.GType 102TX.Score 102TX.Theta 102TX.R 120TX.GType 120TX.Score 120TX.Theta 120TX.R 138TX.GType 138TX.Score 138TX.Theta 138TX.R 14TX.GType  14TX.Score  14TX.Theta  14TX.R  34TX.GType  34TX.Score  34TX.Theta  34TX.R  49TX.GType  49TX.Score  49TX.Theta  49TX.R  64TX.GType  64TX.Score  64TX.Theta  64TX.R  87TX.GType  87TX.Score  87TX.Theta  87TX.R  103TX.GType 103TX.Score 103TX.Theta 103TX.R 123TX.GType 123TX.Score 123TX.Theta 123TX.R 140TX.GType 140TX.Score 140TX.Theta 140TX.R 15TX.GType  15TX.Score  15TX.Theta  15TX.R  36TX.GType  36TX.Score  36TX.Theta  36TX.R  50TX.GType  50TX.Score  50TX.Theta  50TX.R  66TX.GType  66TX.Score  66TX.Theta  66TX.R  88TX.GType  88TX.Score  88TX.Theta  88TX.R  104TX.GType 104TX.Score 104TX.Theta 104TX.R 124TX.GType 124TX.Score 124TX.Theta 124TX.R 141TX.GType 141TX.Score 141TX.Theta 141TX.R 18TX.GType  18TX.Score  18TX.Theta  18TX.R  38TX.GType  38TX.Score  38TX.Theta  38TX.R  51TX.GType  51TX.Score  51TX.Theta  51TX.R  70TX.GType  70TX.Score  70TX.Theta  70TX.R  91TX.GType  91TX.Score  91TX.Theta  91TX.R  105TX.GType 105TX.Score 105TX.Theta 105TX.R 126TX.GType 126TX.Score 126TX.Theta 126TX.R 143TX.GType 143TX.Score 143TX.Theta 143TX.R 20TX.GType  20TX.Score  20TX.Theta  20TX.R  39TX.GType  39TX.Score  39TX.Theta  39TX.R  52TX.GType  52TX.Score  52TX.Theta  52TX.R  71TX.GType  71TX.Score  71TX.Theta  71TX.R  92TX.GType  92TX.Score  92TX.Theta  92TX.R  107TX.GType 107TX.Score 107TX.Theta 107TX.R 127TX.GType 127TX.Score 127TX.Theta 127TX.R 144TX.GType 144TX.Score 144TX.Theta 144TX.R 21TX.GType  21TX.Score  21TX.Theta  21TX.R  40TX.GType  40TX.Score  40TX.Theta  40TX.R  53TX.GType  53TX.Score  53TX.Theta  53TX.R  72TX.GType  72TX.Score  72TX.Theta  72TX.R  93TX.GType  93TX.Score  93TX.Theta  93TX.R  108TX.GType 108TX.Score 108TX.Theta 108TX.R 128TX.GType 128TX.Score 128TX.Theta 128TX.R 149TX.GType 149TX.Score 149TX.Theta 149TX.R
+## 1    rs2661837   59608986    6   160790174   0.9184957   0.2704918   0.204918    0.147541    0.3770492   AA  0.5307649   0.008821869 0.8875614   AA  0.5307649   0.004302552 0.789067    AA  0.5307649   0.0009787768    0.8586947   AA  0.5307649   0   0.8736661   AA  0.5307649   0   0.8482536   AA  0.5307649   0.0005487994    0.8785542   AA  0.5307649   0.005057058 0.864375    AA  0.5307649   0.005132833 0.8686453   AA  0.5307649   0   0.8767484   AA  0.5307649   0.02140945  0.9136057   AA  0.5307649   0.01904788  0.8284584   AA  0.5307649   0.0004573656    0.8286589   AA  0.5307649   0.005780901 0.8757555   AA  0.5307649   0   0.8813874   AA  0.5307649   0   0.8424288   AA  0.5307649   0   0.7390546   AA  0.5307649   0   0.9083221   AA  0.5307649   0.001534978 0.9625239   AA  0.5307649   0   0.8857813   AA  0.5307649   0.00595596  0.9236761   AA  0.5307649   0.01284935  0.844082    AA  0.5307649   0   0.8027009   AA  0.5307649   0.006743634 0.8488653   AA  0.5307649   0   0.7989991   AA  0.5307649   0.02454456  0.9109862   AA  0.5307649   0   0.8853042   AA  0.5307649   0   0.8708639   AA  0.5307649   0.007078197 0.8466141   AA  0.5307649   0   0.8055495   AA  0.5307649   0   0.8259746   AA  0.5307649   0.009037247 0.8377921   AA  0.5307649   0.009644038 0.7771008   AA  0.5307649   0.004977052 0.9286265   AA  0.5307649   0   0.8191994   AA  0.5307649   0   0.8361827   AA  0.5307649   0   0.8815122   AA  0.5307649   0   0.906369    AA  0.5307649   0   0.8790253   AA  0.5307649   0   0.8075159   AA  0.5307649   0.004478569 0.7776845   AA  0.5307649   0.00812393  1.054283    AA  0.5307649   0   0.9849927   AA  0.5307649   0   1.000727    AA  0.5307649   0.003880034 0.9562745   AA  0.5307649   0.003896269 0.8946571   AA  0.5307649   0   0.9378152   AA  0.5307649   0.001933285 0.8194149   AA  0.5307649   0   0.8283761   AA  0.5307649   0.003264024 0.8647493   AA  0.5307649   0.0007608423    0.8907053   AA  0.5307649   0.0009674665    0.9798262   AA  0.5307649   0.009114858 0.8938351   AA  0.5307649   0.003679669 0.8626351   AA  0.5307649   0.009026284 0.856285    AA  0.5307649   0   0.8542439   AA  0.5307649   0.01101972  0.8207533   AA  0.5307649   0.008917466 0.9453406   AA  0.5307649   0.01210755  0.9115667   AA  0.5307649   0   0.8424225   AA  0.5307649   0   0.8795742   AA  0.5307649   0   0.889537    AA  0.5307649   0   0.8563401   AA  0.5307649   0.01974745  0.87435 AA  0.5307649   0.004689173 0.8798686   AA  0.5307649   0   0.8932739   AA  0.5307649   0   0.9043528   AA  0.5307649   0   0.8281192   AA  0.5307649   0   0.8506914   AA  0.5307649   0.001669536 0.8482242   AA  0.5307649   0.009125629 0.8417856   AA  0.5307649   0   0.8414348   AA  0.5307649   0.01010706  0.8204561   AA  0.5307649   0   0.9428991   AA  0.5307649   0.004980553 0.9047675   AA  0.5307649   0   0.8529937   AA  0.5307649   0.00178936  0.8625727   AA  0.5307649   0   0.8376842   AA  0.5307649   0.000836632 0.8550883   AA  0.5307649   0   0.8180589   AA  0.5307649   0   0.8462505   AA  0.5307649   0   0.8995866   AA  0.5307649   0.01502675  0.9455797   AA  0.5307649   0   0.9397838   AA  0.5307649   0.02432778  0.954927    AA  0.5307649   0   0.8519539   AA  0.5307649   0   0.8212793   AA  0.5307649   0   0.8741056   AA  0.5307649   0   0.8466359   AA  0.5307649   0.02224802  0.9700703   AA  0.5307649   0.0023646   0.9193313   AA  0.5307649   0.008858708 0.8796223   AA  0.5307649   0   0.8536922   AA  0.5307649   0.007562425 0.8448886   AA  0.5307649   0.002468169 0.8238339   AA  0.5307649   0.008722084 0.8206755   NC  0   NA  NA
+## 2    rs17599091  22723170    4   100512919   0.9214322   0.3360656   0.1885246   0.1393443   0.3360656   BB  0.912639    1   0.7794374   BB  0.912639    1   0.7302647   BB  0.912639    1   0.7093137   BB  0.912639    1   0.7848499   BB  0.912639    1   0.7104745   BB  0.912639    1   0.7105295   BB  0.912639    0.9838951   0.7404255   BB  0.912639    0.9965864   0.6744733   BB  0.912639    0.9961912   0.8130928   BB  0.912639    0.9918755   0.7053344   BB  0.912639    1   0.781446    BB  0.912639    1   0.6858987   BB  0.912639    1   0.707101    BB  0.912639    1   0.6812564   BB  0.912639    0.9799449   0.7136893   BB  0.912639    0.9685298   0.6533777   BB  0.912639    1   0.7476017   BB  0.912639    0.994001    0.7005985   BB  0.912639    0.9895425   0.7104729   BB  0.912639    1   0.7367218   BB  0.912639    1   0.6662448   BB  0.912639    0.9798351   0.775735    BB  0.912639    0.9857764   0.6874716   BB  0.912639    0.9993283   0.6989886   BB  0.912639    1   0.7155004   BB  0.912639    1   0.6996114   BB  0.912639    1   0.7788225   AB  0.912639    0.5126581   0.8789718   BB  0.912639    0.9996191   0.7642295   BB  0.912639    0.9992164   0.7393318   BB  0.912639    1   0.7467736   AB  0.912639    0.5020118   0.7654631   BB  0.912639    0.9995052   0.8219552   BB  0.912639    1   0.7782356   BB  0.912639    1   0.7228932   BB  0.912639    1   0.7392787   BB  0.912639    0.9893503   0.7638509   BB  0.912639    1   0.7446367   BB  0.912639    0.9910279   0.6606835   BB  0.912639    0.9877959   0.7400993   BB  0.912639    0.9878162   0.9312968   BB  0.912639    0.99714 0.8092455   BB  0.912639    0.9967086   0.7012134   BB  0.912639    1   0.7402307   AB  0.912639    0.5378079   0.8767784   BB  0.912639    1   0.7412875   BB  0.912639    1   0.6642994   BB  0.912639    1   0.682972    BB  0.912639    0.9795766   0.767679    BB  0.912639    0.9878604   0.6468747   BB  0.912639    1   0.7013372   BB  0.912639    1   0.7644573   BB  0.912639    0.9901261   0.7128366   BB  0.912639    0.9976132   0.7424222   BB  0.912639    1   0.7057812   AB  0.912639    0.5276452   0.7657373   BB  0.912639    1   0.7256049   BB  0.912639    0.9923923   0.7006872   BB  0.912639    0.990753    0.6669228   BB  0.912639    1   0.7254286   BB  0.912639    1   0.7412325   BB  0.912639    0.9774454   0.8215737   BB  0.912639    1   0.7094045   BB  0.912639    0.9902368   0.75941 BB  0.912639    0.9878016   0.7513739   BB  0.912639    1   0.7192208   BB  0.912639    0.9999318   0.7556549   NC  0   NA  NA  AB  0.912639    0.5530401   0.8078632   BB  0.912639    1   0.6901007   BB  0.912639    1   0.6701491   BB  0.912639    0.9713188   0.6923268   BB  0.912639    0.994038    0.8934965   BB  0.912639    0.9944166   0.7379977   BB  0.912639    0.9987851   0.7758344   BB  0.912639    0.9881118   0.7431052   BB  0.912639    0.9911516   0.7213073   BB  0.912639    1   0.6183364   BB  0.912639    0.9972501   0.6855696   BB  0.912639    0.9986041   0.7456488   BB  0.912639    0.9967452   0.7073257   BB  0.912639    0.9919431   0.714431    BB  0.912639    1   0.7055821   BB  0.912639    1   0.7329943   BB  0.912639    0.984628    0.7268863   BB  0.912639    0.9993105   0.6670438   BB  0.912639    0.9771692   0.7168946   AB  0.912639    0.524509    0.7334743   BB  0.912639    1   0.720572    BB  0.912639    1   0.6640783   BB  0.912639    0.9820562   0.7841282   BB  0.912639    0.9681635   0.7194906   BB  0.912639    1   0.6973597   BB  0.912639    0.9689506   0.7540384   BB  0.912639    0.9894071   0.6509399   AB  0.912639    0.5748581   0.7970585
+## 3    rs1492138   99703272    12  22030178    0.8141065   0.4344262   0.1803279   0.2213115   0.1639344   AA  0.8366347   0.0155831   1.486767    AA  0.8366347   0.01139608  1.45523 BB  0.8366347   0.9744331   1.221841    AB  0.8366347   0.4255435   1.966771    AA  0.8366347   0.02390762  1.510504    BB  0.8366347   0.983999    1.183172    AB  0.8366347   0.4472335   2.035755    AA  0.8366347   0.00729641  1.418926    AB  0.8366347   0.4148306   1.912822    BB  0.8366347   0.9542933   1.137165    AB  0.8366347   0.4159007   2.037065    AB  0.8366347   0.4468889   2.132677    BB  0.8366347   0.9976263   1.226691    AA  0.8366347   0   1.513907    BB  0.8366347   0.9965111   1.30037 AB  0.8366347   0.4211439   2.017136    AA  0.8366347   0   1.374981    AA  0.8366347   0.002693488 1.562682    AA  0.8366347   0.005519424 1.512518    AA  0.8366347   0.001476752 1.385142    AB  0.8366347   0.4031342   2.165268    AB  0.8366347   0.4252423   2.096977    AB  0.8366347   0.4232504   2.012156    AA  0.8366347   0.003376764 1.591835    AA  0.8366347   0.007099419 1.564587    BB  0.8366347   0.9709764   1.321027    AA  0.8366347   0.003099246 1.655463    AA  0.8366347   0.003674668 1.415602    AA  0.8366347   0.006876315 1.474013    AB  0.8366347   0.4136043   2.010224    AB  0.8366347   0.4087844   1.963807    AB  0.8366347   0.420595    2.026428    AB  0.8366347   0.4173257   1.926922    BB  0.8366347   0.9737976   1.324285    BB  0.8366347   0.9694954   1.21546 AB  0.8366347   0.4287727   1.966868    AA  0.8366347   0   1.35055 BB  0.8366347   0.9945471   1.167764    AA  0.8366347   0.004214888 1.466598    BB  0.8366347   0.9710065   1.371676    AB  0.8366347   0.3404096   1.849519    AB  0.8299909   0.3115434   1.803758    AA  0.8366347   0.001690709 1.447077    AA  0.8366347   0   1.495475    AB  0.8366347   0.451398    2.038282    AB  0.8366347   0.441361    2.060499    BB  0.8366347   0.9639415   1.128435    AA  0.8366347   0.006534345 1.607938    AA  0.8366347   0.008968526 1.453672    AB  0.8366347   0.4179797   2.03199 AB  0.8366347   0.4054756   1.927063    AA  0.8366347   0.003728586 1.54582 AB  0.8366347   0.4586098   2.066513    AA  0.8366347   0.005942309 1.456609    AA  0.8366347   0.001969052 1.376819    AB  0.8366347   0.4175152   2.008322    AA  0.8366347   0.006095464 1.420024    AA  0.8366347   0.002223276 1.389382    BB  0.8366347   0.9793059   1.237754    AB  0.8366347   0.4285659   1.951916    AB  0.8366347   0.4113334   2.000274    AA  0.8366347   0   1.44659 AA  0.8366347   0.008444706 1.490389    AB  0.8366347   0.4439209   2.038851    AA  0.8366347   0.004509314 1.383593    AB  0.8366347   0.4405344   2.059974    AB  0.8366347   0.4328535   2.195414    AA  0.8366347   0   1.494881    AB  0.8366347   0.4193363   2.110659    AB  0.8366347   0.434282    2.114883    AA  0.8366347   0   1.466227    AB  0.8366347   0.4207164   2.030255    AB  0.8366347   0.4354973   2.008646    AB  0.8366347   0.4275382   2.017272    AA  0.8366347   0.005810715 1.469435    AB  0.8366347   0.4474173   2.110847    AB  0.8366347   0.4401546   2.028051    AA  0.8366347   0   1.479243    AA  0.8366347   0   1.409689    AA  0.8366347   0.01048558  1.412405    AB  0.8366347   0.4259372   1.961646    AA  0.8366347   0   1.436944    AB  0.8366347   0.3901789   2.00288 AA  0.8366347   0   1.454558    AA  0.8366347   0.002056191 1.48833 AB  0.8366347   0.3768039   1.936979    AA  0.8366347   0   1.471008    AA  0.8366347   0.004041329 1.437681    BB  0.8366347   0.9244699   1.234854    AA  0.8366347   0.01446751  1.486596    AA  0.8366347   0.01233234  1.547101    AA  0.8366347   0.002319125 1.492505    AA  0.8366347   0.0004765849    1.454594    AA  0.8366347   0   1.503921    AA  0.8366347   0.005422946 1.49873 AB  0.8366347   0.415   2.05146
+## 4    rs7774255   88748467    6   29274356    0.7854481   0.3688525   0.1229508   0.1721312   0.3360656   AB  0.7926739   0.5112678   1.940141    AA  0.7926739   0.08014844  1.424717    BB  0.7926739   0.9941245   1.257275    AB  0.7926739   0.5179696   1.923401    AB  0.7926739   0.4811749   1.799027    BB  0.7926739   0.9856357   1.19916 AA  0.7926739   0.09819158  1.407406    AB  0.7926739   0.4910655   1.85936 BB  0.7926739   0.9877682   1.353877    BB  0.7926739   0.9869372   1.293899    BB  0.7926739   0.9942399   1.266014    AA  0.7926739   0.07868137  1.189857    AB  0.7926739   0.5182776   1.852501    AA  0.7926739   0.06654007  1.413245    BB  0.7926739   0.9869698   1.286103    BB  0.7926739   0.9864491   1.24757 AB  0.7926739   0.508424    1.958874    AB  0.7926739   0.4808007   1.943599    BB  0.7926739   0.9866183   1.360127    AB  0.7926739   0.4877676   1.971766    AB  0.7926739   0.5118554   1.939045    AB  0.7926739   0.4698642   1.9894  AB  0.7926739   0.4958919   1.902828    AA  0.7926739   0.0665183   1.30333 AB  0.7926739   0.4664362   2.112289    AA  0.7926739   0.04282917  1.397611    AB  0.7926739   0.5229321   1.968581    AA  0.7926739   0.05752888  1.384244    BB  0.7926739   0.9944344   1.192579    AB  0.7926739   0.4890593   1.856027    AB  0.7926739   0.4983002   1.887407    BB  0.7926739   0.9996089   1.206165    AB  0.7926739   0.5362663   2.025466    BB  0.7926739   0.993252    1.287352    BB  0.7926739   0.992851    1.237325    BB  0.7926739   1   1.21237 AB  0.7926739   0.4921513   1.934216    AB  0.7926739   0.4822774   1.926908    AB  0.7926739   0.4943883   1.833417    BB  0.7926739   0.9920998   1.283575    BB  0.7926739   0.9897735   1.451442    AB  0.7926739   0.5196703   2.085209    BB  0.7926739   0.9977385   1.360853    AB  0.7926739   0.5116353   2.000905    AB  0.7926739   0.4796951   1.993188    AB  0.7926739   0.5051506   1.955936    AB  0.7926739   0.5011894   1.854383    AB  0.7926739   0.4787369   1.839209    BB  0.7926739   0.9974796   1.320667    AB  0.7926739   0.5128415   1.900608    AB  0.7926739   0.4958718   1.879379    BB  0.7926739   1   1.262688    BB  0.7926739   0.990823    1.342527    BB  0.7926739   0.9892268   1.261049    BB  0.7926739   0.9981848   1.265288    BB  0.7926739   0.9940938   1.146477    AB  0.7926739   0.5207399   1.947979    AB  0.7926739   0.5279382   1.972919    BB  0.7926739   0.9933966   1.358976    AB  0.7926739   0.5261464   1.894968    AA  0.7926739   0.05954503  1.401942    AB  0.7926739   0.5106553   1.874586    AA  0.7926739   0.0809633   1.486078    AB  0.7926739   0.4883955   1.9057  AB  0.7926739   0.4939272   1.946569    BB  0.7926739   0.9947953   1.32105 BB  0.7926739   0.9943367   1.339465    BB  0.7926739   1   1.394975    AB  0.7926739   0.48035 1.890013    BB  0.7926739   0.9838084   1.329443    AB  0.7926739   0.4947823   1.84951 BB  0.7926739   0.9925782   1.298822    BB  0.7926739   0.9859158   1.426968    AA  0.7926739   0.03490131  1.431856    BB  0.7926739   0.99248 1.186385    AB  0.7926739   0.5173417   1.91599 AB  0.7926739   0.5160283   1.876975    AB  0.7926739   0.4995595   1.905217    AA  0.7926739   0.07604657  1.418187    NC  0   NA  NA  AA  0.7926739   0.05842686  1.418575    AA  0.7926739   0.03868439  1.360571    BB  0.7926739   0.9986436   1.397145    AB  0.7926739   0.4806562   1.957089    BB  0.7926739   1   1.358828    AB  0.7926739   0.5081648   1.969581    AB  0.7926739   0.5137373   1.827905    BB  0.7926739   0.9850864   1.28201 BB  0.7926739   0.9832256   1.309727    AA  0.7926739   0.06402967  1.319998    AB  0.7926739   0.4899253   1.89991 AA  0.7926739   0.04551065  1.339315    AB  0.7926739   0.5122963   1.851436    AB  0.7926739   0.5072753   1.834534    AB  0.7926739   0.4827657   1.793649    AB  0.7926739   0.5172095   1.900066</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="gwas-case-study-data-preparation.html#cb10-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb10-2"><a href="gwas-case-study-data-preparation.html#cb10-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb10-3"><a href="gwas-case-study-data-preparation.html#cb10-3" tabindex="-1"></a><span class="fu">head</span> sampleID.txt</span></code></pre></div>
+<pre><code>## id
+## 3TX
+## 23TX
+## 41TX
+## 54TX
+## 76TX
+## 94TX
+## 109TX
+## 130TX
+## 5TX</code></pre>
+</div>
+</div>
+<div id="preprocessing-phenotype-data" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Preprocessing Phenotype Data<a href="gwas-case-study-data-preparation.html#preprocessing-phenotype-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="extracting-phenotype-data" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Extracting phenotype data<a href="gwas-case-study-data-preparation.html#extracting-phenotype-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are 14 metabolites phenotype data, but we won’t analyze all of them. Also, as there are many useless information in the original phenotype file, we need to extract only the information we use for analysis.
++ Obtain only sample ID and phenotype data from <strong>GSE129162_series_matrix.txt</strong><br />
+==&gt; save data as <strong>phenotype.txt</strong>: Col 1 is sample ID, Col 2 is trait 1, Col 3 is trait 2, Col 4 is trait 3</p>
+<p>We will use the <code>getGEO</code> function from <code>GEOquery</code> package to read in this data. <code>GEOquery</code>is a very useful tool to handle GEO accession data like this. A detailed documentation of <code>GEOquery</code> package can be found <a href="https://www.bioconductor.org/packages/release/bioc/manuals/GEOquery/man/GEOquery.pdf">here</a>. <code>getGPL=FALSE</code> arguement means that we won’t include the GPL information in this matrix.</p>
+<p>You might see a message of “Use <code>spec()</code> for the full column specification” message when running the code below. This is a normal message from the function telling you that it parsed the characteristic information for you. Please don’t worry about this.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="gwas-case-study-data-preparation.html#cb12-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb12-2"><a href="gwas-case-study-data-preparation.html#cb12-2" tabindex="-1"></a>my_gse <span class="ot">&lt;-</span><span class="st">&quot;GSE129162&quot;</span></span>
+<span id="cb12-3"><a href="gwas-case-study-data-preparation.html#cb12-3" tabindex="-1"></a>my_pheno <span class="ot">&lt;-</span> <span class="fu">getGEO</span>(<span class="at">GEO=</span>my_gse, <span class="at">filename=</span><span class="st">&quot;GSE129162_series_matrix.txt&quot;</span>, <span class="at">getGPL=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<p><code>ls</code> lists the current objects we have loaded, and we will see <code>my_pheno</code> is already there.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="gwas-case-study-data-preparation.html#cb13-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb13-2"><a href="gwas-case-study-data-preparation.html#cb13-2" tabindex="-1"></a><span class="fu">ls</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;my_gse&quot;   &quot;my_pheno&quot;</code></pre>
+<p>The codes below show that <code>my_pheno</code> is an <strong>ExpressionSet</strong> object which can be manipulated easily in R. We also print a brief summary of <code>my_pheno</code>, which shows that we have 192 samples.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="gwas-case-study-data-preparation.html#cb15-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb15-2"><a href="gwas-case-study-data-preparation.html#cb15-2" tabindex="-1"></a><span class="fu">class</span>(my_pheno)</span></code></pre></div>
+<pre><code>## [1] &quot;ExpressionSet&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;Biobase&quot;</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="gwas-case-study-data-preparation.html#cb17-1" tabindex="-1"></a><span class="fu">show</span>(my_pheno)</span></code></pre></div>
+<pre><code>## ExpressionSet (storageMode: lockedEnvironment)
+## assayData: 0 features, 192 samples 
+##   element names: exprs 
+## protocolData: none
+## phenoData
+##   sampleNames: GSM3701423 GSM3701424 ... GSM3701614 (192 total)
+##   varLabels: title geo_accession ... z-endoxifen ratio:ch1 (62 total)
+##   varMetadata: labelDescription
+## featureData: none
+## experimentData: use &#39;experimentData(object)&#39;
+##   pubMedIds: 31344832 
+## Annotation: GPL16104</code></pre>
+<p>Data stored in <code>my_pheno</code> can be extracted using <code>pData</code>. Here we will print the first 6 rows to take a look.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="gwas-case-study-data-preparation.html#cb19-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb19-2"><a href="gwas-case-study-data-preparation.html#cb19-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">pData</span>(my_pheno))</span></code></pre></div>
+<pre><code>##            title geo_accession                status submission_date
+## GSM3701423   3TX    GSM3701423 Public on Sep 18 2019     Apr 01 2019
+## GSM3701424  23TX    GSM3701424 Public on Sep 18 2019     Apr 01 2019
+## GSM3701425  41TX    GSM3701425 Public on Sep 18 2019     Apr 01 2019
+## GSM3701426  54TX    GSM3701426 Public on Sep 18 2019     Apr 01 2019
+## GSM3701427  76TX    GSM3701427 Public on Sep 18 2019     Apr 01 2019
+## GSM3701428  94TX    GSM3701428 Public on Sep 18 2019     Apr 01 2019
+##            last_update_date    type channel_count source_name_ch1 organism_ch1
+## GSM3701423      Sep 18 2019 genomic             1           blood Homo sapiens
+## GSM3701424      Sep 18 2019 genomic             1           blood Homo sapiens
+## GSM3701425      Sep 18 2019 genomic             1           blood Homo sapiens
+## GSM3701426      Sep 18 2019 genomic             1           blood Homo sapiens
+## GSM3701427      Sep 18 2019 genomic             1           blood Homo sapiens
+## GSM3701428      Sep 18 2019 genomic             1           blood Homo sapiens
+##            characteristics_ch1            characteristics_ch1.1
+## GSM3701423       tissue: blood patient diagnosis: breast cancer
+## GSM3701424       tissue: blood patient diagnosis: breast cancer
+## GSM3701425       tissue: blood patient diagnosis: breast cancer
+## GSM3701426       tissue: blood patient diagnosis: breast cancer
+## GSM3701427       tissue: blood patient diagnosis: breast cancer
+## GSM3701428       tissue: blood patient diagnosis: breast cancer
+##                    characteristics_ch1.2              characteristics_ch1.3
+## GSM3701423  (z)-4-oh-tam + 3-oh-tam: 2.1 (z)-endoxifen + 3-oh-ndm-tam: 7.62
+## GSM3701424 (z)-4-oh-tam + 3-oh-tam: 1.77 (z)-endoxifen + 3-oh-ndm-tam: 4.31
+## GSM3701425 (z)-4-oh-tam + 3-oh-tam: 1.46 (z)-endoxifen + 3-oh-ndm-tam: 4.09
+## GSM3701426 (z)-4-oh-tam + 3-oh-tam: 2.19 (z)-endoxifen + 3-oh-ndm-tam: 2.95
+## GSM3701427 (z)-4-oh-tam + 3-oh-tam: 1.67 (z)-endoxifen + 3-oh-ndm-tam: 3.77
+## GSM3701428  (z)-4-oh-tam + 3-oh-tam: 1.1 (z)-endoxifen + 3-oh-ndm-tam: 1.21
+##            characteristics_ch1.4 characteristics_ch1.5 characteristics_ch1.6
+## GSM3701423     tamoxifen: 136.63       ndm-tam: 158.63      (e)-endoxifen: 0
+## GSM3701424     tamoxifen: 110.38       ndm-tam: 174.85      (e)-endoxifen: 0
+## GSM3701425     tamoxifen: 145.73       ndm-tam: 195.63      (e)-endoxifen: 0
+## GSM3701426     tamoxifen: 169.76       ndm-tam: 280.15      (e)-endoxifen: 0
+## GSM3701427     tamoxifen: 194.25       ndm-tam: 300.06      (e)-endoxifen: 0
+## GSM3701428     tamoxifen: 167.92       ndm-tam: 303.72      (e)-endoxifen: 0
+##            characteristics_ch1.7   characteristics_ch1.8 characteristics_ch1.9
+## GSM3701423    4prim-oh-tam: 3.67 4prim-oh-ndm-tam: 3.724     tam-n-oxide: 9.51
+## GSM3701424    4prim-oh-tam: 2.39  4prim-oh-ndm-tam: 2.67      tam-n-oxide: 7.3
+## GSM3701425    4prim-oh-tam: 3.89 4prim-oh-ndm-tam: 3.665     tam-n-oxide: 9.79
+## GSM3701426     4prim-oh-tam: 4.1 4prim-oh-ndm-tam: 6.624    tam-n-oxide: 21.05
+## GSM3701427    4prim-oh-tam: 4.18 4prim-oh-ndm-tam: 6.374    tam-n-oxide: 27.72
+## GSM3701428    4prim-oh-tam: 3.51 4prim-oh-ndm-tam: 6.182    tam-n-oxide: 28.71
+##            characteristics_ch1.10   characteristics_ch1.11
+## GSM3701423 4-oh-tam-o-gluc: 0.093 4-oh-ndm-tam-gluc: 0.773
+## GSM3701424 4-oh-tam-o-gluc: 0.132 4-oh-ndm-tam-gluc: 0.888
+## GSM3701425 4-oh-tam-o-gluc: 0.147 4-oh-ndm-tam-gluc: 0.725
+## GSM3701426  4-oh-tam-o-gluc: 0.08 4-oh-ndm-tam-gluc: 0.329
+## GSM3701427 4-oh-tam-o-gluc: 0.462 4-oh-ndm-tam-gluc: 1.719
+## GSM3701428 4-oh-tam-o-gluc: 0.027 4-oh-ndm-tam-gluc: 0.104
+##            characteristics_ch1.12 characteristics_ch1.13 characteristics_ch1.14
+## GSM3701423       tam-n-gluc: 0.09     (e)-a-oh-tam: 0.39        (z)-a-oh-tam: 0
+## GSM3701424       tam-n-gluc: 0.34    (e)-a-oh-tam: 0.546    (z)-a-oh-tam: 0.041
+## GSM3701425        tam-n-gluc: 0.1    (e)-a-oh-tam: 0.531        (z)-a-oh-tam: 0
+## GSM3701426       tam-n-gluc: 0.21    (e)-a-oh-tam: 0.496    (z)-a-oh-tam: 0.063
+## GSM3701427       tam-n-gluc: 0.47    (e)-a-oh-tam: 0.339    (z)-a-oh-tam: 0.079
+## GSM3701428       tam-n-gluc: 0.31    (e)-a-oh-tam: 0.303    (z)-a-oh-tam: 0.064
+##                    characteristics_ch1.15 molecule_ch1
+## GSM3701423 z-endoxifen ratio: 0.024134673  genomic DNA
+## GSM3701424 z-endoxifen ratio: 0.014308285  genomic DNA
+## GSM3701425 z-endoxifen ratio: 0.011294447  genomic DNA
+## GSM3701426 z-endoxifen ratio: 0.006079783  genomic DNA
+## GSM3701427  z-endoxifen ratio: 0.00701069  genomic DNA
+## GSM3701428 z-endoxifen ratio: 0.002365497  genomic DNA
+##                                                                                extract_protocol_ch1
+## GSM3701423 Genomic DNA was extracted from whole blood treated with EDTA using a QIAamp DNA Mini Kit
+## GSM3701424 Genomic DNA was extracted from whole blood treated with EDTA using a QIAamp DNA Mini Kit
+## GSM3701425 Genomic DNA was extracted from whole blood treated with EDTA using a QIAamp DNA Mini Kit
+## GSM3701426 Genomic DNA was extracted from whole blood treated with EDTA using a QIAamp DNA Mini Kit
+## GSM3701427 Genomic DNA was extracted from whole blood treated with EDTA using a QIAamp DNA Mini Kit
+## GSM3701428 Genomic DNA was extracted from whole blood treated with EDTA using a QIAamp DNA Mini Kit
+##            label_ch1
+## GSM3701423   cy3/cy5
+## GSM3701424   cy3/cy5
+## GSM3701425   cy3/cy5
+## GSM3701426   cy3/cy5
+## GSM3701427   cy3/cy5
+## GSM3701428   cy3/cy5
+##                                                                                                   label_protocol_ch1
+## GSM3701423 DNA was assayed using Illumina SNP BeadChips as per manufacturer’s instructions (Illumina, San Diego CA).
+## GSM3701424 DNA was assayed using Illumina SNP BeadChips as per manufacturer’s instructions (Illumina, San Diego CA).
+## GSM3701425 DNA was assayed using Illumina SNP BeadChips as per manufacturer’s instructions (Illumina, San Diego CA).
+## GSM3701426 DNA was assayed using Illumina SNP BeadChips as per manufacturer’s instructions (Illumina, San Diego CA).
+## GSM3701427 DNA was assayed using Illumina SNP BeadChips as per manufacturer’s instructions (Illumina, San Diego CA).
+## GSM3701428 DNA was assayed using Illumina SNP BeadChips as per manufacturer’s instructions (Illumina, San Diego CA).
+##            taxid_ch1
+## GSM3701423      9606
+## GSM3701424      9606
+## GSM3701425      9606
+## GSM3701426      9606
+## GSM3701427      9606
+## GSM3701428      9606
+##                                                           hyb_protocol
+## GSM3701423 As per manufacturer’s instructions (Illumina, San Diego CA)
+## GSM3701424 As per manufacturer’s instructions (Illumina, San Diego CA)
+## GSM3701425 As per manufacturer’s instructions (Illumina, San Diego CA)
+## GSM3701426 As per manufacturer’s instructions (Illumina, San Diego CA)
+## GSM3701427 As per manufacturer’s instructions (Illumina, San Diego CA)
+## GSM3701428 As per manufacturer’s instructions (Illumina, San Diego CA)
+##                           scan_protocol          description
+## GSM3701423 Arrays were scanned on iScan processed data file:
+## GSM3701424 Arrays were scanned on iScan processed data file:
+## GSM3701425 Arrays were scanned on iScan processed data file:
+## GSM3701426 Arrays were scanned on iScan processed data file:
+## GSM3701427 Arrays were scanned on iScan processed data file:
+## GSM3701428 Arrays were scanned on iScan processed data file:
+##                          description.1                data_processing
+## GSM3701423 Plate_1_Full_Data_Table.txt no data processing was applied
+## GSM3701424 Plate_1_Full_Data_Table.txt no data processing was applied
+## GSM3701425 Plate_1_Full_Data_Table.txt no data processing was applied
+## GSM3701426 Plate_1_Full_Data_Table.txt no data processing was applied
+## GSM3701427 Plate_1_Full_Data_Table.txt no data processing was applied
+## GSM3701428 Plate_1_Full_Data_Table.txt no data processing was applied
+##                                                                                                                                                                                  data_processing.1
+## GSM3701423 Processed data files include: Genotype: AA,AB,BB,or NC (no call). The first 10 columns of  *Full_Data_Table.txt files contain info about probes, processed values start at 11th column.
+## GSM3701424 Processed data files include: Genotype: AA,AB,BB,or NC (no call). The first 10 columns of  *Full_Data_Table.txt files contain info about probes, processed values start at 11th column.
+## GSM3701425 Processed data files include: Genotype: AA,AB,BB,or NC (no call). The first 10 columns of  *Full_Data_Table.txt files contain info about probes, processed values start at 11th column.
+## GSM3701426 Processed data files include: Genotype: AA,AB,BB,or NC (no call). The first 10 columns of  *Full_Data_Table.txt files contain info about probes, processed values start at 11th column.
+## GSM3701427 Processed data files include: Genotype: AA,AB,BB,or NC (no call). The first 10 columns of  *Full_Data_Table.txt files contain info about probes, processed values start at 11th column.
+## GSM3701428 Processed data files include: Genotype: AA,AB,BB,or NC (no call). The first 10 columns of  *Full_Data_Table.txt files contain info about probes, processed values start at 11th column.
+##            platform_id      contact_name     contact_department
+## GSM3701423    GPL16104 Krzysztof,,Goryca Department of Genetics
+## GSM3701424    GPL16104 Krzysztof,,Goryca Department of Genetics
+## GSM3701425    GPL16104 Krzysztof,,Goryca Department of Genetics
+## GSM3701426    GPL16104 Krzysztof,,Goryca Department of Genetics
+## GSM3701427    GPL16104 Krzysztof,,Goryca Department of Genetics
+## GSM3701428    GPL16104 Krzysztof,,Goryca Department of Genetics
+##                                                  contact_institute
+## GSM3701423 Centrum Onkologii Instytut im. Marii Skłodowskiej Curie
+## GSM3701424 Centrum Onkologii Instytut im. Marii Skłodowskiej Curie
+## GSM3701425 Centrum Onkologii Instytut im. Marii Skłodowskiej Curie
+## GSM3701426 Centrum Onkologii Instytut im. Marii Skłodowskiej Curie
+## GSM3701427 Centrum Onkologii Instytut im. Marii Skłodowskiej Curie
+## GSM3701428 Centrum Onkologii Instytut im. Marii Skłodowskiej Curie
+##            contact_address contact_city contact_zip/postal_code contact_country
+## GSM3701423     Roentgena 5     Warszawa                  02-781          Poland
+## GSM3701424     Roentgena 5     Warszawa                  02-781          Poland
+## GSM3701425     Roentgena 5     Warszawa                  02-781          Poland
+## GSM3701426     Roentgena 5     Warszawa                  02-781          Poland
+## GSM3701427     Roentgena 5     Warszawa                  02-781          Poland
+## GSM3701428     Roentgena 5     Warszawa                  02-781          Poland
+##            supplementary_file data_row_count (e)-a-oh-tam:ch1 (e)-endoxifen:ch1
+## GSM3701423               NONE              0             0.39                 0
+## GSM3701424               NONE              0            0.546                 0
+## GSM3701425               NONE              0            0.531                 0
+## GSM3701426               NONE              0            0.496                 0
+## GSM3701427               NONE              0            0.339                 0
+## GSM3701428               NONE              0            0.303                 0
+##            (z)-4-oh-tam + 3-oh-tam:ch1 (z)-a-oh-tam:ch1
+## GSM3701423                         2.1                0
+## GSM3701424                        1.77            0.041
+## GSM3701425                        1.46                0
+## GSM3701426                        2.19            0.063
+## GSM3701427                        1.67            0.079
+## GSM3701428                         1.1            0.064
+##            (z)-endoxifen + 3-oh-ndm-tam:ch1 4-oh-ndm-tam-gluc:ch1
+## GSM3701423                             7.62                 0.773
+## GSM3701424                             4.31                 0.888
+## GSM3701425                             4.09                 0.725
+## GSM3701426                             2.95                 0.329
+## GSM3701427                             3.77                 1.719
+## GSM3701428                             1.21                 0.104
+##            4-oh-tam-o-gluc:ch1 4prim-oh-ndm-tam:ch1 4prim-oh-tam:ch1
+## GSM3701423               0.093                3.724             3.67
+## GSM3701424               0.132                 2.67             2.39
+## GSM3701425               0.147                3.665             3.89
+## GSM3701426                0.08                6.624              4.1
+## GSM3701427               0.462                6.374             4.18
+## GSM3701428               0.027                6.182             3.51
+##            ndm-tam:ch1 patient diagnosis:ch1 tam-n-gluc:ch1 tam-n-oxide:ch1
+## GSM3701423      158.63         breast cancer           0.09            9.51
+## GSM3701424      174.85         breast cancer           0.34             7.3
+## GSM3701425      195.63         breast cancer            0.1            9.79
+## GSM3701426      280.15         breast cancer           0.21           21.05
+## GSM3701427      300.06         breast cancer           0.47           27.72
+## GSM3701428      303.72         breast cancer           0.31           28.71
+##            tamoxifen:ch1 tissue:ch1 z-endoxifen ratio:ch1
+## GSM3701423        136.63      blood           0.024134673
+## GSM3701424        110.38      blood           0.014308285
+## GSM3701425        145.73      blood           0.011294447
+## GSM3701426        169.76      blood           0.006079783
+## GSM3701427        194.25      blood            0.00701069
+## GSM3701428        167.92      blood           0.002365497</code></pre>
+<p>As you can see, the table size is too large and contain too many useless information. <code>colnames</code> function can help us to check what information is contained in this data table by printing all the column names.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="gwas-case-study-data-preparation.html#cb21-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb21-2"><a href="gwas-case-study-data-preparation.html#cb21-2" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">pData</span>(my_pheno))</span></code></pre></div>
+<pre><code>##  [1] &quot;title&quot;                            &quot;geo_accession&quot;                   
+##  [3] &quot;status&quot;                           &quot;submission_date&quot;                 
+##  [5] &quot;last_update_date&quot;                 &quot;type&quot;                            
+##  [7] &quot;channel_count&quot;                    &quot;source_name_ch1&quot;                 
+##  [9] &quot;organism_ch1&quot;                     &quot;characteristics_ch1&quot;             
+## [11] &quot;characteristics_ch1.1&quot;            &quot;characteristics_ch1.2&quot;           
+## [13] &quot;characteristics_ch1.3&quot;            &quot;characteristics_ch1.4&quot;           
+## [15] &quot;characteristics_ch1.5&quot;            &quot;characteristics_ch1.6&quot;           
+## [17] &quot;characteristics_ch1.7&quot;            &quot;characteristics_ch1.8&quot;           
+## [19] &quot;characteristics_ch1.9&quot;            &quot;characteristics_ch1.10&quot;          
+## [21] &quot;characteristics_ch1.11&quot;           &quot;characteristics_ch1.12&quot;          
+## [23] &quot;characteristics_ch1.13&quot;           &quot;characteristics_ch1.14&quot;          
+## [25] &quot;characteristics_ch1.15&quot;           &quot;molecule_ch1&quot;                    
+## [27] &quot;extract_protocol_ch1&quot;             &quot;label_ch1&quot;                       
+## [29] &quot;label_protocol_ch1&quot;               &quot;taxid_ch1&quot;                       
+## [31] &quot;hyb_protocol&quot;                     &quot;scan_protocol&quot;                   
+## [33] &quot;description&quot;                      &quot;description.1&quot;                   
+## [35] &quot;data_processing&quot;                  &quot;data_processing.1&quot;               
+## [37] &quot;platform_id&quot;                      &quot;contact_name&quot;                    
+## [39] &quot;contact_department&quot;               &quot;contact_institute&quot;               
+## [41] &quot;contact_address&quot;                  &quot;contact_city&quot;                    
+## [43] &quot;contact_zip/postal_code&quot;          &quot;contact_country&quot;                 
+## [45] &quot;supplementary_file&quot;               &quot;data_row_count&quot;                  
+## [47] &quot;(e)-a-oh-tam:ch1&quot;                 &quot;(e)-endoxifen:ch1&quot;               
+## [49] &quot;(z)-4-oh-tam + 3-oh-tam:ch1&quot;      &quot;(z)-a-oh-tam:ch1&quot;                
+## [51] &quot;(z)-endoxifen + 3-oh-ndm-tam:ch1&quot; &quot;4-oh-ndm-tam-gluc:ch1&quot;           
+## [53] &quot;4-oh-tam-o-gluc:ch1&quot;              &quot;4prim-oh-ndm-tam:ch1&quot;            
+## [55] &quot;4prim-oh-tam:ch1&quot;                 &quot;ndm-tam:ch1&quot;                     
+## [57] &quot;patient diagnosis:ch1&quot;            &quot;tam-n-gluc:ch1&quot;                  
+## [59] &quot;tam-n-oxide:ch1&quot;                  &quot;tamoxifen:ch1&quot;                   
+## [61] &quot;tissue:ch1&quot;                       &quot;z-endoxifen ratio:ch1&quot;</code></pre>
+<p>Here, we will only extract the sample ID and all 14 metabolites data from the large table. <code>pheno_var</code> lists all the column names of the data we will extract, and these extracted data will be saved in object <code>phenotype</code>. We will still print the first 6 rows as a preview. You can see that the table becomes much smaller and only contains the data we will use.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="gwas-case-study-data-preparation.html#cb23-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb23-2"><a href="gwas-case-study-data-preparation.html#cb23-2" tabindex="-1"></a>pheno_var<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;title&#39;</span>,<span class="st">&#39;(e)-a-oh-tam:ch1&#39;</span>,<span class="st">&#39;(e)-endoxifen:ch1&#39;</span>,</span>
+<span id="cb23-3"><a href="gwas-case-study-data-preparation.html#cb23-3" tabindex="-1"></a>              <span class="st">&#39;(z)-4-oh-tam + 3-oh-tam:ch1&#39;</span>,<span class="st">&#39;(z)-a-oh-tam:ch1&#39;</span>,</span>
+<span id="cb23-4"><a href="gwas-case-study-data-preparation.html#cb23-4" tabindex="-1"></a>              <span class="st">&#39;(z)-endoxifen + 3-oh-ndm-tam:ch1&#39;</span>,<span class="st">&#39;4-oh-ndm-tam-gluc:ch1&#39;</span>,</span>
+<span id="cb23-5"><a href="gwas-case-study-data-preparation.html#cb23-5" tabindex="-1"></a>              <span class="st">&#39;4-oh-tam-o-gluc:ch1&#39;</span>,<span class="st">&#39;4prim-oh-ndm-tam:ch1&#39;</span>,<span class="st">&#39;4prim-oh-tam:ch1&#39;</span>,</span>
+<span id="cb23-6"><a href="gwas-case-study-data-preparation.html#cb23-6" tabindex="-1"></a>              <span class="st">&#39;ndm-tam:ch1&#39;</span>,<span class="st">&#39;tam-n-gluc:ch1&#39;</span>,<span class="st">&#39;tam-n-oxide:ch1&#39;</span>,<span class="st">&#39;tamoxifen:ch1&#39;</span>,</span>
+<span id="cb23-7"><a href="gwas-case-study-data-preparation.html#cb23-7" tabindex="-1"></a>              <span class="st">&#39;z-endoxifen ratio:ch1&#39;</span>)</span>
+<span id="cb23-8"><a href="gwas-case-study-data-preparation.html#cb23-8" tabindex="-1"></a>phenotype <span class="ot">&lt;-</span> <span class="fu">pData</span>(my_pheno)[,pheno_var]</span>
+<span id="cb23-9"><a href="gwas-case-study-data-preparation.html#cb23-9" tabindex="-1"></a><span class="fu">head</span>(phenotype)</span></code></pre></div>
+<pre><code>##            title (e)-a-oh-tam:ch1 (e)-endoxifen:ch1 (z)-4-oh-tam + 3-oh-tam:ch1
+## GSM3701423   3TX             0.39                 0                         2.1
+## GSM3701424  23TX            0.546                 0                        1.77
+## GSM3701425  41TX            0.531                 0                        1.46
+## GSM3701426  54TX            0.496                 0                        2.19
+## GSM3701427  76TX            0.339                 0                        1.67
+## GSM3701428  94TX            0.303                 0                         1.1
+##            (z)-a-oh-tam:ch1 (z)-endoxifen + 3-oh-ndm-tam:ch1
+## GSM3701423                0                             7.62
+## GSM3701424            0.041                             4.31
+## GSM3701425                0                             4.09
+## GSM3701426            0.063                             2.95
+## GSM3701427            0.079                             3.77
+## GSM3701428            0.064                             1.21
+##            4-oh-ndm-tam-gluc:ch1 4-oh-tam-o-gluc:ch1 4prim-oh-ndm-tam:ch1
+## GSM3701423                 0.773               0.093                3.724
+## GSM3701424                 0.888               0.132                 2.67
+## GSM3701425                 0.725               0.147                3.665
+## GSM3701426                 0.329                0.08                6.624
+## GSM3701427                 1.719               0.462                6.374
+## GSM3701428                 0.104               0.027                6.182
+##            4prim-oh-tam:ch1 ndm-tam:ch1 tam-n-gluc:ch1 tam-n-oxide:ch1
+## GSM3701423             3.67      158.63           0.09            9.51
+## GSM3701424             2.39      174.85           0.34             7.3
+## GSM3701425             3.89      195.63            0.1            9.79
+## GSM3701426              4.1      280.15           0.21           21.05
+## GSM3701427             4.18      300.06           0.47           27.72
+## GSM3701428             3.51      303.72           0.31           28.71
+##            tamoxifen:ch1 z-endoxifen ratio:ch1
+## GSM3701423        136.63           0.024134673
+## GSM3701424        110.38           0.014308285
+## GSM3701425        145.73           0.011294447
+## GSM3701426        169.76           0.006079783
+## GSM3701427        194.25            0.00701069
+## GSM3701428        167.92           0.002365497</code></pre>
+<p>You can also explore other columns using <code>$</code> and <code>head</code>. You can play with this code by changing it to different columns.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="gwas-case-study-data-preparation.html#cb25-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb25-2"><a href="gwas-case-study-data-preparation.html#cb25-2" tabindex="-1"></a><span class="co"># explore each one</span></span>
+<span id="cb25-3"><a href="gwas-case-study-data-preparation.html#cb25-3" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">pData</span>(my_pheno)<span class="sc">$</span>characteristics_ch1<span class="fl">.3</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;(z)-endoxifen + 3-oh-ndm-tam: 7.62&quot; &quot;(z)-endoxifen + 3-oh-ndm-tam: 4.31&quot;
+## [3] &quot;(z)-endoxifen + 3-oh-ndm-tam: 4.09&quot; &quot;(z)-endoxifen + 3-oh-ndm-tam: 2.95&quot;
+## [5] &quot;(z)-endoxifen + 3-oh-ndm-tam: 3.77&quot; &quot;(z)-endoxifen + 3-oh-ndm-tam: 1.21&quot;</code></pre>
+<p>We also need to check the variables class to make sure they are read in correctly.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="gwas-case-study-data-preparation.html#cb27-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb27-2"><a href="gwas-case-study-data-preparation.html#cb27-2" tabindex="-1"></a><span class="fu">apply</span>(phenotype,<span class="dv">2</span>,class)</span></code></pre></div>
+<pre><code>##                            title                 (e)-a-oh-tam:ch1 
+##                      &quot;character&quot;                      &quot;character&quot; 
+##                (e)-endoxifen:ch1      (z)-4-oh-tam + 3-oh-tam:ch1 
+##                      &quot;character&quot;                      &quot;character&quot; 
+##                 (z)-a-oh-tam:ch1 (z)-endoxifen + 3-oh-ndm-tam:ch1 
+##                      &quot;character&quot;                      &quot;character&quot; 
+##            4-oh-ndm-tam-gluc:ch1              4-oh-tam-o-gluc:ch1 
+##                      &quot;character&quot;                      &quot;character&quot; 
+##             4prim-oh-ndm-tam:ch1                 4prim-oh-tam:ch1 
+##                      &quot;character&quot;                      &quot;character&quot; 
+##                      ndm-tam:ch1                   tam-n-gluc:ch1 
+##                      &quot;character&quot;                      &quot;character&quot; 
+##                  tam-n-oxide:ch1                    tamoxifen:ch1 
+##                      &quot;character&quot;                      &quot;character&quot; 
+##            z-endoxifen ratio:ch1 
+##                      &quot;character&quot;</code></pre>
+<p>From the table of <code>phenotype</code> above, we can see that the class of characters are not recognized correctly. All the metabolites data are recognized as <code>character</code> while they should be <code>numeric</code>. Therefore, we need to change the types of these varaibles into the correct class before we can do further exploration.</p>
+<p>In the code below, we use <code>as.character</code> to change the first column <code>title</code> to a character. The second row applys <code>as.numeric</code> to each of the metabolites variables with <code>apply</code>, then combine them again with the first column using <code>cbind</code> (column binding). The second argument <code>"2"</code> in the <code>apply</code> function indicates that we will apply the <code>as.numeric</code> to each <strong>column</strong> (“2” indicates column, and “1” indicates row). Finally, we rename the columns with simpler names and save it as <strong>phenotype.txt</strong>.</p>
+<p><strong>The codes below will generate a list of warning message saying that “NAs introduced by coercion”. This is because our phenotype data contains missing values. You don’t have to worry of this as we will impute this missings in next section.</strong></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="gwas-case-study-data-preparation.html#cb29-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb29-2"><a href="gwas-case-study-data-preparation.html#cb29-2" tabindex="-1"></a><span class="co">#change to numeric, warning because of NA</span></span>
+<span id="cb29-3"><a href="gwas-case-study-data-preparation.html#cb29-3" tabindex="-1"></a>phenotype <span class="ot">&lt;-</span> <span class="fu">cbind</span>(phenotype[,<span class="dv">1</span>], <span class="fu">apply</span>(phenotype[,<span class="dv">2</span><span class="sc">:</span><span class="dv">15</span>],<span class="dv">2</span>,as.numeric))</span></code></pre></div>
+<pre><code>## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion
+## Warning in apply(phenotype[, 2:15], 2, as.numeric): NAs introduced by coercion</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="gwas-case-study-data-preparation.html#cb31-1" tabindex="-1"></a><span class="co"># rename into shorter names, column names don&#39;t like special characters and don&#39;t like numbers as start</span></span>
+<span id="cb31-2"><a href="gwas-case-study-data-preparation.html#cb31-2" tabindex="-1"></a><span class="fu">colnames</span>(phenotype) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;sample_ID&#39;</span>,<span class="st">&#39;e.a.oh.tam&#39;</span>,<span class="st">&#39;e.endoxifen&#39;</span>,</span>
+<span id="cb31-3"><a href="gwas-case-study-data-preparation.html#cb31-3" tabindex="-1"></a>                         <span class="st">&#39;z.4.oh.tam_3.oh.tam&#39;</span>,<span class="st">&#39;z.a.oh.tam&#39;</span>,<span class="st">&#39;z.endoxifen_3.oh.ndm.tam&#39;</span>,</span>
+<span id="cb31-4"><a href="gwas-case-study-data-preparation.html#cb31-4" tabindex="-1"></a>                         <span class="st">&#39;V4.oh.ndm.tam.gluc&#39;</span>,<span class="st">&#39;V4.oh.tam.o.gluc&#39;</span>,<span class="st">&#39;V4prim.oh.ndm.tam&#39;</span>,</span>
+<span id="cb31-5"><a href="gwas-case-study-data-preparation.html#cb31-5" tabindex="-1"></a>                         <span class="st">&#39;V4prim.oh.tam&#39;</span>,<span class="st">&#39;ndm.tam&#39;</span>,<span class="st">&#39;tam.n.gluc&#39;</span>,<span class="st">&#39;tam.n.oxide&#39;</span>,</span>
+<span id="cb31-6"><a href="gwas-case-study-data-preparation.html#cb31-6" tabindex="-1"></a>                         <span class="st">&#39;tamoxifen&#39;</span>,<span class="st">&#39;z.endoxifen_ratio&#39;</span>)</span>
+<span id="cb31-7"><a href="gwas-case-study-data-preparation.html#cb31-7" tabindex="-1"></a><span class="co">#save</span></span>
+<span id="cb31-8"><a href="gwas-case-study-data-preparation.html#cb31-8" tabindex="-1"></a><span class="fu">write.table</span>(phenotype,<span class="st">&quot;phenotype.txt&quot;</span>, </span>
+<span id="cb31-9"><a href="gwas-case-study-data-preparation.html#cb31-9" tabindex="-1"></a>            <span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>, <span class="at">quote=</span>F, <span class="at">row.name=</span>F,<span class="at">col.names=</span>T)</span></code></pre></div>
+</div>
+<div id="summary-of-phenotypes-data" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Summary of Phenotypes Data<a href="gwas-case-study-data-preparation.html#summary-of-phenotypes-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Phenotype data:
+<ul>
+<li><strong>phenotype.txt</strong> #Col 1 is sample ID, Col 2-15 are metabolites data.</li>
+</ul></li>
+</ul>
+<p>As we said in the last step, there are missing values in the phenotype data. We also need to check the distribution of this phenotype data to see if other preprossessing steps such as normalization is needed.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="gwas-case-study-data-preparation.html#cb32-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb32-2"><a href="gwas-case-study-data-preparation.html#cb32-2" tabindex="-1"></a><span class="co"># Read data</span></span>
+<span id="cb32-3"><a href="gwas-case-study-data-preparation.html#cb32-3" tabindex="-1"></a>phenotype<span class="ot">=</span><span class="fu">fread</span>(<span class="st">&quot;phenotype.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb32-4"><a href="gwas-case-study-data-preparation.html#cb32-4" tabindex="-1"></a><span class="fu">head</span>(phenotype)</span></code></pre></div>
+<pre><code>##    sample_ID e.a.oh.tam e.endoxifen z.4.oh.tam_3.oh.tam z.a.oh.tam
+##       &lt;char&gt;      &lt;num&gt;       &lt;num&gt;               &lt;num&gt;      &lt;num&gt;
+## 1:       3TX      0.390           0                2.10      0.000
+## 2:      23TX      0.546           0                1.77      0.041
+## 3:      41TX      0.531           0                1.46      0.000
+## 4:      54TX      0.496           0                2.19      0.063
+## 5:      76TX      0.339           0                1.67      0.079
+## 6:      94TX      0.303           0                1.10      0.064
+##    z.endoxifen_3.oh.ndm.tam V4.oh.ndm.tam.gluc V4.oh.tam.o.gluc
+##                       &lt;num&gt;              &lt;num&gt;            &lt;num&gt;
+## 1:                     7.62              0.773            0.093
+## 2:                     4.31              0.888            0.132
+## 3:                     4.09              0.725            0.147
+## 4:                     2.95              0.329            0.080
+## 5:                     3.77              1.719            0.462
+## 6:                     1.21              0.104            0.027
+##    V4prim.oh.ndm.tam V4prim.oh.tam ndm.tam tam.n.gluc tam.n.oxide tamoxifen
+##                &lt;num&gt;         &lt;num&gt;   &lt;num&gt;      &lt;num&gt;       &lt;num&gt;     &lt;num&gt;
+## 1:             3.724          3.67  158.63       0.09        9.51    136.63
+## 2:             2.670          2.39  174.85       0.34        7.30    110.38
+## 3:             3.665          3.89  195.63       0.10        9.79    145.73
+## 4:             6.624          4.10  280.15       0.21       21.05    169.76
+## 5:             6.374          4.18  300.06       0.47       27.72    194.25
+## 6:             6.182          3.51  303.72       0.31       28.71    167.92
+##    z.endoxifen_ratio
+##                &lt;num&gt;
+## 1:       0.024134673
+## 2:       0.014308285
+## 3:       0.011294447
+## 4:       0.006079783
+## 5:       0.007010690
+## 6:       0.002365497</code></pre>
+<p>This phenotype data still has too many metabolites. We will only select several metabolites that are of interest, and use them to perform the future analysis. In the reference paper, they mentioned 2 tamoxifen active metabolites ((Z)-endoxifen and (Z)-4-OH-TAM) and also a metabolite ratio statistic (MR) which corresponds to the (Z)-endoxifen efficacy threshold level. We will mainly focus on using these 3 variables as phenotype data. The MR variable refers to the last column <code>z.endoxifen_ratio</code> in the phenotype data.</p>
+<p>The codes below first select these specific variables from phenotype data, and save them as a new object <code>pheno_mr</code>, then rename them with even shorter abbreviations for easy handling. This <code>pheno_mr</code> is saved as <strong>pheno_mr.txt</strong>, and the first column of sample ID is saved as <strong>sampleID.txt</strong>.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="gwas-case-study-data-preparation.html#cb34-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb34-2"><a href="gwas-case-study-data-preparation.html#cb34-2" tabindex="-1"></a><span class="co">#only select necessary pheno</span></span>
+<span id="cb34-3"><a href="gwas-case-study-data-preparation.html#cb34-3" tabindex="-1"></a>pheno_mr <span class="ot">&lt;-</span> phenotype[,<span class="fu">c</span>(<span class="st">&#39;sample_ID&#39;</span>,<span class="st">&#39;z.4.oh.tam_3.oh.tam&#39;</span>,<span class="st">&#39;tamoxifen&#39;</span>,<span class="st">&#39;z.endoxifen_ratio&#39;</span>)]</span>
+<span id="cb34-4"><a href="gwas-case-study-data-preparation.html#cb34-4" tabindex="-1"></a><span class="fu">names</span>(pheno_mr) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>,<span class="st">&quot;z4&quot;</span>, <span class="st">&quot;tam&quot;</span>,<span class="st">&quot;mr&quot;</span>)</span>
+<span id="cb34-5"><a href="gwas-case-study-data-preparation.html#cb34-5" tabindex="-1"></a><span class="fu">head</span>(pheno_mr)</span></code></pre></div>
+<pre><code>##        id    z4    tam          mr
+##    &lt;char&gt; &lt;num&gt;  &lt;num&gt;       &lt;num&gt;
+## 1:    3TX  2.10 136.63 0.024134673
+## 2:   23TX  1.77 110.38 0.014308285
+## 3:   41TX  1.46 145.73 0.011294447
+## 4:   54TX  2.19 169.76 0.006079783
+## 5:   76TX  1.67 194.25 0.007010690
+## 6:   94TX  1.10 167.92 0.002365497</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="gwas-case-study-data-preparation.html#cb36-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb36-2"><a href="gwas-case-study-data-preparation.html#cb36-2" tabindex="-1"></a><span class="fu">fwrite</span>(pheno_mr, <span class="st">&quot;pheno_mr.txt&quot;</span>, <span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>,<span class="at">quote=</span>F,<span class="at">row.name=</span>F, <span class="at">col.name=</span>T,<span class="at">na=</span><span class="st">&quot;NA&quot;</span>)</span>
+<span id="cb36-3"><a href="gwas-case-study-data-preparation.html#cb36-3" tabindex="-1"></a><span class="fu">fwrite</span>(pheno_mr[,<span class="st">&quot;id&quot;</span>],<span class="st">&quot;sampleID.txt&quot;</span>,<span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>,<span class="at">quote=</span>F,<span class="at">row.name=</span>F, <span class="at">col.name=</span>T,<span class="at">na=</span><span class="st">&quot;NA&quot;</span>)</span></code></pre></div>
+</div>
+<div id="histogram-of-each-trait" class="section level3 hasAnchor" number="4.3.3">
+<h3><span class="header-section-number">4.3.3</span> Histogram of each trait<a href="gwas-case-study-data-preparation.html#histogram-of-each-trait" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In this section, we will discover the distribution of these 3 traits using histogram. As there are missing values in the data, written as ‘NA’, we need to exclude them with !is.na when generating the histogram. The plots are generated for each of the 3 variables with hist function, xlab argument specifies the x-axis label and main specifies the plot title.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="gwas-case-study-data-preparation.html#cb37-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb37-2"><a href="gwas-case-study-data-preparation.html#cb37-2" tabindex="-1"></a><span class="fu">hist</span>(pheno_mr<span class="sc">$</span>z4[<span class="sc">!</span><span class="fu">is.na</span>(pheno_mr<span class="sc">$</span>z4)],<span class="at">xlab=</span><span class="st">&quot;Z-4-oh-Tam&quot;</span>,<span class="at">main=</span><span class="st">&quot;histogram of Z-4-oh-Tam&quot;</span>)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="gwas-case-study-data-preparation.html#cb38-1" tabindex="-1"></a><span class="fu">hist</span>(pheno_mr<span class="sc">$</span>tam[<span class="sc">!</span><span class="fu">is.na</span>(pheno_mr<span class="sc">$</span>tam)],<span class="at">xlab=</span><span class="st">&quot;tamoxifen&quot;</span>,<span class="at">main=</span><span class="st">&quot;histogram of tamoxifen&quot;</span>)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="gwas-case-study-data-preparation.html#cb39-1" tabindex="-1"></a><span class="fu">hist</span>(pheno_mr<span class="sc">$</span>mr[<span class="sc">!</span><span class="fu">is.na</span>(pheno_mr<span class="sc">$</span>mr)],<span class="at">xlab=</span><span class="st">&quot;z-endoxifen ratio&quot;</span>,<span class="at">main=</span><span class="st">&quot;histogram of z-endoxifen ratio&quot;</span>)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-23-3.png" width="672" /></p>
+<p>From the above histograms, we can see that the distribution of these 3 traits are all above zero and slightly skewed. This could violate the normality assumption as current phenotype values are all positive. We might want to perform normalization before analysis.</p>
+</div>
+<div id="handling-the-missing-values-in-the-phenotypes-and-covariates" class="section level3 hasAnchor" number="4.3.4">
+<h3><span class="header-section-number">4.3.4</span> Handling the missing values in the phenotypes and covariates<a href="gwas-case-study-data-preparation.html#handling-the-missing-values-in-the-phenotypes-and-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Remember that we still have missing values in our phenotype data, we need to impute these NAs as well. The following code imputes the missing values in the phenotype with the mean of the variable.</p>
+<p>In the following codes, we first exclude the first variable, “sample ID”, from <code>pheno_mr</code> and save only the phenotypes as <code>pheno0</code>. Then we write a <code>for loop</code> that replaces missing values(NA) in each trait with mean of non-missing values. The imputed phenotype data is saved as <code>phenotype0.txt</code>.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="gwas-case-study-data-preparation.html#cb40-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb40-2"><a href="gwas-case-study-data-preparation.html#cb40-2" tabindex="-1"></a>pheno_mr <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;pheno_mr.txt&quot;</span>,<span class="at">header=</span>T)</span>
+<span id="cb40-3"><a href="gwas-case-study-data-preparation.html#cb40-3" tabindex="-1"></a>pheno0<span class="ot">=</span>pheno_mr[,<span class="sc">-</span><span class="dv">1</span>] <span class="co">#remove sample ID (Col 1)</span></span>
+<span id="cb40-4"><a href="gwas-case-study-data-preparation.html#cb40-4" tabindex="-1"></a>n<span class="ot">=</span><span class="fu">dim</span>(pheno0)[<span class="dv">1</span>] <span class="co">#sample size</span></span>
+<span id="cb40-5"><a href="gwas-case-study-data-preparation.html#cb40-5" tabindex="-1"></a>p<span class="ot">=</span><span class="fu">dim</span>(pheno0)[<span class="dv">2</span>] <span class="co">#number of traits</span></span>
+<span id="cb40-6"><a href="gwas-case-study-data-preparation.html#cb40-6" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){</span>
+<span id="cb40-7"><a href="gwas-case-study-data-preparation.html#cb40-7" tabindex="-1"></a>  pheno0[<span class="fu">is.na</span>(pheno0[,i]),i]<span class="ot">=</span><span class="fu">mean</span>(pheno0[<span class="sc">!</span><span class="fu">is.na</span>(pheno0[,i]),i]) <span class="co">#for each trait, replace missing values with the mean of the variable</span></span>
+<span id="cb40-8"><a href="gwas-case-study-data-preparation.html#cb40-8" tabindex="-1"></a>}</span>
+<span id="cb40-9"><a href="gwas-case-study-data-preparation.html#cb40-9" tabindex="-1"></a><span class="fu">head</span>(pheno0)</span></code></pre></div>
+<pre><code>##     z4    tam          mr
+## 1 2.10 136.63 0.024134673
+## 2 1.77 110.38 0.014308285
+## 3 1.46 145.73 0.011294447
+## 4 2.19 169.76 0.006079783
+## 5 1.67 194.25 0.007010690
+## 6 1.10 167.92 0.002365497</code></pre>
+</div>
+<div id="checking-normality-assumptions-for-each-trait" class="section level3 hasAnchor" number="4.3.5">
+<h3><span class="header-section-number">4.3.5</span> Checking normality assumptions for each trait<a href="gwas-case-study-data-preparation.html#checking-normality-assumptions-for-each-trait" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The association test is essentially a linear regression for continous reponse variable. Thus, it is worthwhile to check whether the normality assumption is valid for the responses. The <strong>Shapiro-Wilk test</strong> is one of the popular normality test. The following code conduct the Shapiro tests on the three response variables. When the P-value of Shapiro test is greater then 0.05, it indicates the normality assumption is valid. Please note that the normality assumption is not critical for the association test. If the sample size is large enough, the association test can also be valid even the normality assumption doesn’t hold.</p>
+<p>For more information on KS test, please refer: <a href="https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test" class="uri">https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test</a></p>
+<p>The following codes perform Shapiro test using <code>shapiro.test</code> function in package <code>stats</code>. We still need to exclude the NA values when doing this test, otherwise the test will result in error.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="gwas-case-study-data-preparation.html#cb42-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb42-2"><a href="gwas-case-study-data-preparation.html#cb42-2" tabindex="-1"></a><span class="co">#Violation of this assumption can severely affect the power and type I error </span></span>
+<span id="cb42-3"><a href="gwas-case-study-data-preparation.html#cb42-3" tabindex="-1"></a><span class="fu">shapiro.test</span>(pheno0<span class="sc">$</span>z4[<span class="sc">!</span><span class="fu">is.na</span>(pheno0<span class="sc">$</span>z4)])</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  pheno0$z4[!is.na(pheno0$z4)]
+## W = 0.97522, p-value = 0.001748</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="gwas-case-study-data-preparation.html#cb44-1" tabindex="-1"></a><span class="fu">shapiro.test</span>(pheno0<span class="sc">$</span>tam[<span class="sc">!</span><span class="fu">is.na</span>(pheno0<span class="sc">$</span>tam)])</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  pheno0$tam[!is.na(pheno0$tam)]
+## W = 0.96659, p-value = 0.0001551</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="gwas-case-study-data-preparation.html#cb46-1" tabindex="-1"></a><span class="fu">shapiro.test</span>(pheno0<span class="sc">$</span>mr[<span class="sc">!</span><span class="fu">is.na</span>(pheno0<span class="sc">$</span>mr)])</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  pheno0$mr[!is.na(pheno0$mr)]
+## W = 0.95304, p-value = 5.707e-06</code></pre>
+<p>However, the test results of these three traits are all lower than cut-off value 0.05, which means that we fail to accept the normality assumption and a normalization of these data is necessary.</p>
+</div>
+<div id="normalize-phenotype-data" class="section level3 hasAnchor" number="4.3.6">
+<h3><span class="header-section-number">4.3.6</span> Normalize phenotype data<a href="gwas-case-study-data-preparation.html#normalize-phenotype-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here we are going to normalize the phenotype data using log2 transformation. We used the phenotype values +1 here to shift possible zero values to make it acceptable by log distribution.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="gwas-case-study-data-preparation.html#cb48-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb48-2"><a href="gwas-case-study-data-preparation.html#cb48-2" tabindex="-1"></a><span class="co"># We will do a rank-based inverse normal transformation </span></span>
+<span id="cb48-3"><a href="gwas-case-study-data-preparation.html#cb48-3" tabindex="-1"></a>pheno0<span class="sc">$</span>z4 <span class="ot">&lt;-</span> <span class="fu">log2</span>(pheno0<span class="sc">$</span>z4<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb48-4"><a href="gwas-case-study-data-preparation.html#cb48-4" tabindex="-1"></a>pheno0<span class="sc">$</span>tam <span class="ot">&lt;-</span> <span class="fu">log2</span>(pheno0<span class="sc">$</span>tam<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb48-5"><a href="gwas-case-study-data-preparation.html#cb48-5" tabindex="-1"></a>pheno0<span class="sc">$</span>mr <span class="ot">&lt;-</span> <span class="fu">log2</span>(pheno0<span class="sc">$</span>mr<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb48-6"><a href="gwas-case-study-data-preparation.html#cb48-6" tabindex="-1"></a><span class="fu">write.table</span>(pheno0, <span class="st">&quot;phenotype0.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save new phenotype data</span></span></code></pre></div>
+</div>
+</div>
+<div id="covariates-adjustment" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Covariates Adjustment<a href="gwas-case-study-data-preparation.html#covariates-adjustment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This study didn’t provide any public data containing covariates information, such as AGE, BMI, and all samples are female. The only information of covariates they provided in the supplementary table is <strong>Age</strong> with a range of 22 to 95. <strong>In order to show you the process of covariates adjustment in real data, we are going to generate an <code>Age</code> covariate using a series of random integers within interval 22 to 95.</strong></p>
+<p>The following code generates 192 random integers within (22, 95). <strong>Don’t run it, as we already generated it for you. Rerunning this code with different seeds will generate a new series of Age and might change the results in later sections.</strong></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="gwas-case-study-data-preparation.html#cb49-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb49-2"><a href="gwas-case-study-data-preparation.html#cb49-2" tabindex="-1"></a><span class="co"># set.seed(1234)</span></span>
+<span id="cb49-3"><a href="gwas-case-study-data-preparation.html#cb49-3" tabindex="-1"></a><span class="co"># age&lt;- sample(22:95, size=192,replace=TRUE)</span></span>
+<span id="cb49-4"><a href="gwas-case-study-data-preparation.html#cb49-4" tabindex="-1"></a><span class="co"># age</span></span>
+<span id="cb49-5"><a href="gwas-case-study-data-preparation.html#cb49-5" tabindex="-1"></a><span class="co"># fwrite(as.matrix(age),&quot;age.txt&quot;,quote=F, row.names=F,col.names=F)</span></span></code></pre></div>
+<p>Next we will load the phenotype data and covariate data. The data is coerced to class matrix for easy manipulation in R. <code>n</code> is the sample size and <code>p</code> is number of traits. So we have 192 samples and 3 traits.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="gwas-case-study-data-preparation.html#cb50-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb50-2"><a href="gwas-case-study-data-preparation.html#cb50-2" tabindex="-1"></a><span class="co"># Read phenotype data and covariates data</span></span>
+<span id="cb50-3"><a href="gwas-case-study-data-preparation.html#cb50-3" tabindex="-1"></a>pheno<span class="ot">=</span><span class="fu">fread</span>(<span class="st">&quot;phenotype0.txt&quot;</span>) <span class="co">#read phenotype data</span></span>
+<span id="cb50-4"><a href="gwas-case-study-data-preparation.html#cb50-4" tabindex="-1"></a>covar<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;age.txt&quot;</span>) <span class="co">#read covariates data</span></span>
+<span id="cb50-5"><a href="gwas-case-study-data-preparation.html#cb50-5" tabindex="-1"></a>pheno<span class="ot">=</span><span class="fu">as.matrix</span>(pheno) <span class="co">#create a matrix from the phenotype data</span></span>
+<span id="cb50-6"><a href="gwas-case-study-data-preparation.html#cb50-6" tabindex="-1"></a>covar<span class="ot">=</span><span class="fu">as.matrix</span>(covar) <span class="co">#create a matrix from the covariates data</span></span>
+<span id="cb50-7"><a href="gwas-case-study-data-preparation.html#cb50-7" tabindex="-1"></a>n<span class="ot">=</span><span class="fu">dim</span>(pheno)[<span class="dv">1</span>] <span class="co">#sample size</span></span>
+<span id="cb50-8"><a href="gwas-case-study-data-preparation.html#cb50-8" tabindex="-1"></a>p<span class="ot">=</span><span class="fu">dim</span>(pheno)[<span class="dv">2</span>] <span class="co">#number of traits</span></span>
+<span id="cb50-9"><a href="gwas-case-study-data-preparation.html#cb50-9" tabindex="-1"></a>n</span></code></pre></div>
+<pre><code>## [1] 192</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="gwas-case-study-data-preparation.html#cb52-1" tabindex="-1"></a>p</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>To perform covariates adjustment, the following codes fit a linear regression of phenotype and covariates. The resulted residuals from this model will be used as the new phenotype data, and is saved in <code>resid_phenotype0.txt</code>.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="gwas-case-study-data-preparation.html#cb54-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb54-2"><a href="gwas-case-study-data-preparation.html#cb54-2" tabindex="-1"></a>fit<span class="ot">=</span><span class="fu">list</span>() <span class="co">#create an empty list</span></span>
+<span id="cb54-3"><a href="gwas-case-study-data-preparation.html#cb54-3" tabindex="-1"></a>residpheno<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">0</span>, n, p) <span class="co">#create an empty matrix</span></span>
+<span id="cb54-4"><a href="gwas-case-study-data-preparation.html#cb54-4" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){</span>
+<span id="cb54-5"><a href="gwas-case-study-data-preparation.html#cb54-5" tabindex="-1"></a>  fit[[i]]<span class="ot">=</span><span class="fu">lm</span>(pheno[,i]<span class="sc">~</span>covar) <span class="co">#for each trait, fit linear regression of phenotype against covariates</span></span>
+<span id="cb54-6"><a href="gwas-case-study-data-preparation.html#cb54-6" tabindex="-1"></a>  residpheno[,i]<span class="ot">=</span><span class="fu">resid</span>(fit[[i]]) <span class="co">#obtain residual phenotype data</span></span>
+<span id="cb54-7"><a href="gwas-case-study-data-preparation.html#cb54-7" tabindex="-1"></a>}</span>
+<span id="cb54-8"><a href="gwas-case-study-data-preparation.html#cb54-8" tabindex="-1"></a><span class="fu">write.table</span>(residpheno, <span class="st">&quot;resid_phenotype0.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save residual phenotype data</span></span></code></pre></div>
+</div>
+<div id="prepare-plink-data" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Prepare PLINK data<a href="gwas-case-study-data-preparation.html#prepare-plink-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<blockquote>
+<p><span style="color: red;"> <strong>Important</strong>: Genotype data is too large to be handled on a personal laptop. So codes in this section are all commented out. Please DON’T try them unless you run using a computational server. They are memory consuming and will take long time to finish. We simply show the codes here as an example. Later, we will subset the prepared PLINK PED and MAP file to only 1000 SNPs so they can run on laptop! </span></p>
+</blockquote>
+<p><strong>PLINK</strong> is an open-source whole genomic association analysis tool that can achieve multiple functions, such as calculating summary statistics, performing imputation and different types of tests. It is a command line application, so you are not able to run it by simply clicking a button. The codes in this part are all bash codes.</p>
+<p><strong>PLINK</strong> expects 2 input data files in <strong>.ped</strong> and <strong>.map</strong> format. These are genotype files that are organized in a specific format. Please refer to the PLINK website for formats of <a href="http://zzz.bwh.harvard.edu/plink/data.shtml#ped">PED</a> and <a href="http://zzz.bwh.harvard.edu/plink/data.shtml#map">MAP</a> files. In this section, we will show you how to prepare our phenotype and genotype data into PED and MAP format.</p>
+<p>PLINK can be downloaded to your own computer <a href="https://zzz.bwh.harvard.edu/plink/download.shtml">here</a>. We already have this tool installed in our environment, so the codes below load the <code>plink</code> with <code>module load</code> directly.</p>
+<div id="step-1-prepare-plink-ped-file" class="section level3 hasAnchor" number="4.5.1">
+<h3><span class="header-section-number">4.5.1</span> Step 1: prepare PLINK ped file<a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+</div>
+<div id="step-1-prepare-plink-ped-file-1" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> Step 1: prepare PLINK ped file<a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The PED file is a white-space (space or tab) delimited file: the first six columns are mandatory:</p>
+<ul>
+<li>Family ID</li>
+<li>Individual ID</li>
+<li>Paternal ID</li>
+<li>Maternal ID</li>
+<li>Sex (1=male; 2=female; other=unknown)</li>
+<li>Phenotype</li>
+</ul>
+<p>Staring from column 7, genotypes should also be white-space delimited; they can be any character (e.g. 1,2,3,4 or A,C,G,T or anything else) except 0 which is, by default, the missing genotype character. All markers should be biallelic. All SNPs (whether haploid or not) must have two alleles specified. Either Both alleles should be missing (i.e. 0) or neither. No header row should be given. Here is an example of the final PED file format with two individuals typed for 3 SNPs (one row = one person):</p>
+<pre><code> FAM001  1  0 0  1  2  A A  G G  A C 
+ FAM001  2  0 0  1  2  A A  A G  0 0 
+ </code></pre>
+<p>Below, we will generate the first 6 columns. We don’t have specific Family ID, Paternal ID and Maternal ID, so we will use a sequence of number for Family ID and 0 for Paternal and Maternal ID. Phenotype is also a sequence of 0 here, as we will use our own phenotype data later. Gender is set to 2 for all samples as they are all female. Individual ID is the sample ID, so we will use the sample ID from the phenotype data.</p>
+<p>This code extract the sample ID from file <code>sampleID.txt</code>. <code>NR&gt;=2</code> means we start reading the file from line 2, as we have header in the first line.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb56-1"><a href="gwas-case-study-data-preparation.html#cb56-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb56-2"><a href="gwas-case-study-data-preparation.html#cb56-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb56-3"><a href="gwas-case-study-data-preparation.html#cb56-3" tabindex="-1"></a><span class="co">### Individual ID: sampleID.txt (in Linux)</span></span>
+<span id="cb56-4"><a href="gwas-case-study-data-preparation.html#cb56-4" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;NR&gt;=2 {print}&#39;</span> sampleID.txt <span class="op">&gt;</span> samID.txt</span>
+<span id="cb56-5"><a href="gwas-case-study-data-preparation.html#cb56-5" tabindex="-1"></a><span class="fu">head</span> samID.txt</span></code></pre></div>
+<pre><code>## 3TX
+## 23TX
+## 41TX
+## 54TX
+## 76TX
+## 94TX
+## 109TX
+## 130TX
+## 5TX
+## 24TX</code></pre>
+<p>The following codes generate the files for Family ID, paternal ID, maternal ID, phenotype (all set to missing) (using R)</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="gwas-case-study-data-preparation.html#cb58-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb58-2"><a href="gwas-case-study-data-preparation.html#cb58-2" tabindex="-1"></a>samID<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;samID.txt&quot;</span>)<span class="co">#read sample ID</span></span>
+<span id="cb58-3"><a href="gwas-case-study-data-preparation.html#cb58-3" tabindex="-1"></a>samID<span class="ot">=</span><span class="fu">as.matrix</span>(samID) <span class="co">#create a matrix from samID</span></span>
+<span id="cb58-4"><a href="gwas-case-study-data-preparation.html#cb58-4" tabindex="-1"></a>len<span class="ot">=</span><span class="fu">length</span>(samID) <span class="co">#sample size</span></span>
+<span id="cb58-5"><a href="gwas-case-study-data-preparation.html#cb58-5" tabindex="-1"></a>famID<span class="ot">=</span><span class="fu">seq</span>(<span class="dv">1</span><span class="sc">:</span>len) <span class="co">#family ID is a sequence from 1 to n (sample size)</span></span>
+<span id="cb58-6"><a href="gwas-case-study-data-preparation.html#cb58-6" tabindex="-1"></a>patID<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">0</span>, len) <span class="co">#paternal ID is a sequence of 0</span></span>
+<span id="cb58-7"><a href="gwas-case-study-data-preparation.html#cb58-7" tabindex="-1"></a>matID<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">0</span>, len) <span class="co">#maternal ID is a sequence of 0</span></span>
+<span id="cb58-8"><a href="gwas-case-study-data-preparation.html#cb58-8" tabindex="-1"></a>gender<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">2</span>, len) <span class="co"># gender data, all female</span></span>
+<span id="cb58-9"><a href="gwas-case-study-data-preparation.html#cb58-9" tabindex="-1"></a>pheno<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">0</span>, len) <span class="co">#phenotype data is a sequence of 0</span></span>
+<span id="cb58-10"><a href="gwas-case-study-data-preparation.html#cb58-10" tabindex="-1"></a><span class="fu">write.table</span>(famID, <span class="st">&quot;famID.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save family ID</span></span>
+<span id="cb58-11"><a href="gwas-case-study-data-preparation.html#cb58-11" tabindex="-1"></a><span class="fu">write.table</span>(patID, <span class="st">&quot;patID.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save paternal ID</span></span>
+<span id="cb58-12"><a href="gwas-case-study-data-preparation.html#cb58-12" tabindex="-1"></a><span class="fu">write.table</span>(matID, <span class="st">&quot;matID.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save maternal ID</span></span>
+<span id="cb58-13"><a href="gwas-case-study-data-preparation.html#cb58-13" tabindex="-1"></a><span class="fu">write.table</span>(gender, <span class="st">&quot;gender.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save gender data</span></span>
+<span id="cb58-14"><a href="gwas-case-study-data-preparation.html#cb58-14" tabindex="-1"></a><span class="fu">write.table</span>(pheno, <span class="st">&quot;pheno.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save phenotype data</span></span></code></pre></div>
+<p>From column 7 and onwards, we need to prepare the genotype data. The following code extract the genotype data from our downloaded genotype data. The orignial genotype data has too many useless information. Here are the first several columns of the genotype header:</p>
+<pre><code>    Index   Name    Address Chr Position    GenTrain Score  Frac A  Frac C  Frac G  Frac T  
+    3TX.GType   3TX.Score   3TX.Theta   3TX.R   23TX.GType  23TX.Score  23TX.Theta  23TX.R  
+    41TX.GType  41TX.Score  41TX.Theta  41TX.R</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb60-1"><a href="gwas-case-study-data-preparation.html#cb60-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb60-2"><a href="gwas-case-study-data-preparation.html#cb60-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb60-3"><a href="gwas-case-study-data-preparation.html#cb60-3" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 2 GSE129162_1k_geno1.txt</span></code></pre></div>
+<pre><code>## Index    Name    Address Chr Position    GenTrain Score  Frac A  Frac C  Frac G  Frac T  3TX.GType   3TX.Score   3TX.Theta   3TX.R   23TX.GType  23TX.Score  23TX.Theta  23TX.R  41TX.GType  41TX.Score  41TX.Theta  41TX.R  54TX.GType  54TX.Score  54TX.Theta  54TX.R  76TX.GType  76TX.Score  76TX.Theta  76TX.R  94TX.GType  94TX.Score  94TX.Theta  94TX.R  109TX.GType 109TX.Score 109TX.Theta 109TX.R 130TX.GType 130TX.Score 130TX.Theta 130TX.R 5TX.GType   5TX.Score   5TX.Theta   5TX.R   24TX.GType  24TX.Score  24TX.Theta  24TX.R  42TX.GType  42TX.Score  42TX.Theta  42TX.R  56TX.GType  56TX.Score  56TX.Theta  56TX.R  80TX.GType  80TX.Score  80TX.Theta  80TX.R  95TX.GType  95TX.Score  95TX.Theta  95TX.R  110TX.GType 110TX.Score 110TX.Theta 110TX.R 131TX.GType 131TX.Score 131TX.Theta 131TX.R 8TX.GType   8TX.Score   8TX.Theta   8TX.R   26TX.GType  26TX.Score  26TX.Theta  26TX.R  43TX.GType  43TX.Score  43TX.Theta  43TX.R  57TX.GType  57TX.Score  57TX.Theta  57TX.R  81TX.GType  81TX.Score  81TX.Theta  81TX.R  96TX.GType  96TX.Score  96TX.Theta  96TX.R  111TX.GType 111TX.Score 111TX.Theta 111TX.R 132TX.GType 132TX.Score 132TX.Theta 132TX.R 10TX.GType  10TX.Score  10TX.Theta  10TX.R  28TX.GType  28TX.Score  28TX.Theta  28TX.R  44TX.GType  44TX.Score  44TX.Theta  44TX.R  58TX.GType  58TX.Score  58TX.Theta  58TX.R  82TX.GType  82TX.Score  82TX.Theta  82TX.R  97TX.GType  97TX.Score  97TX.Theta  97TX.R  112TX.GType 112TX.Score 112TX.Theta 112TX.R 134TX.GType 134TX.Score 134TX.Theta 134TX.R 11TX.GType  11TX.Score  11TX.Theta  11TX.R  30TX.GType  30TX.Score  30TX.Theta  30TX.R  45TX.GType  45TX.Score  45TX.Theta  45TX.R  59TX.GType  59TX.Score  59TX.Theta  59TX.R  84TX.GType  84TX.Score  84TX.Theta  84TX.R  100TX.GType 100TX.Score 100TX.Theta 100TX.R 113TX.GType 113TX.Score 113TX.Theta 113TX.R 135TX.GType 135TX.Score 135TX.Theta 135TX.R 12TX.GType  12TX.Score  12TX.Theta  12TX.R  31TX.GType  31TX.Score  31TX.Theta  31TX.R  47TX.GType  47TX.Score  47TX.Theta  47TX.R  60TX.GType  60TX.Score  60TX.Theta  60TX.R  85TX.GType  85TX.Score  85TX.Theta  85TX.R  101TX.GType 101TX.Score 101TX.Theta 101TX.R 119TX.GType 119TX.Score 119TX.Theta 119TX.R 137TX.GType 137TX.Score 137TX.Theta 137TX.R 13TX.GType  13TX.Score  13TX.Theta  13TX.R  33TX.GType  33TX.Score  33TX.Theta  33TX.R  48TX.GType  48TX.Score  48TX.Theta  48TX.R  62TX.GType  62TX.Score  62TX.Theta  62TX.R  86TX.GType  86TX.Score  86TX.Theta  86TX.R  102TX.GType 102TX.Score 102TX.Theta 102TX.R 120TX.GType 120TX.Score 120TX.Theta 120TX.R 138TX.GType 138TX.Score 138TX.Theta 138TX.R 14TX.GType  14TX.Score  14TX.Theta  14TX.R  34TX.GType  34TX.Score  34TX.Theta  34TX.R  49TX.GType  49TX.Score  49TX.Theta  49TX.R  64TX.GType  64TX.Score  64TX.Theta  64TX.R  87TX.GType  87TX.Score  87TX.Theta  87TX.R  103TX.GType 103TX.Score 103TX.Theta 103TX.R 123TX.GType 123TX.Score 123TX.Theta 123TX.R 140TX.GType 140TX.Score 140TX.Theta 140TX.R 15TX.GType  15TX.Score  15TX.Theta  15TX.R  36TX.GType  36TX.Score  36TX.Theta  36TX.R  50TX.GType  50TX.Score  50TX.Theta  50TX.R  66TX.GType  66TX.Score  66TX.Theta  66TX.R  88TX.GType  88TX.Score  88TX.Theta  88TX.R  104TX.GType 104TX.Score 104TX.Theta 104TX.R 124TX.GType 124TX.Score 124TX.Theta 124TX.R 141TX.GType 141TX.Score 141TX.Theta 141TX.R 18TX.GType  18TX.Score  18TX.Theta  18TX.R  38TX.GType  38TX.Score  38TX.Theta  38TX.R  51TX.GType  51TX.Score  51TX.Theta  51TX.R  70TX.GType  70TX.Score  70TX.Theta  70TX.R  91TX.GType  91TX.Score  91TX.Theta  91TX.R  105TX.GType 105TX.Score 105TX.Theta 105TX.R 126TX.GType 126TX.Score 126TX.Theta 126TX.R 143TX.GType 143TX.Score 143TX.Theta 143TX.R 20TX.GType  20TX.Score  20TX.Theta  20TX.R  39TX.GType  39TX.Score  39TX.Theta  39TX.R  52TX.GType  52TX.Score  52TX.Theta  52TX.R  71TX.GType  71TX.Score  71TX.Theta  71TX.R  92TX.GType  92TX.Score  92TX.Theta  92TX.R  107TX.GType 107TX.Score 107TX.Theta 107TX.R 127TX.GType 127TX.Score 127TX.Theta 127TX.R 144TX.GType 144TX.Score 144TX.Theta 144TX.R 21TX.GType  21TX.Score  21TX.Theta  21TX.R  40TX.GType  40TX.Score  40TX.Theta  40TX.R  53TX.GType  53TX.Score  53TX.Theta  53TX.R  72TX.GType  72TX.Score  72TX.Theta  72TX.R  93TX.GType  93TX.Score  93TX.Theta  93TX.R  108TX.GType 108TX.Score 108TX.Theta 108TX.R 128TX.GType 128TX.Score 128TX.Theta 128TX.R 149TX.GType 149TX.Score 149TX.Theta 149TX.R
+## 1    rs2661837   59608986    6   160790174   0.9184957   0.2704918   0.204918    0.147541    0.3770492   AA  0.5307649   0.008821869 0.8875614   AA  0.5307649   0.004302552 0.789067    AA  0.5307649   0.0009787768    0.8586947   AA  0.5307649   0   0.8736661   AA  0.5307649   0   0.8482536   AA  0.5307649   0.0005487994    0.8785542   AA  0.5307649   0.005057058 0.864375    AA  0.5307649   0.005132833 0.8686453   AA  0.5307649   0   0.8767484   AA  0.5307649   0.02140945  0.9136057   AA  0.5307649   0.01904788  0.8284584   AA  0.5307649   0.0004573656    0.8286589   AA  0.5307649   0.005780901 0.8757555   AA  0.5307649   0   0.8813874   AA  0.5307649   0   0.8424288   AA  0.5307649   0   0.7390546   AA  0.5307649   0   0.9083221   AA  0.5307649   0.001534978 0.9625239   AA  0.5307649   0   0.8857813   AA  0.5307649   0.00595596  0.9236761   AA  0.5307649   0.01284935  0.844082    AA  0.5307649   0   0.8027009   AA  0.5307649   0.006743634 0.8488653   AA  0.5307649   0   0.7989991   AA  0.5307649   0.02454456  0.9109862   AA  0.5307649   0   0.8853042   AA  0.5307649   0   0.8708639   AA  0.5307649   0.007078197 0.8466141   AA  0.5307649   0   0.8055495   AA  0.5307649   0   0.8259746   AA  0.5307649   0.009037247 0.8377921   AA  0.5307649   0.009644038 0.7771008   AA  0.5307649   0.004977052 0.9286265   AA  0.5307649   0   0.8191994   AA  0.5307649   0   0.8361827   AA  0.5307649   0   0.8815122   AA  0.5307649   0   0.906369    AA  0.5307649   0   0.8790253   AA  0.5307649   0   0.8075159   AA  0.5307649   0.004478569 0.7776845   AA  0.5307649   0.00812393  1.054283    AA  0.5307649   0   0.9849927   AA  0.5307649   0   1.000727    AA  0.5307649   0.003880034 0.9562745   AA  0.5307649   0.003896269 0.8946571   AA  0.5307649   0   0.9378152   AA  0.5307649   0.001933285 0.8194149   AA  0.5307649   0   0.8283761   AA  0.5307649   0.003264024 0.8647493   AA  0.5307649   0.0007608423    0.8907053   AA  0.5307649   0.0009674665    0.9798262   AA  0.5307649   0.009114858 0.8938351   AA  0.5307649   0.003679669 0.8626351   AA  0.5307649   0.009026284 0.856285    AA  0.5307649   0   0.8542439   AA  0.5307649   0.01101972  0.8207533   AA  0.5307649   0.008917466 0.9453406   AA  0.5307649   0.01210755  0.9115667   AA  0.5307649   0   0.8424225   AA  0.5307649   0   0.8795742   AA  0.5307649   0   0.889537    AA  0.5307649   0   0.8563401   AA  0.5307649   0.01974745  0.87435 AA  0.5307649   0.004689173 0.8798686   AA  0.5307649   0   0.8932739   AA  0.5307649   0   0.9043528   AA  0.5307649   0   0.8281192   AA  0.5307649   0   0.8506914   AA  0.5307649   0.001669536 0.8482242   AA  0.5307649   0.009125629 0.8417856   AA  0.5307649   0   0.8414348   AA  0.5307649   0.01010706  0.8204561   AA  0.5307649   0   0.9428991   AA  0.5307649   0.004980553 0.9047675   AA  0.5307649   0   0.8529937   AA  0.5307649   0.00178936  0.8625727   AA  0.5307649   0   0.8376842   AA  0.5307649   0.000836632 0.8550883   AA  0.5307649   0   0.8180589   AA  0.5307649   0   0.8462505   AA  0.5307649   0   0.8995866   AA  0.5307649   0.01502675  0.9455797   AA  0.5307649   0   0.9397838   AA  0.5307649   0.02432778  0.954927    AA  0.5307649   0   0.8519539   AA  0.5307649   0   0.8212793   AA  0.5307649   0   0.8741056   AA  0.5307649   0   0.8466359   AA  0.5307649   0.02224802  0.9700703   AA  0.5307649   0.0023646   0.9193313   AA  0.5307649   0.008858708 0.8796223   AA  0.5307649   0   0.8536922   AA  0.5307649   0.007562425 0.8448886   AA  0.5307649   0.002468169 0.8238339   AA  0.5307649   0.008722084 0.8206755   NC  0   NA  NA</code></pre>
+<p>We will only need the first column “Index”, which is SNP ID, and the SNPs for each sample, which are in columns with names “.GType”. Therefore, starting from 11th column, we need to extract every 4 columns to get only the SNP information.</p>
+<p>The code below is a bash code. <code>NR&gt;=2</code> means we start print the data from 2nd row. The <code>for loop</code> extracts every 4th column starting from column 11 and print to file <code>geno_1k_ready1.txt</code> and <code>geno_1k_ready2.txt</code>.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb62-1"><a href="gwas-case-study-data-preparation.html#cb62-1" tabindex="-1"></a><span class="co">### bash codes- run in terminal</span></span>
+<span id="cb62-2"><a href="gwas-case-study-data-preparation.html#cb62-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb62-3"><a href="gwas-case-study-data-preparation.html#cb62-3" tabindex="-1"></a><span class="co">### Genotype only </span></span>
+<span id="cb62-4"><a href="gwas-case-study-data-preparation.html#cb62-4" tabindex="-1"></a><span class="co">## from Row 2, print every 4th columns starting from column 11</span></span>
+<span id="cb62-5"><a href="gwas-case-study-data-preparation.html#cb62-5" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;NR&gt;=2 {for(i=11;i&lt;=NF; i+=4) {printf &quot;%s &quot;, $i} printf &quot;\n&quot;}&#39;</span> <span class="dt">\</span></span>
+<span id="cb62-6"><a href="gwas-case-study-data-preparation.html#cb62-6" tabindex="-1"></a>GSE129162_1k_geno1.txt <span class="op">&gt;</span> geno_1k_ready1.txt</span>
+<span id="cb62-7"><a href="gwas-case-study-data-preparation.html#cb62-7" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;NR&gt;=2 {for(i=11;i&lt;=NF; i+=4) {printf &quot;%s &quot;, $i} printf &quot;\n&quot;}&#39;</span> <span class="dt">\</span></span>
+<span id="cb62-8"><a href="gwas-case-study-data-preparation.html#cb62-8" tabindex="-1"></a>GSE129162_1k_geno2.txt <span class="op">&gt;</span> geno_1k_ready2.txt</span></code></pre></div>
+<p>Next we need to transpose the extracted data so that every row is a sample and every column is a SNP.</p>
+<p>We read in the genodata from last step into R using <code>fread</code> function and check its dimension using <code>dim</code>. <code>fread</code> performs much faster on large datasets than <code>read.table</code>.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="gwas-case-study-data-preparation.html#cb63-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb63-2"><a href="gwas-case-study-data-preparation.html#cb63-2" tabindex="-1"></a><span class="co"># Transpose genotype data (using R)</span></span>
+<span id="cb63-3"><a href="gwas-case-study-data-preparation.html#cb63-3" tabindex="-1"></a>genodata1<span class="ot">=</span><span class="fu">fread</span>(<span class="st">&quot;geno_1k_ready1.txt&quot;</span>,<span class="at">header=</span>F) <span class="co">#read genotype data</span></span>
+<span id="cb63-4"><a href="gwas-case-study-data-preparation.html#cb63-4" tabindex="-1"></a>genodata2<span class="ot">=</span> <span class="fu">fread</span>(<span class="st">&quot;geno_1k_ready2.txt&quot;</span>,<span class="at">header=</span>F)</span>
+<span id="cb63-5"><a href="gwas-case-study-data-preparation.html#cb63-5" tabindex="-1"></a><span class="do">## check dim</span></span>
+<span id="cb63-6"><a href="gwas-case-study-data-preparation.html#cb63-6" tabindex="-1"></a><span class="fu">dim</span>(genodata1)</span></code></pre></div>
+<pre><code>## [1] 1000   96</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="gwas-case-study-data-preparation.html#cb65-1" tabindex="-1"></a><span class="fu">dim</span>(genodata2)</span></code></pre></div>
+<pre><code>## [1] 1000   96</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="gwas-case-study-data-preparation.html#cb67-1" tabindex="-1"></a><span class="do">### 1000 snp and 96 sample</span></span>
+<span id="cb67-2"><a href="gwas-case-study-data-preparation.html#cb67-2" tabindex="-1"></a><span class="fu">head</span>(genodata1)</span></code></pre></div>
+<pre><code>##        V1     V2     V3     V4     V5     V6     V7     V8     V9    V10    V11
+##    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+## 1:     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA
+## 2:     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB
+## 3:     AA     AA     BB     AB     AA     BB     AB     AA     AB     BB     AB
+## 4:     AB     AA     BB     AB     AB     BB     AA     AB     BB     BB     BB
+## 5:     BB     BB     AB     BB     AB     AA     BB     BB     AB     AA     BB
+## 6:     AB     BB     BB     BB     BB     BB     AB     BB     BB     BB     AB
+##       V12    V13    V14    V15    V16    V17    V18    V19    V20    V21    V22
+##    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+## 1:     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA
+## 2:     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB
+## 3:     AB     BB     AA     BB     AB     AA     AA     AA     AA     AB     AB
+## 4:     AA     AB     AA     BB     BB     AB     AB     BB     AB     AB     AB
+## 5:     BB     BB     BB     AB     AB     AB     AB     BB     AB     BB     BB
+## 6:     AB     BB     BB     AB     BB     BB     BB     BB     BB     BB     BB
+##       V23    V24    V25    V26    V27    V28    V29    V30    V31    V32    V33
+##    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+## 1:     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA
+## 2:     BB     BB     BB     BB     BB     AB     BB     BB     BB     AB     BB
+## 3:     AB     AA     AA     BB     AA     AA     AA     AB     AB     AB     AB
+## 4:     AB     AA     AB     AA     AB     AA     BB     AB     AB     BB     AB
+## 5:     AA     BB     AB     BB     AA     BB     BB     AB     AB     BB     BB
+## 6:     BB     AB     BB     BB     BB     BB     BB     BB     BB     BB     BB
+##       V34    V35    V36    V37    V38    V39    V40    V41    V42    V43    V44
+##    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+## 1:     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA
+## 2:     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB
+## 3:     BB     BB     AB     AA     BB     AA     BB     AB     AB     AA     AA
+## 4:     BB     BB     BB     AB     AB     AB     BB     BB     AB     BB     AB
+## 5:     AB     BB     BB     BB     AB     BB     BB     BB     BB     AB     BB
+## 6:     BB     BB     BB     AB     BB     BB     BB     BB     NC     BB     BB
+##       V45    V46    V47    V48    V49    V50    V51    V52    V53    V54    V55
+##    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+## 1:     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA
+## 2:     AB     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB
+## 3:     AB     AB     BB     AA     AA     AB     AB     AA     AB     AA     AA
+## 4:     AB     AB     AB     AB     BB     AB     AB     BB     BB     BB     BB
+## 5:     BB     AB     BB     BB     BB     BB     AB     BB     BB     BB     BB
+## 6:     BB     BB     BB     BB     BB     BB     AB     BB     BB     BB     BB
+##       V56    V57    V58    V59    V60    V61    V62    V63    V64    V65    V66
+##    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+## 1:     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA
+## 2:     AB     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB
+## 3:     AB     AA     AA     BB     AB     AB     AA     AA     AB     AA     AB
+## 4:     BB     AB     AB     BB     AB     AA     AB     AA     AB     AB     BB
+## 5:     BB     BB     BB     BB     AB     BB     BB     BB     BB     AB     BB
+## 6:     AB     AB     BB     AB     BB     AB     BB     BB     BB     BB     BB
+##       V67    V68    V69    V70    V71    V72    V73    V74    V75    V76    V77
+##    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+## 1:     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA
+## 2:     BB     NC     AB     BB     BB     BB     BB     BB     BB     BB     BB
+## 3:     AB     AA     AB     AB     AA     AB     AB     AB     AA     AB     AB
+## 4:     BB     BB     AB     BB     AB     BB     BB     AA     BB     AB     AB
+## 5:     BB     BB     BB     BB     BB     AB     BB     BB     AB     BB     BB
+## 6:     AB     BB     BB     AB     BB     BB     BB     AB     BB     BB     BB
+##       V78    V79    V80    V81    V82    V83    V84    V85    V86    V87    V88
+##    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+## 1:     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA     AA
+## 2:     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB     AB
+## 3:     AA     AA     AA     AB     AA     AB     AA     AA     AB     AA     AA
+## 4:     AB     AA     NC     AA     AA     BB     AB     BB     AB     AB     BB
+## 5:     BB     BB     AB     AB     BB     AB     BB     AB     BB     AB     BB
+## 6:     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB     BB
+##       V89    V90    V91    V92    V93    V94    V95    V96
+##    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+## 1:     AA     AA     AA     AA     AA     AA     AA     NC
+## 2:     BB     BB     BB     BB     BB     BB     BB     AB
+## 3:     BB     AA     AA     AA     AA     AA     AA     AB
+## 4:     BB     AA     AB     AA     AB     AB     AB     AB
+## 5:     BB     BB     BB     AB     AB     BB     BB     BB
+## 6:     BB     BB     AB     NC     AB     BB     BB     BB</code></pre>
+<p>There are 1,000 SNPs for each of the 96 samples in each dataset. Next, we are going to combine these 2 genotype data into one, and transpose it. <strong>In the original genotype file, there are 2,567,845 SNPs which is too large to run on laptops</strong>.</p>
+<p>These 2 data sets need to be converted to matrix first and combined with <code>cbind</code> before transposing. The transpose is done with <code>t()</code> function in R. The complete genotype data is saved as <code>genodata_1k.txt</code> (~1MB).</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="gwas-case-study-data-preparation.html#cb69-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb69-2"><a href="gwas-case-study-data-preparation.html#cb69-2" tabindex="-1"></a>genodata1<span class="ot">=</span><span class="fu">as.matrix</span>(genodata1) <span class="co">#create a matrix from the genotype data</span></span>
+<span id="cb69-3"><a href="gwas-case-study-data-preparation.html#cb69-3" tabindex="-1"></a>genodata2<span class="ot">=</span><span class="fu">as.matrix</span>(genodata2)</span>
+<span id="cb69-4"><a href="gwas-case-study-data-preparation.html#cb69-4" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="gwas-case-study-data-preparation.html#cb69-5" tabindex="-1"></a>genodata <span class="ot">&lt;-</span> <span class="fu">cbind</span>(genodata1,genodata2)</span>
+<span id="cb69-6"><a href="gwas-case-study-data-preparation.html#cb69-6" tabindex="-1"></a><span class="do">##save transposed genotype data</span></span>
+<span id="cb69-7"><a href="gwas-case-study-data-preparation.html#cb69-7" tabindex="-1"></a><span class="fu">write.table</span>(<span class="fu">t</span>(genodata), <span class="st">&quot;genodata_1k.txt&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>)</span>
+<span id="cb69-8"><a href="gwas-case-study-data-preparation.html#cb69-8" tabindex="-1"></a><span class="do">### Each row is a sample, each column is a SNP</span></span>
+<span id="cb69-9"><a href="gwas-case-study-data-preparation.html#cb69-9" tabindex="-1"></a></span>
+<span id="cb69-10"><a href="gwas-case-study-data-preparation.html#cb69-10" tabindex="-1"></a><span class="fu">dim</span>(genodata)</span></code></pre></div>
+<pre><code>## [1] 1000  192</code></pre>
+<p>It is very important that in PED file, <strong>all marker should be biallelic.</strong> The genotype is orginal data is in format of AA,AB,BB. So allels need to be delimited by space and changed with <code>A=A</code>, <code>B=G</code> and <code>NC=0 0</code>. (<code>NC</code> means “no call”, which indicates missing. The expression of missing may not always be <code>NC</code> so you need to check your original genotype before this step. )</p>
+<p>Here, we will achieve this by using the bash command <code>sed</code>. We will run using the subsetted genotype data “genodata_1k.txt”.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb71-1"><a href="gwas-case-study-data-preparation.html#cb71-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb71-2"><a href="gwas-case-study-data-preparation.html#cb71-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb71-3"><a href="gwas-case-study-data-preparation.html#cb71-3" tabindex="-1"></a><span class="co"># Replace &#39;A&#39; with &#39;A &#39;, &#39;B&#39; with &#39;G &#39;, NC(NoCall) with &#39;0 &#39; in genodata (in Linux)</span></span>
+<span id="cb71-4"><a href="gwas-case-study-data-preparation.html#cb71-4" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="at">-e</span> <span class="st">&#39;s/A/A /g&#39;</span> genodata_1k.txt</span>
+<span id="cb71-5"><a href="gwas-case-study-data-preparation.html#cb71-5" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="at">-e</span> <span class="st">&#39;s/B/G /g&#39;</span> genodata_1k.txt</span>
+<span id="cb71-6"><a href="gwas-case-study-data-preparation.html#cb71-6" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="at">-e</span> <span class="st">&#39;s/NC/0 0/g&#39;</span> genodata_1k.txt</span></code></pre></div>
+<p>Finally, we are ready to generate the PED file. We combine the files we generated for the first 6 columns with the transposed genotype data, and save the final data as <code>genotype_1k.ped</code>. This is done in bash code using <code>sed</code> and each column is delimited with white space.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb72-1"><a href="gwas-case-study-data-preparation.html#cb72-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb72-2"><a href="gwas-case-study-data-preparation.html#cb72-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb72-3"><a href="gwas-case-study-data-preparation.html#cb72-3" tabindex="-1"></a><span class="co">### PED file (in Linux)</span></span>
+<span id="cb72-4"><a href="gwas-case-study-data-preparation.html#cb72-4" tabindex="-1"></a><span class="fu">paste</span> <span class="at">-d</span><span class="st">&#39; &#39;</span> <span class="dt">\</span></span>
+<span id="cb72-5"><a href="gwas-case-study-data-preparation.html#cb72-5" tabindex="-1"></a>famID.txt samID.txt patID.txt matID.txt gender.txt pheno.txt genodata_1k.txt <span class="op">&gt;</span> genotype_1k.ped</span></code></pre></div>
+<div id="step-2-prepare-plink-map-file" class="section level3 hasAnchor" number="4.6.1">
+<h3><span class="header-section-number">4.6.1</span> Step 2: prepare PLINK map file<a href="gwas-case-study-data-preparation.html#step-2-prepare-plink-map-file" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>By default, each line of the MAP file describes a single marker and must contain exactly 4 columns:</p>
+<ul>
+<li>chromosome (1-22, X, Y or 0 if unplaced)</li>
+<li>rs# or snp identifier</li>
+<li>Genetic distance (morgans)</li>
+<li>Base-pair position (bp units)</li>
+</ul>
+<p>These information can be extracted from the platform data <code>GPL16104-1240.txt</code>. The following codes extract the information we need in bash.</p>
+<p>In the platform data, because SNP information starts at line 6, we use <code>tail -n+6</code> to print all data from the 6th row and save it as <code>datatable.txt</code>. Then we cut the first 4 columns from <code>datatable.txt</code>, which are <code>ID</code>, <code>Chr</code>, <code>Position</code> and <code>SNP_ID</code>, and save it as <code>map0.txt</code>.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb73-1"><a href="gwas-case-study-data-preparation.html#cb73-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb73-2"><a href="gwas-case-study-data-preparation.html#cb73-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb73-3"><a href="gwas-case-study-data-preparation.html#cb73-3" tabindex="-1"></a><span class="fu">head</span> GPL16104-1240.txt</span>
+<span id="cb73-4"><a href="gwas-case-study-data-preparation.html#cb73-4" tabindex="-1"></a></span>
+<span id="cb73-5"><a href="gwas-case-study-data-preparation.html#cb73-5" tabindex="-1"></a><span class="co">### Row 31 (in Linux)</span></span>
+<span id="cb73-6"><a href="gwas-case-study-data-preparation.html#cb73-6" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n+6</span> GPL16104-1240.txt <span class="op">&gt;</span> datatable.txt</span>
+<span id="cb73-7"><a href="gwas-case-study-data-preparation.html#cb73-7" tabindex="-1"></a></span>
+<span id="cb73-8"><a href="gwas-case-study-data-preparation.html#cb73-8" tabindex="-1"></a><span class="co">### Obtain ID, SPOT_ID, chromosome, and physical position (in Linux)</span></span>
+<span id="cb73-9"><a href="gwas-case-study-data-preparation.html#cb73-9" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f1,2,3,4</span> datatable.txt <span class="op">&gt;</span> map0.txt</span>
+<span id="cb73-10"><a href="gwas-case-study-data-preparation.html#cb73-10" tabindex="-1"></a><span class="fu">head</span> map0.txt</span></code></pre></div>
+<pre><code>## #ID = 
+## #Chr = Chromosome on which the probe is located
+## #Position = Position of the probe on chromosome
+## #SNP_ID = NCBI SNP accession
+## #SPOT_ID = 
+## ID   Chr Position    SNP_ID  SPOT_ID
+## rs2698846    0   0   rs2698846   
+## rs2542903    0   0   rs2542903   
+## rs1059667    0   0   rs1059667   
+## rs35144699   0   0   rs35144699  
+## ID   Chr Position    SNP_ID
+## rs2698846    0   0   rs2698846
+## rs2542903    0   0   rs2542903
+## rs1059667    0   0   rs1059667
+## rs35144699   0   0   rs35144699
+## rs35425675   0   0   rs35425675
+## rs3876241    0   0   rs3876241
+## rs160179 0   0   rs160179
+## rs12065999   0   0   rs12065999
+## rs2571902    0   0   rs2571902</code></pre>
+<p>Then, the list of SNPs in original genotype data was extracted and matched with the SNPs in platform, because we will contain the annotation of the same list of SNPs in genotype file as in the MAP file.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb75-1"><a href="gwas-case-study-data-preparation.html#cb75-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb75-2"><a href="gwas-case-study-data-preparation.html#cb75-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb75-3"><a href="gwas-case-study-data-preparation.html#cb75-3" tabindex="-1"></a><span class="co">### SNP ID in discovery set (in Linux)</span></span>
+<span id="cb75-4"><a href="gwas-case-study-data-preparation.html#cb75-4" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;NR&gt;=2 {print $2}&#39;</span> GSE129162_1k_geno1.txt <span class="op">&gt;</span> SNPID.txt</span>
+<span id="cb75-5"><a href="gwas-case-study-data-preparation.html#cb75-5" tabindex="-1"></a></span>
+<span id="cb75-6"><a href="gwas-case-study-data-preparation.html#cb75-6" tabindex="-1"></a><span class="co">### Extract map0 to be matched with SNPID (in Linux)</span></span>
+<span id="cb75-7"><a href="gwas-case-study-data-preparation.html#cb75-7" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-R</span> 777 ./extractrows.pl <span class="co"># modify script access</span></span>
+<span id="cb75-8"><a href="gwas-case-study-data-preparation.html#cb75-8" tabindex="-1"></a><span class="ex">./extractrows.pl</span> SNPID.txt map0.txt <span class="op">&gt;</span> map1.txt</span></code></pre></div>
+<p>Next. we could construct the MAP file. The MAP file must contain as many markers as are in the PED file. The markers in the PED file do not need to be in genomic order, BUT the order of MAP file should align with the order of the PED file markers.</p>
+<p>The MAP file is constructed with <code>SNPID.txt</code> and <code>map1.txt</code>. SNPs in <code>map1.txt</code> are reordered to match the SNPs in <code>genotype.ped</code> file. The 4th column (<code>bp units</code>) are set to <code>-9</code> for those missing SNPs so that they will be omitted in analysis.(This number for missing SNPs is required by PLINK.)</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="gwas-case-study-data-preparation.html#cb76-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb76-2"><a href="gwas-case-study-data-preparation.html#cb76-2" tabindex="-1"></a><span class="do">### Order map1 to be matched with SNPID (using R)</span></span>
+<span id="cb76-3"><a href="gwas-case-study-data-preparation.html#cb76-3" tabindex="-1"></a>SNPID<span class="ot">=</span><span class="fu">fread</span>(<span class="st">&quot;SNPID.txt&quot;</span>, <span class="at">header=</span>F) <span class="co">#read REF ID</span></span>
+<span id="cb76-4"><a href="gwas-case-study-data-preparation.html#cb76-4" tabindex="-1"></a>map1<span class="ot">=</span><span class="fu">fread</span>(<span class="st">&quot;map1.txt&quot;</span>,<span class="at">header=</span>F) <span class="co"># Col 1 is SNP ID, Col 2 is chr, Col 3 is physical pos, Col 4 is REF ID</span></span>
+<span id="cb76-5"><a href="gwas-case-study-data-preparation.html#cb76-5" tabindex="-1"></a>SNPID<span class="ot">=</span><span class="fu">as.matrix</span>(SNPID) <span class="co">#create a matrix from SNPID</span></span>
+<span id="cb76-6"><a href="gwas-case-study-data-preparation.html#cb76-6" tabindex="-1"></a>map1<span class="ot">=</span><span class="fu">as.matrix</span>(map1) <span class="co">#create a matrix from map1</span></span>
+<span id="cb76-7"><a href="gwas-case-study-data-preparation.html#cb76-7" tabindex="-1"></a>len<span class="ot">=</span><span class="fu">length</span>(SNPID) <span class="co">#number of SNPs</span></span>
+<span id="cb76-8"><a href="gwas-case-study-data-preparation.html#cb76-8" tabindex="-1"></a><span class="co"># more snps in genotype than in platform</span></span>
+<span id="cb76-9"><a href="gwas-case-study-data-preparation.html#cb76-9" tabindex="-1"></a></span>
+<span id="cb76-10"><a href="gwas-case-study-data-preparation.html#cb76-10" tabindex="-1"></a><span class="co"># construct matrix with 1000 rows and 4 columns</span></span>
+<span id="cb76-11"><a href="gwas-case-study-data-preparation.html#cb76-11" tabindex="-1"></a>map<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">0</span>, len, <span class="dv">4</span>) <span class="co">#Col 1 is chr, Col 2 is SNP ID, Col 3 is 0, Col 4 is physical pos</span></span>
+<span id="cb76-12"><a href="gwas-case-study-data-preparation.html#cb76-12" tabindex="-1"></a>idx<span class="ot">=</span><span class="fu">match</span>(SNPID, map1[,<span class="dv">1</span>]) <span class="co">#index of map1 that match with SNP ID</span></span>
+<span id="cb76-13"><a href="gwas-case-study-data-preparation.html#cb76-13" tabindex="-1"></a></span>
+<span id="cb76-14"><a href="gwas-case-study-data-preparation.html#cb76-14" tabindex="-1"></a><span class="co">#order MAP file (matched with SNPID)</span></span>
+<span id="cb76-15"><a href="gwas-case-study-data-preparation.html#cb76-15" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>len){</span>
+<span id="cb76-16"><a href="gwas-case-study-data-preparation.html#cb76-16" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">is.na</span>(idx[i])){</span>
+<span id="cb76-17"><a href="gwas-case-study-data-preparation.html#cb76-17" tabindex="-1"></a>        map[i,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>)]<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="dv">9</span>)</span>
+<span id="cb76-18"><a href="gwas-case-study-data-preparation.html#cb76-18" tabindex="-1"></a>    } <span class="cf">else</span>{</span>
+<span id="cb76-19"><a href="gwas-case-study-data-preparation.html#cb76-19" tabindex="-1"></a>        map[i,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>)]<span class="ot">=</span>map1[idx[i],<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>)]</span>
+<span id="cb76-20"><a href="gwas-case-study-data-preparation.html#cb76-20" tabindex="-1"></a>    }</span>
+<span id="cb76-21"><a href="gwas-case-study-data-preparation.html#cb76-21" tabindex="-1"></a>}</span>
+<span id="cb76-22"><a href="gwas-case-study-data-preparation.html#cb76-22" tabindex="-1"></a><span class="co"># for no match, use 0,0,-9 to exclude this snp in analysis</span></span>
+<span id="cb76-23"><a href="gwas-case-study-data-preparation.html#cb76-23" tabindex="-1"></a><span class="fu">dim</span>(map)</span></code></pre></div>
+<pre><code>## [1] 1000    4</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="gwas-case-study-data-preparation.html#cb78-1" tabindex="-1"></a><span class="fu">write.table</span>(map, <span class="st">&quot;genotype_1k.map&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save ordered MAP file</span></span></code></pre></div>
+</div>
+<div id="step-3-prepare-plink-alternate-phenotype-file-in-linux" class="section level3 hasAnchor" number="4.6.2">
+<h3><span class="header-section-number">4.6.2</span> Step 3 : prepare PLINK alternate phenotype file (in Linux)<a href="gwas-case-study-data-preparation.html#step-3-prepare-plink-alternate-phenotype-file-in-linux" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The code below prepares the phenotype data that will be submitted to PLINK. We used phenotype0.txt that is saved in section 4.3. The resulted file is saved as <code>phenotype_plink.txt</code>.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb79-1"><a href="gwas-case-study-data-preparation.html#cb79-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb79-2"><a href="gwas-case-study-data-preparation.html#cb79-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb79-3"><a href="gwas-case-study-data-preparation.html#cb79-3" tabindex="-1"></a><span class="fu">paste</span> famID.txt samID.txt resid_phenotype0.txt <span class="op">&gt;</span> phenotype_plink.txt</span></code></pre></div>
+<p><strong>PLINK-Ready Files</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>PED file: genotype.ped</p></li>
+<li><p>MAP file: genotype.map</p></li>
+<li><p>Alternative phenotype file: phenotype_plink.txt</p></li>
+</ol>
+<hr />
+<p>About imputation!!!!!</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="gwas-with-continuous-trait-in-plink.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-gwas_part1.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["cshl_2024.pdf", "cshl_2024.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

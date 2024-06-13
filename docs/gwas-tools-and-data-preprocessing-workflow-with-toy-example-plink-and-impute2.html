@@ -189,7 +189,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html"><i class="fa fa-check"></i><b>7</b> Unit 3. GWAS Case Study-Continuous Trait</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-preprocessing"><i class="fa fa-check"></i><b>7.1</b> Data Preprocessing</a></li>
+<li class="chapter" data-level="7.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#environment-setting-and-packages-1"><i class="fa fa-check"></i><b>7.1</b> Environment setting and packages</a></li>
+<li class="chapter" data-level="7.2" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#accessing-data"><i class="fa fa-check"></i><b>7.2</b> Accessing data</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-availability"><i class="fa fa-check"></i><b>7.2.1</b> Data availability</a></li>
+<li class="chapter" data-level="7.2.2" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-files-documentation"><i class="fa fa-check"></i><b>7.2.2</b> Data files documentation</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>8</b> Applications</a>
 <ul>
@@ -239,11 +244,11 @@ Special notes for Windows users: Windows has two command-line shells, Command sh
 <p>Before we can run any analysis, we need to set the working directory path to the downloaded “bigcare-main” folder for both Terminal and Console in RStudio. Below are the codes to setup paths at both places. These paths have to be setup correctly at first, otherwise we can’t locate the correct input files.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-1" tabindex="-1"></a><span class="co"># change the paths to where you saved &quot;bigcare-main&quot;</span></span>
 <span id="cb1-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-2" tabindex="-1"></a><span class="do">## run in Terminal</span></span>
-<span id="cb1-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-3" tabindex="-1"></a>mydir<span class="ot">=</span><span class="st">&quot;/path/to/bigcare-main&quot;</span></span>
+<span id="cb1-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-3" tabindex="-1"></a>mydir<span class="ot">=</span><span class="st">&quot;/path/to/cshl_2024&quot;</span></span>
 <span id="cb1-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-4" tabindex="-1"></a>cd <span class="sc">$</span>mydir</span>
 <span id="cb1-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-5" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-6" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb1-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-7" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/bigcare-main&quot;</span>)</span></code></pre></div>
+<span id="cb1-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb1-7" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/cshl_2024&quot;</span>)</span></code></pre></div>
 </div>
 <div id="gwas-tools" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> GWAS Tools<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -367,13 +372,36 @@ However, macOS users need to go through additional steps to authorize PLINK and 
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
 <span id="cb8-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
 <span id="cb8-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-3" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-4" tabindex="-1"></a><span class="co"># for macoS users</span></span>
-<span id="cb8-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac_20230116/plink</span> <span class="dt">\</span></span>
-<span id="cb8-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--missing</span> <span class="at">--out</span> ./Data/QC/younameit</span>
-<span id="cb8-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-7" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-8" tabindex="-1"></a><span class="co"># for windows users</span></span>
-<span id="cb8-9"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-9" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64_20230116/plink.exe</span> <span class="dt">\</span></span>
-<span id="cb8-10"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-10" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--missing</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<span id="cb8-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-4" tabindex="-1"></a><span class="co"># for windows users</span></span>
+<span id="cb8-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb8-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb8-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--missing</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb9-1" tabindex="-1"></a><span class="co"># for macoS users</span></span>
+<span id="cb9-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb9-2" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb9-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb9-3" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--missing</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<pre><code>## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
+## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
+## Logging to ./Data/QC/younameit.log.
+## Options in effect:
+##   --file ./Data/QC/5SNPs
+##   --missing
+##   --noweb
+##   --out ./Data/QC/younameit
+## 
+## Note: --noweb has no effect since no web check is implemented yet.
+## 16384 MB RAM detected; reserving 8192 MB for main workspace.
+## Scanning .ped file... 0%1%1%1%1%2%2%2%3%3%3%3%4%4%4%5%5%5%5%6%6%6%7%7%7%7%8%8%8%9%9%9%9%10%10%10%11%11%11%11%12%12%12%13%13%13%13%14%14%14%15%15%15%15%16%16%16%17%17%17%17%18%18%18%19%19%19%19%20%20%20%21%21%21%21%22%22%22%23%23%23%23%24%24%24%25%25%25%25%26%26%26%27%27%27%27%28%28%28%29%29%29%29%30%30%30%31%31%31%32%32%32%32%33%33%33%34%34%34%34%35%35%35%36%36%36%37%37%37%37%38%38%38%39%39%39%39%40%40%40%41%41%41%41%42%42%42%43%43%43%44%44%44%44%45%45%45%46%46%46%46%47%47%47%48%48%48%49%49%49%49%50%50%50%51%51%51%51%52%52%52%53%53%53%53%54%54%54%55%55%55%56%56%56%56%57%57%57%58%58%58%58%59%59%59%60%60%60%61%61%61%61%62%62%62%63%63%63%63%64%64%64%65%65%65%66%66%66%66%67%67%67%68%68%68%68%69%69%69%70%70%70%70%71%71%71%72%72%72%73%73%73%73%74%74%74%75%75%75%75%76%76%76%77%77%77%78%78%78%78%79%79%79%80%80%80%80%81%81%81%82%82%82%83%83%83%83%84%84%84%85%85%85%85%86%86%86%87%87%87%87%88%88%88%89%89%89%90%90%90%90%91%91%91%92%92%92%92%93%93%93%94%94%94%95%95%95%95%96%96%96%97%97%97%97%98%98%98%99%99%99%100%.ped scan complete (for binary autoconversion).
+## Performing single-pass .bed write (5 variants, 344 people).
+## 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%--file: ./Data/QC/younameit-temporary.bed + ./Data/QC/younameit-temporary.bim +
+## ./Data/QC/younameit-temporary.fam written.
+## 5 variants loaded from .bim file.
+## 344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
+## Ambiguous sex IDs written to ./Data/QC/younameit.nosex .
+## Using 1 thread (no multithreaded calculations invoked).
+## Before main variant filters, 344 founders and 0 nonfounders present.
+## Calculating allele frequencies... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99% done.
+## Total genotyping rate is 0.976744.
+## --missing: Sample missing data report written to ./Data/QC/younameit.imiss, and
+## variant-based missing data report written to ./Data/QC/younameit.lmiss.</code></pre>
 <p>This option creates two output files in ‘results’ folder:</p>
 <ol style="list-style-type: decimal">
 <li><strong>“younameit.imiss”</strong>, missingness by individual.</li>
@@ -386,9 +414,9 @@ However, macOS users need to go through additional steps to authorize PLINK and 
  N_MISS             Number of missing SNPs
  N_GENO             Number of non-obligatory missing genotypes
  F_MISS             Proportion of missing SNPs</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb10-1" tabindex="-1"></a><span class="co"># bash codes- run in Terminal</span></span>
-<span id="cb10-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb10-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
-<span id="cb10-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb10-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.imiss</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb12-1" tabindex="-1"></a><span class="co"># bash codes- run in Terminal</span></span>
+<span id="cb12-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb12-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb12-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb12-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.imiss</span></code></pre></div>
 <pre><code>##  FID       IID MISS_PHENO   N_MISS   N_GENO   F_MISS
 ##    1   206-001          Y        0        5        0
 ##    2   206-003          Y        0        5        0
@@ -405,9 +433,9 @@ However, macOS users need to go through additional steps to authorize PLINK and 
  N_MISS             Number of individuals missing this SNP
  N_GENO             Number of non-obligatory missing genotypes
  F_MISS             Proportion of sample missing for this SNP</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb13-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb13-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb13-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
-<span id="cb13-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb13-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.lmiss</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb15-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb15-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.lmiss</span></code></pre></div>
 <pre><code>##  CHR         SNP   N_MISS   N_GENO   F_MISS
 ##    1   rs3094315        2      344 0.005814
 ##    1   rs2073813       14      344   0.0407
@@ -419,16 +447,38 @@ However, macOS users need to go through additional steps to authorize PLINK and 
 <h3><span class="header-section-number">3.4.3</span> Calculating allel frequencies<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-allel-frequencies" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The following command computes the <strong>allele frequencies</strong>. (The output will print all calculation progress generated by <code>PLINK</code>.)
 1. <strong>–freq</strong>, calculate the allele frequencies.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
-<span id="cb15-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
-<span id="cb15-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-3" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-4" tabindex="-1"></a><span class="co"># macOS user</span></span>
-<span id="cb15-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac_20230116/plink</span> <span class="dt">\</span></span>
-<span id="cb15-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--freq</span> <span class="at">--out</span> ./Data/QC/younameit</span>
-<span id="cb15-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-7" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-8" tabindex="-1"></a><span class="co"># Windows user</span></span>
-<span id="cb15-9"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-9" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64_20230116/plink.exe</span> <span class="dt">\</span></span>
-<span id="cb15-10"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb15-10" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--freq</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
+<span id="cb17-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
+<span id="cb17-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-3" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-4" tabindex="-1"></a><span class="co"># Windows user</span></span>
+<span id="cb17-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb17-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--freq</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb18-1" tabindex="-1"></a><span class="co"># macOS user</span></span>
+<span id="cb18-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb18-2" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb18-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb18-3" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--freq</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<pre><code>## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
+## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
+## Logging to ./Data/QC/younameit.log.
+## Options in effect:
+##   --file ./Data/QC/5SNPs
+##   --freq
+##   --noweb
+##   --out ./Data/QC/younameit
+## 
+## Note: --noweb has no effect since no web check is implemented yet.
+## 16384 MB RAM detected; reserving 8192 MB for main workspace.
+## Scanning .ped file... 0%1%1%1%1%2%2%2%3%3%3%3%4%4%4%5%5%5%5%6%6%6%7%7%7%7%8%8%8%9%9%9%9%10%10%10%11%11%11%11%12%12%12%13%13%13%13%14%14%14%15%15%15%15%16%16%16%17%17%17%17%18%18%18%19%19%19%19%20%20%20%21%21%21%21%22%22%22%23%23%23%23%24%24%24%25%25%25%25%26%26%26%27%27%27%27%28%28%28%29%29%29%29%30%30%30%31%31%31%32%32%32%32%33%33%33%34%34%34%34%35%35%35%36%36%36%37%37%37%37%38%38%38%39%39%39%39%40%40%40%41%41%41%41%42%42%42%43%43%43%44%44%44%44%45%45%45%46%46%46%46%47%47%47%48%48%48%49%49%49%49%50%50%50%51%51%51%51%52%52%52%53%53%53%53%54%54%54%55%55%55%56%56%56%56%57%57%57%58%58%58%58%59%59%59%60%60%60%61%61%61%61%62%62%62%63%63%63%63%64%64%64%65%65%65%66%66%66%66%67%67%67%68%68%68%68%69%69%69%70%70%70%70%71%71%71%72%72%72%73%73%73%73%74%74%74%75%75%75%75%76%76%76%77%77%77%78%78%78%78%79%79%79%80%80%80%80%81%81%81%82%82%82%83%83%83%83%84%84%84%85%85%85%85%86%86%86%87%87%87%87%88%88%88%89%89%89%90%90%90%90%91%91%91%92%92%92%92%93%93%93%94%94%94%95%95%95%95%96%96%96%97%97%97%97%98%98%98%99%99%99%100%.ped scan complete (for binary autoconversion).
+## Performing single-pass .bed write (5 variants, 344 people).
+## 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%--file: ./Data/QC/younameit-temporary.bed + ./Data/QC/younameit-temporary.bim +
+## ./Data/QC/younameit-temporary.fam written.
+## 5 variants loaded from .bim file.
+## 344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
+## Ambiguous sex IDs written to ./Data/QC/younameit.nosex .
+## Using 1 thread (no multithreaded calculations invoked).
+## Before main variant filters, 344 founders and 0 nonfounders present.
+## Calculating allele frequencies... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99% done.
+## Total genotyping rate is 0.976744.
+## --freq: Allele frequencies (founders only) written to ./Data/QC/younameit.frq .</code></pre>
 <p>This command will create a output file <strong>“younameit.frq”</strong> with six columns:</p>
 <pre><code> CHR       Chromosome
  
@@ -441,9 +491,9 @@ However, macOS users need to go through additional steps to authorize PLINK and 
  MAF       Minor allele frequency
  
  NCHROBS   Non-missing allele count</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb17-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
-<span id="cb17-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb17-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.frq</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb21-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb21-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb21-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb21-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb21-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.frq</span></code></pre></div>
 <pre><code>##  CHR         SNP   A1   A2          MAF  NCHROBS
 ##    1   rs3094315    G    A      0.07749      684
 ##    1   rs2073813    A    G       0.2242      660
@@ -455,16 +505,39 @@ However, macOS users need to go through additional steps to authorize PLINK and 
 <h3><span class="header-section-number">3.4.4</span> Hardy-Weinberg Equilibrium<a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#hardy-weinberg-equilibrium" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The following command computes the <strong>Hardy-Weiberg test</strong>. (The output will print all calculation progress generated by <code>PLINK</code>.)
 1. <strong>–hardy</strong>, perform hardy-weinberg test.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
-<span id="cb19-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
-<span id="cb19-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-3" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-4" tabindex="-1"></a><span class="co"># macOS user</span></span>
-<span id="cb19-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac_20230116/plink</span> <span class="dt">\</span></span>
-<span id="cb19-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--hardy</span> <span class="at">--out</span> ./Data/QC/younameit</span>
-<span id="cb19-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-7" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-8" tabindex="-1"></a><span class="co"># Windows user</span></span>
-<span id="cb19-9"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-9" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64_20230116/plink.exe</span> <span class="dt">\</span></span>
-<span id="cb19-10"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb19-10" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--hardy</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
+<span id="cb23-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
+<span id="cb23-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-3" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-4" tabindex="-1"></a><span class="co"># Windows user</span></span>
+<span id="cb23-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb23-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--hardy</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-1" tabindex="-1"></a><span class="co"># macOS user</span></span>
+<span id="cb24-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-2" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb24-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-3" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--hardy</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<pre><code>## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
+## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
+## Logging to ./Data/QC/younameit.log.
+## Options in effect:
+##   --file ./Data/QC/5SNPs
+##   --hardy
+##   --noweb
+##   --out ./Data/QC/younameit
+## 
+## Note: --noweb has no effect since no web check is implemented yet.
+## 16384 MB RAM detected; reserving 8192 MB for main workspace.
+## Scanning .ped file... 0%1%1%1%1%2%2%2%3%3%3%3%4%4%4%5%5%5%5%6%6%6%7%7%7%7%8%8%8%9%9%9%9%10%10%10%11%11%11%11%12%12%12%13%13%13%13%14%14%14%15%15%15%15%16%16%16%17%17%17%17%18%18%18%19%19%19%19%20%20%20%21%21%21%21%22%22%22%23%23%23%23%24%24%24%25%25%25%25%26%26%26%27%27%27%27%28%28%28%29%29%29%29%30%30%30%31%31%31%32%32%32%32%33%33%33%34%34%34%34%35%35%35%36%36%36%37%37%37%37%38%38%38%39%39%39%39%40%40%40%41%41%41%41%42%42%42%43%43%43%44%44%44%44%45%45%45%46%46%46%46%47%47%47%48%48%48%49%49%49%49%50%50%50%51%51%51%51%52%52%52%53%53%53%53%54%54%54%55%55%55%56%56%56%56%57%57%57%58%58%58%58%59%59%59%60%60%60%61%61%61%61%62%62%62%63%63%63%63%64%64%64%65%65%65%66%66%66%66%67%67%67%68%68%68%68%69%69%69%70%70%70%70%71%71%71%72%72%72%73%73%73%73%74%74%74%75%75%75%75%76%76%76%77%77%77%78%78%78%78%79%79%79%80%80%80%80%81%81%81%82%82%82%83%83%83%83%84%84%84%85%85%85%85%86%86%86%87%87%87%87%88%88%88%89%89%89%90%90%90%90%91%91%91%92%92%92%92%93%93%93%94%94%94%95%95%95%95%96%96%96%97%97%97%97%98%98%98%99%99%99%100%.ped scan complete (for binary autoconversion).
+## Performing single-pass .bed write (5 variants, 344 people).
+## 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%--file: ./Data/QC/younameit-temporary.bed + ./Data/QC/younameit-temporary.bim +
+## ./Data/QC/younameit-temporary.fam written.
+## 5 variants loaded from .bim file.
+## 344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
+## Ambiguous sex IDs written to ./Data/QC/younameit.nosex .
+## Using 1 thread (no multithreaded calculations invoked).
+## Before main variant filters, 344 founders and 0 nonfounders present.
+## Calculating allele frequencies... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99% done.
+## Total genotyping rate is 0.976744.
+## --hardy: Writing Hardy-Weinberg report (founders only) to
+## ./Data/QC/younameit.hwe ... 0%0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99%done.</code></pre>
 <p>This command will create an output file <strong>“younameit.hwe”</strong> with the following columns:</p>
 <pre><code> SNP             SNP identifier
  
@@ -481,9 +554,9 @@ However, macOS users need to go through additional steps to authorize PLINK and 
  E(HET)          Expected heterozygosity
  
  P               P-value for Hardy-Weinberg test</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb21-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb21-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb21-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
-<span id="cb21-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb21-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.hwe</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb27-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb27-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb27-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb27-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb27-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.hwe</span></code></pre></div>
 <pre><code>##  CHR         SNP     TEST   A1   A2                 GENO   O(HET)   E(HET)            P 
 ##    1   rs3094315  ALL(NP)    G    A             3/47/292   0.1374    0.143       0.4398
 ##    1   rs2073813  ALL(NP)    A    G           18/112/200   0.3394   0.3479       0.6366
@@ -505,18 +578,52 @@ However, macOS users need to go through additional steps to authorize PLINK and 
 3. <strong>–maf</strong> 0.05, exclude the SNPs with minor allele frequency (MAF) smaller than 0.05. You can change 0.05 to other desiered values.
 4. <strong>–hwe</strong> 0.001, exclude the SNPs with P-values of Hardy-Weinberg test smaller than 0.001. You can change it to otehr desired values.
 5. <strong>–recode</strong>, generate a new dataset.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
-<span id="cb23-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
-<span id="cb23-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-3" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-4" tabindex="-1"></a><span class="co"># macOS user</span></span>
-<span id="cb23-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac_20230116/plink</span> <span class="dt">\</span></span>
-<span id="cb23-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="dt">\</span></span>
-<span id="cb23-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-7" tabindex="-1"></a>--mind 0.1 <span class="at">--geno</span> 0.1 <span class="at">--maf</span> 0.05 <span class="at">--hwe</span> 0.001 <span class="at">--recode</span> <span class="at">--out</span> ./Data/QC/younameit</span>
-<span id="cb23-8"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-8" tabindex="-1"></a></span>
-<span id="cb23-9"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-9" tabindex="-1"></a><span class="co"># Windows user</span></span>
-<span id="cb23-10"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-10" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64_20230116/plink.exe</span> <span class="dt">\</span></span>
-<span id="cb23-11"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-11" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="dt">\</span></span>
-<span id="cb23-12"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb23-12" tabindex="-1"></a>--mind 0.1 <span class="at">--geno</span> 0.1 <span class="at">--maf</span> 0.05 <span class="at">--hwe</span> 0.001 <span class="at">--recode</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb29-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
+<span id="cb29-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb29-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
+<span id="cb29-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb29-3" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb29-4" tabindex="-1"></a><span class="co"># Windows user</span></span>
+<span id="cb29-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb29-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb29-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb29-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="dt">\</span></span>
+<span id="cb29-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb29-7" tabindex="-1"></a>--mind 0.1 <span class="at">--geno</span> 0.1 <span class="at">--maf</span> 0.05 <span class="at">--hwe</span> 0.001 <span class="at">--recode</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb30-1" tabindex="-1"></a><span class="co"># macOS user</span></span>
+<span id="cb30-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb30-2" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb30-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb30-3" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="dt">\</span></span>
+<span id="cb30-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb30-4" tabindex="-1"></a>--mind 0.1 <span class="at">--geno</span> 0.1 <span class="at">--maf</span> 0.05 <span class="at">--hwe</span> 0.001 <span class="at">--recode</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<pre><code>## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
+## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
+## Logging to ./Data/QC/younameit.log.
+## Options in effect:
+##   --file ./Data/QC/5SNPs
+##   --geno 0.1
+##   --hwe 0.001
+##   --maf 0.05
+##   --mind 0.1
+##   --noweb
+##   --out ./Data/QC/younameit
+##   --recode
+## 
+## Note: --noweb has no effect since no web check is implemented yet.
+## 16384 MB RAM detected; reserving 8192 MB for main workspace.
+## Scanning .ped file... 0%1%1%1%1%2%2%2%3%3%3%3%4%4%4%5%5%5%5%6%6%6%7%7%7%7%8%8%8%9%9%9%9%10%10%10%11%11%11%11%12%12%12%13%13%13%13%14%14%14%15%15%15%15%16%16%16%17%17%17%17%18%18%18%19%19%19%19%20%20%20%21%21%21%21%22%22%22%23%23%23%23%24%24%24%25%25%25%25%26%26%26%27%27%27%27%28%28%28%29%29%29%29%30%30%30%31%31%31%32%32%32%32%33%33%33%34%34%34%34%35%35%35%36%36%36%37%37%37%37%38%38%38%39%39%39%39%40%40%40%41%41%41%41%42%42%42%43%43%43%44%44%44%44%45%45%45%46%46%46%46%47%47%47%48%48%48%49%49%49%49%50%50%50%51%51%51%51%52%52%52%53%53%53%53%54%54%54%55%55%55%56%56%56%56%57%57%57%58%58%58%58%59%59%59%60%60%60%61%61%61%61%62%62%62%63%63%63%63%64%64%64%65%65%65%66%66%66%66%67%67%67%68%68%68%68%69%69%69%70%70%70%70%71%71%71%72%72%72%73%73%73%73%74%74%74%75%75%75%75%76%76%76%77%77%77%78%78%78%78%79%79%79%80%80%80%80%81%81%81%82%82%82%83%83%83%83%84%84%84%85%85%85%85%86%86%86%87%87%87%87%88%88%88%89%89%89%90%90%90%90%91%91%91%92%92%92%92%93%93%93%94%94%94%95%95%95%95%96%96%96%97%97%97%97%98%98%98%99%99%99%100%.ped scan complete (for binary autoconversion).
+## Performing single-pass .bed write (5 variants, 344 people).
+## 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%--file: ./Data/QC/younameit-temporary.bed + ./Data/QC/younameit-temporary.bim +
+## ./Data/QC/younameit-temporary.fam written.
+## 5 variants loaded from .bim file.
+## 344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
+## Ambiguous sex IDs written to ./Data/QC/younameit.nosex .
+## 32 people removed due to missing genotype data (--mind).
+## IDs written to ./Data/QC/younameit.irem .
+## Using 1 thread (no multithreaded calculations invoked).
+## Before main variant filters, 312 founders and 0 nonfounders present.
+## Calculating allele frequencies... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99% done.
+## Total genotyping rate in remaining samples is exactly 1.
+## 0 variants removed due to missing genotype data (--geno).
+## --hwe: 0 variants removed due to Hardy-Weinberg exact test.
+## 0 variants removed due to minor allele threshold(s)
+## (--maf/--max-maf/--mac/--max-mac).
+## 5 variants and 312 people pass filters and QC.
+## Note: No phenotypes present.
+## --recode ped to ./Data/QC/younameit.ped + ./Data/QC/younameit.map ... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99%done.</code></pre>
 <p>The output files will be <strong>“younameit.map”</strong> and <strong>“younameit.ped”</strong> which have been quality controlled by the criteria you specified.</p>
 </div>
 <div id="remove-closely-related-individuals" class="section level2 hasAnchor" number="3.6">
@@ -528,16 +635,41 @@ However, macOS users need to go through additional steps to authorize PLINK and 
 </ul>
 <p>The following command will calculate <strong>indentical by descent (IBS) distances</strong> between all individuals.
 1. <strong>–genome</strong>, calculate IBS</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
-<span id="cb24-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
-<span id="cb24-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-3" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-4" tabindex="-1"></a><span class="co"># macOS user</span></span>
-<span id="cb24-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac_20230116/plink</span> <span class="dt">\</span></span>
-<span id="cb24-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--genome</span> <span class="at">--out</span> ./Data/QC/younameit</span>
-<span id="cb24-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-7" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-8" tabindex="-1"></a><span class="co"># Windows user</span></span>
-<span id="cb24-9"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-9" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64_20230116/plink.exe</span> <span class="dt">\</span></span>
-<span id="cb24-10"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb24-10" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--genome</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb32-1" tabindex="-1"></a><span class="co"># both Mac and Windows can run in Terminal</span></span>
+<span id="cb32-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb32-2" tabindex="-1"></a><span class="co"># modify the path to &quot;plink&quot; program</span></span>
+<span id="cb32-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb32-3" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb32-4" tabindex="-1"></a><span class="co"># Windows user</span></span>
+<span id="cb32-5"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb32-5" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb32-6"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb32-6" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--genome</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb33-1" tabindex="-1"></a><span class="co"># macOS user</span></span>
+<span id="cb33-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb33-2" tabindex="-1"></a><span class="ex">./Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb33-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb33-3" tabindex="-1"></a>--noweb <span class="at">--file</span> ./Data/QC/5SNPs <span class="at">--genome</span> <span class="at">--out</span> ./Data/QC/younameit</span></code></pre></div>
+<pre><code>## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
+## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
+## Logging to ./Data/QC/younameit.log.
+## Options in effect:
+##   --file ./Data/QC/5SNPs
+##   --genome
+##   --noweb
+##   --out ./Data/QC/younameit
+## 
+## Note: --noweb has no effect since no web check is implemented yet.
+## 16384 MB RAM detected; reserving 8192 MB for main workspace.
+## Scanning .ped file... 0%1%1%1%1%2%2%2%3%3%3%3%4%4%4%5%5%5%5%6%6%6%7%7%7%7%8%8%8%9%9%9%9%10%10%10%11%11%11%11%12%12%12%13%13%13%13%14%14%14%15%15%15%15%16%16%16%17%17%17%17%18%18%18%19%19%19%19%20%20%20%21%21%21%21%22%22%22%23%23%23%23%24%24%24%25%25%25%25%26%26%26%27%27%27%27%28%28%28%29%29%29%29%30%30%30%31%31%31%32%32%32%32%33%33%33%34%34%34%34%35%35%35%36%36%36%37%37%37%37%38%38%38%39%39%39%39%40%40%40%41%41%41%41%42%42%42%43%43%43%44%44%44%44%45%45%45%46%46%46%46%47%47%47%48%48%48%49%49%49%49%50%50%50%51%51%51%51%52%52%52%53%53%53%53%54%54%54%55%55%55%56%56%56%56%57%57%57%58%58%58%58%59%59%59%60%60%60%61%61%61%61%62%62%62%63%63%63%63%64%64%64%65%65%65%66%66%66%66%67%67%67%68%68%68%68%69%69%69%70%70%70%70%71%71%71%72%72%72%73%73%73%73%74%74%74%75%75%75%75%76%76%76%77%77%77%78%78%78%78%79%79%79%80%80%80%80%81%81%81%82%82%82%83%83%83%83%84%84%84%85%85%85%85%86%86%86%87%87%87%87%88%88%88%89%89%89%90%90%90%90%91%91%91%92%92%92%92%93%93%93%94%94%94%95%95%95%95%96%96%96%97%97%97%97%98%98%98%99%99%99%100%.ped scan complete (for binary autoconversion).
+## Performing single-pass .bed write (5 variants, 344 people).
+## 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%--file: ./Data/QC/younameit-temporary.bed + ./Data/QC/younameit-temporary.bim +
+## ./Data/QC/younameit-temporary.fam written.
+## 5 variants loaded from .bim file.
+## 344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
+## Ambiguous sex IDs written to ./Data/QC/younameit.nosex .
+## Using up to 8 threads (change this with --threads).
+## Before main variant filters, 344 founders and 0 nonfounders present.
+## Calculating allele frequencies... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99% done.
+## Total genotyping rate is 0.976744.
+## 5 variants and 344 people pass filters and QC.
+## Note: No phenotypes present.
+## 5 markers complete.IBD calculations complete.  
+## Writing... 1%Writing... 4%Writing... 6%Writing... 8%Writing... 11%Writing... 13%Writing... 15%Writing... 17%Writing... 20%Writing... 22%Writing... 24%Writing... 26%Writing... 29%Writing... 31%Writing... 33%Writing... 36%Writing... 38%Writing... 40%Writing... 42%Writing... 45%Writing... 47%Writing... 49%Writing... 51%Writing... 54%Writing... 56%Writing... 58%Writing... 61%Writing... 63%Writing... 65%Writing... 67%Writing... 70%Writing... 72%Writing... 74%Writing... 77%Writing... 79%Writing... 81%Writing... 83%Writing... 86%Writing... 88%Writing... 90%Writing... 92%Writing... 95%Writing... 97%Writing... 99%Finished writing ./Data/QC/younameit.genome .</code></pre>
 <p>This will create the file <strong>younameit.genome</strong> which has the following fields:</p>
 <pre><code> FID1      Family ID for first individual
  
@@ -568,9 +700,9 @@ However, macOS users need to go through additional steps to authorize PLINK and 
  RATIO     Of HETHET : IBS 0 SNPs (expected value is 2)</code></pre>
 <p>Scan the output file <strong>“younameit.genome”</strong> for any individuals with high <strong>PI_HAT</strong> values (e.g. greater than 0.05).</p>
 <p>Optionally, remove one member of the pair if close relatives are identified.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb26-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb26-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb26-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
-<span id="cb26-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb26-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.genome</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb36-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb36-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb36-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App</span></span>
+<span id="cb36-3"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#cb36-3" tabindex="-1"></a><span class="fu">head</span> ./Data/QC/younameit.genome</span></code></pre></div>
 <pre><code>##  FID1     IID1 FID2     IID2 RT    EZ      Z0      Z1      Z2  PI_HAT PHE       DST     PPC   RATIO
 ##    1  206-001   2  206-003 UN    NA  0.0000  0.0000  1.0000  1.0000  -1  1.000000      NA      NA
 ##    1  206-001   3  206-004 UN    NA  0.0000  0.0000  1.0000  1.0000  -1  1.000000      NA      NA

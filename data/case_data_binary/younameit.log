@@ -1,4 +1,4 @@
-PLINK v1.90b6.21 64-bit (19 Oct 2020)
+PLINK v1.90p 64-bit (11 Dec 2023)
 Options in effect:
   --adjust
   --all-pheno
@@ -8,13 +8,13 @@ Options in effect:
   --out younameit
   --pheno binary_phenotype.txt
 
-Hostname: a242.anvil.rcac.purdue.edu
-Working directory: /anvil/scratch/x-liu2302/gwas_workshop/Data/case_data_binary
-Start time: Sat Jul  1 00:25:41 2023
+Hostname: Dannis-Mac-mini.local
+Working directory: /Users/oooliviaaa/Documents/cshl_2024/Data/case_data_binary
+Start time: Wed Jun 12 22:47:08 2024
 
 Note: --noweb has no effect since no web check is implemented yet.
-Random number seed: 1688185541
-257520 MB RAM detected; reserving 128760 MB for main workspace.
+Random number seed: 1718257628
+16384 MB RAM detected; reserving 8192 MB for main workspace.
 Scanning .ped file... done.
 Performing single-pass .bed write (1000 variants, 192 people).
 --file: younameit-temporary.bed + younameit-temporary.bim +
@@ -36,4 +36,4 @@ Writing C/C --assoc report to younameit.P1.assoc ... done.
 --adjust: Genomic inflation est. lambda (based on median chisq) = 1.37231.
 --adjust values (805 variants) written to younameit.P1.assoc.adjusted .
 
-End time: Sat Jul  1 00:25:42 2023
+End time: Wed Jun 12 22:47:08 2024

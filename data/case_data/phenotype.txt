@@ -1,4 +1,4 @@
-sample_ID	(e)-a-oh-tam:ch1	(e)-endoxifen:ch1	z.4.oh.tam_3.oh.tam	z.a.oh.tam	z.endoxifen_3.oh.ndm.tam	4.oh.ndm.tam.gluc	V4.oh.tam.o.gluc	V4prim.oh.ndm.tam	V4prim.oh.tam	ndm.tam	tam.n.gluc	tam.n.oxide	tamoxifen	z.endoxifen_ratio
+sample_ID	e.a.oh.tam	e.endoxifen	z.4.oh.tam_3.oh.tam	z.a.oh.tam	z.endoxifen_3.oh.ndm.tam	V4.oh.ndm.tam.gluc	V4.oh.tam.o.gluc	V4prim.oh.ndm.tam	V4prim.oh.tam	ndm.tam	tam.n.gluc	tam.n.oxide	tamoxifen	z.endoxifen_ratio
 3TX	0.39	0	2.1	0	7.62	0.773	0.093	3.724	3.67	158.63	0.09	9.51	136.63	0.024134673
 23TX	0.546	0	1.77	0.041	4.31	0.888	0.132	2.67	2.39	174.85	0.34	7.3	110.38	0.014308285
 41TX	0.531	0	1.46	0	4.09	0.725	0.147	3.665	3.89	195.63	0.1	9.79	145.73	0.011294447

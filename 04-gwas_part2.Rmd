@@ -1,0 +1,534 @@
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "./Data/case_data")
+getwd
+```
+
+```{r eval=T, echo=F,message=FALSE, warnings=FALSE}
+# R codes- run in R Console
+#load R packages
+library(data.table)
+library(GEOquery)
+library(qqman)
+library(png)
+library(QCGWAS)
+```
+
+
+# GWAS with Continuous Trait
+
+After all files are prepared in the PLINK format, we are ready to perform association test. The following code conducts the Genome-Wide Association Test by PLINK. **This code will take 1 minute to finish.**
+
+```{bash eval=F}
+# both Mac and Windows can run in Terminal
+# windows users
+../../Tools/PLINK/plink_win64/plink.exe \
+--noweb --file genotype_1k --assoc --adjust --pheno phenotype_plink.txt \
+--all-pheno --out younameit
+```
+```{bash}
+# macOS users
+../../Tools/PLINK/plink_mac/plink \
+--noweb --file genotype_1k --assoc --adjust --pheno phenotype_plink.txt \
+--all-pheno --out younameit
+```
+
+1. **--file** specifies .ped and .map files, 
+2. **--assoc** performs case/control or QTL association, 
+3. **--adjust** generates a file of adjusted significance values that correct for all tests performed and other metrics, 
+4. **--pheno** specifies alternate phenotype, 
+5. **--all-pheno** performs association for all phenotypes in file, 
+6. **--out** specifies output filename. 
+
+This will generate the files **younameit.P1.qassoc**, **younameit.P2.qassoc**, **younameit.P3.qassoc** for each of the phenotype with fields as follows:
+
+          CHR      Chromosome number
+          
+          SNP      SNP identifier
+          
+          BP       Physical position (base-pair)
+          
+          NMISS    Number of non-missing genotypes
+          
+          BETA     Regression coefficient
+          
+          SE       Standard error
+          
+          R2       Regression r-squared
+          
+          T        Wald test (based on t-distribtion)
+          
+          P        Wald test asymptotic p-value
+          
+## Manhattan Plot and Q-Q Plot
+
+The Manhattan plot is a good way to visualize the resuls of GWAS test. For more details, please refer: https://en.wikipedia.org/wiki/Manhattan_plot
+
+The Q-Q plot for GWAS is another way to visualize the signals. For more details, please refer:https://genome.sph.umich.edu/wiki/Code_Sample:_Generating_QQ_Plots_in_R
+
+qqman is an R package for creating Q-Q and manhattan plots from GWAS results. See the reference page http://www.gettinggeneticsdone.com/2014/05/qqman-r-package-for-qq-and-manhattan-plots-for-gwas-results.html.
+
+The qqman R package assumes you have columns named SNP, CHR, BP, and P, corresponding to the SNP name (rs number), chromosome number, base-pair position, and p-value.
+
+Here is what the data looks like:
+
+          SNP        CHR    BP         P 
+          
+          rs10495434 1      235800006  0.62220 
+          
+          rs6689417  1      46100028   0.06195 
+          
+          rs3897197  1      143700035  0.10700 
+            
+          rs2282450  1      202300047  0.47280 
+          
+          rs11208515 1      64900051   0.53430 
+          
+So we need to extract these columns from our results files so they can be used with `qqman`. The resulted files are P1.qassoc, P2.qassoc and P3.qassoc for each of the 3 traits.
+
+```{bash}
+# bash codes- run in terminal
+# Windows user need to run in Powershell App 
+### Prepare qqman R input files (CHR, SNP, BP, P) (in Linux)
+awk '{print $1,$2,$3,$9}' younameit.P1.qassoc > P1.qassoc
+awk '{print $1,$2,$3,$9}' younameit.P2.qassoc > P2.qassoc
+awk '{print $1,$2,$3,$9}' younameit.P3.qassoc > P3.qassoc
+```
+
+The codes below read in the association results as `qassoc1`, `qassoc2`, `qassoc3`. Here we only read in one of the trait as an example, as reading in all three will take a long time.
+
+```{r}
+# R codes- run in R Console
+traits=c("z-4-oh-Tam","tamoxifen","z-endoxifen_ratio") #name of four traits
+traits=as.matrix(traits) #create a matrix from traits
+
+#Load association results
+i=1 #first trait: Z-4-OH-TAM
+qassoc1=read.table(paste0("P", i, ".qassoc"), header=T)
+qassoc1=qassoc1[(qassoc1$CHR!=0) & (!is.na(qassoc1$P)),]
+head(qassoc1)
+
+i=2 #second trait: tamoxifen
+qassoc2=read.table(paste0("P", i, ".qassoc"), header=T)
+qassoc2=qassoc2[(qassoc2$CHR!=0) & (!is.na(qassoc2$P)),]
+head(qassoc2)
+
+i=3 #third trait: MR
+qassoc3=read.table(paste0("P", i, ".qassoc"), header=T)
+qassoc3=qassoc3[(qassoc3$CHR!=0) & (!is.na(qassoc3$P)),]
+head(qassoc3)
+```
+
+### Generate manhattan plot
+
+We are ready to generate the Manhattan plots. Manhattan plots are generated using `manhattan` function, and are saved as png files.
+
+```{r}
+# R codes- run in R Console
+dev.off()
+traits=c("z-4-oh-Tam","tamoxifen","z-endoxifen_ratio") #name of four traits
+
+# trait 1: Z-4-OH-TAM
+i=1
+png(filename=paste0("Manhattan_Plot_for_", traits[i], ".png"), type="cairo")
+manhattan(qassoc1, col=c("dimgray", "darkgoldenrod1"), suggestiveline=F, genomewideline=F)
+dev.off()
+
+# trait 2: tamoxifen
+i=2
+png(filename=paste0("Manhattan_Plot_for_", traits[i], ".png"), type="cairo")
+manhattan(qassoc2, col=c("dimgray", "darkgoldenrod1"), suggestiveline=F, genomewideline=F)
+dev.off()
+
+# trait 3: z-endoxifen ratio
+i=3
+png(filename=paste0("Manhattan_Plot_for_", traits[i], ".png"), type="cairo")
+manhattan(qassoc3, col=c("dimgray", "darkgoldenrod1"), suggestiveline=F, genomewideline=F)
+dev.off()
+```
+
+We will directly read the Manhattan plots from saved files. From these manhattan plots, we can observe several significant SNPs or peaks that stand out over others. Specifically, there is one extremely significant SNP for z-endoxifen ratio in chromosome 22. (chr26 here means mitochondrial DNA.)
+
+```{r}
+# R codes- run in R Console
+img <- readPNG("Manhattan_Plot_for_z-4-oh-Tam.png")
+grid::grid.raster(img)
+```
+
+```{r}
+# R codes- run in R Console
+img <- readPNG("Manhattan_Plot_for_tamoxifen.png")
+grid::grid.raster(img)
+```
+
+```{r}
+# R codes- run in R Console
+img <- readPNG("Manhattan_Plot_for_z-endoxifen_ratio.png")
+grid::grid.raster(img)
+```
+
+### Generate Q-Q plot
+
+A Quantile-Quantile (QQ) plot (in general) plots the observed quantiles of one distribution versus another OR plots the
+observed quantiles of a distribution versus the quantiles of the ideal distribution (in this case is normal distritbution). In GWAS we use a QQ plot to plot the quantile distribution of observed p-values (on the y-axis) versus the quantile distribution of expected p-values.
+
+In an ideal GWAS case where there are **NO** causal polymorphisms, your QQ plot will be a straight line with a slope. However, in an ideal GWAS case where there **ARE** causal polymorphisms, your QQ plot will be **a line with a tail!**
+
+The codes below generate the QQ plot with `qq` function in `qqman` package.
+
+```{r}
+# R codes- run in R Console
+traits=c("z-4-oh-Tam","tamoxifen","z-endoxifen_ratio") #name of four traits
+
+# trait 1: Z-4-OH-TAM
+i=1
+png(filename=paste0("Q-Q_Plot_for_", traits[i], ".png"), type="cairo")
+qq(qassoc1$P)
+dev.off()
+
+# trait 2: tamoxifen
+i=2
+png(filename=paste0("Q-Q_Plot_for_", traits[i], ".png"), type="cairo")
+qq(qassoc2$P)
+dev.off()
+
+# trait 3: z-endoxifen ratio
+i=3
+png(filename=paste0("Q-Q_Plot_for_", traits[i], ".png"), type="cairo")
+qq(qassoc3$P)
+dev.off()
+```
+
+Then, we read the generated Q-Q plot for each of the three traits. Plot of Z-4-OH-TAM shows a slight deviation at the tail. Tamoxifen has a little more deviation, and the points that forms a straight short line at the tail are very likely to have some correlation, such as they are from the same chromosome. However, plot pf Z-endoxifen ratio shows a even better result with a long tail, meaning that we might expect many significant markers associated with Z-endoxifen ratio when we look at the test results.
+
+```{r}
+# R codes- run in R Console
+img1 <- readPNG("Q-Q_Plot_for_z-4-oh-Tam.png")
+grid::grid.raster(img1)
+```
+
+```{r}
+# R codes- run in R Console
+img2 <- readPNG("Q-Q_Plot_for_tamoxifen.png")
+grid::grid.raster(img2)
+```
+
+```{r}
+# R codes- run in R Console
+img3 <- readPNG("Q-Q_Plot_for_z-endoxifen_ratio.png")
+grid::grid.raster(img3)
+```
+
+## Multiple-Test Correction
+
+In the Association test, we simultaneously performed tests on each SNP, which means we performed millions of test at the same time. Therefore, it is necessary that we carry out a multiple test correction procedure that control the overall type-I error rate using false discovery rate (FDR). Pleas refer to [this page](https://en.wikipedia.org/wiki/Multiple_comparisons_problem#:~:text=Multiple%20testing%20correction%20refers%20to,be%20more%20stringent%20than%20α.) for multiple-test correction.
+
+### Prepare R input files (in Linux)
+
+PLINK already performed this correction using Bonferroni correction method, when we specified `--adjust` in the PLINK command in section 6. The following code extracts the `chr`, `snp`, `unadj`, `fdr_bh` from the PLINK output.
+The results are stored in the files: **P(1,2,3).qassoc.adjusted**.
+```{bash}
+# bash codes- run in terminal
+# Windows user need to run in Powershell App 
+awk '{print $1,$2,$3,$9}' younameit.P1.qassoc.adjusted > P1.qassoc.adjusted
+awk '{print $1,$2,$3,$9}' younameit.P2.qassoc.adjusted > P2.qassoc.adjusted
+awk '{print $1,$2,$3,$9}' younameit.P3.qassoc.adjusted > P3.qassoc.adjusted
+```
+
+### Significant SNPs after a multiple-test correction of FDR (using R)
+
+The following code identifies the significant SNPs with the adjusted p-values and a cutoff 0.05. SNPs with adjusted p-values < 0.05 are significant SNPs associated with the corresponding trait. The resulted significant SNP lists are save as "significant_SNPsfor(trait).txt".
+
+```{r}
+# R codes- run in R Console
+traits=c("z-4-oh-Tam","tamoxifen","z-endoxifen_ratio")
+traits=as.matrix(traits)
+
+for (i in 1:3){
+  qassoc.adjusted=read.table(paste0("P", i, ".qassoc.adjusted"), header=T) #load association results
+  sigidx=which(qassoc.adjusted$FDR_BH<0.05) #index of significant SNPs (FDR_BH<0.05)
+  sigSNP=qassoc.adjusted[sigidx,] #extract association results for significant SNPs
+  write.table(sigSNP, paste0("significant_SNPs_for_", traits[i],".txt"), row.names=F, col.names=T, quote=F, sep=" ") #save results
+}  
+```
+
+As a result, if you open the result files of each trait, you can observe that only "Z-endoxifen ratio" still have significant SNPs after multiple correction. Let's read in the results and match it with SNP annotation, so it can be used for plotting in next step.
+
+```{r}
+# R codes- run in R Console
+library(data.table)
+map<- fread("genotype_1k.map",header=F)
+names(map) <- c("CHR","SNP","GP","BP") # assign header
+zr_result <- fread("significant_SNPs_for_z-endoxifen_ratio.txt")
+idx <- match(zr_result$SNP, map$SNP)#index of map that match with SNP in result
+zr_result$BP <- map$BP[idx]
+head(zr_result)
+dim(zr_result) #get number of significant SNPs
+```
+
+There are a total of 82 significant SNPs after multiple adjusting. However, many SNP IDs are started with kgpXXXX. This kgp identifier is created by Illumina and there is no direct mapping from kpg identifier to rs identifier. I used a GitHub tutorial here to match the kgp identifier with rs identifier based on SNP position. This mapping is done using the [UCSC Table Browser GRCh38](http://genome.ucsc.edu/cgi-bin/hgTables).
+
+The codes below extract the SNPs with kgp identifier using `grepl` function, and modified the table into UCSC required format. The resulted SNP list is saved in `kgp_snps.txt`.
+
+```{r}
+# R codes- run in R Console
+kgp_snps <- zr_result[grepl("kgp",zr_result$SNP),]
+head(kgp_snps)
+kgp_snps$CHR<- paste0("chr",kgp_snps$CHR)
+kgp_snps$BP_1<- kgp_snps$BP-1
+fwrite(kgp_snps[,c("CHR","BP_1","BP","SNP")], "kgp_snps.txt", sep=" ", quote=F, row.name=F, col.name=F)
+dim(kgp_snps)
+```
+
+There are 53 significant SNPs with kgp identifier, a large number! However, after mapping using UCSC, we only find 2 SNPs with corresponding rs identifiers. The matched SNPs is saved in file `kgp_rs.txt`. Now, we match these 4 SNPs with the p-values in the original results.
+
+```{r}
+# R codes- run in R Console
+kgp_rs<- fread("kgp_rs.txt",header=F)
+names(kgp_rs)<- c("CHR","BP_1","BP","SNP")# assign header
+idx <- match(kgp_rs$BP, kgp_snps$BP)# get index of these matched SNPs in results
+kgp_match<- kgp_snps[idx[!is.na(idx)],]
+kgp_match$SNP<- kgp_rs$SNP[!is.na(idx)] # replace kgp identifier with rs identifier
+kgp_match
+```
+
+Then, these 2 match SNPs are combined with rs SNPs in the results. Print the results and look at the dimension.
+
+There are 31 significant SNPs in total. The most significant SNP is "rs8138080".
+
+```{r}
+# R codes- run in R Console
+rs_snps <- zr_result[grepl("rs",zr_result$SNP),]
+kgp_match$CHR <- "22"
+rs_snps <- rbind(rs_snps, kgp_match[,-6])
+fwrite(rs_snps, "significant_snps_with_rs_for_z-endoxifen-ratio.txt", sep=" ", quote=F, row.name=F, col.name=T)
+dim(rs_snps)
+rs_snps
+```
+
+## Regional Association Plot
+
+`make.fancy.locus.plot` is an R function for highlighting the statistical strength of an association in the context of the association results for surrounding markers, gene annotations, estimated recombination rates and pairwise correlations between the surrounding markers and the putative associated variant, see the reference page http://www.broadinstitute.org/diabetes/scandinavs/figures.html
+
+You need provide a file that contains the following data for every SNP across the region of interest: position, p-value, a label to indicate whether a SNP is “typed" or "imputed", and the r-squared between that SNP and the putative associated variant.
+
+All SNPs in this file will be plotted with their corresponding P-values (as -log10 values) as a function of chromosomal position. SNPs that are "typed" are plotted as diamonds; "imputed" SNPs are plotted as circles. Estimated recombination rates are plotted to reflect the local LD structure around the associated SNP and their correlated proxies (bright red indicating highly correlated, faint red indicating weakly correlated).
+
+### Obtain regional SNPs (using R)
+As most of the significant SNPs are located within chromosome 22, we could take a closer look at this specific chromosome.
+
+```{r}
+# R codes- run in R Console
+qassoc=read.table("younameit.P3.qassoc", header=T, stringsAsFactors=F) #load association results
+idx=which(qassoc$CHR==22 & qassoc$BP>=4200000 & qassoc$BP<=52000000 & qassoc$SNP!="---" & !is.na(qassoc$P)) #index of regional SNPs
+TYPE=rep("typed", length(idx)) #all SNPs are typed SNPs
+region=data.frame(qassoc$SNP[idx], qassoc$BP[idx], qassoc$P[idx], TYPE, qassoc$R2[idx]) #information for regional SNPs
+write.table(region, "regional_SNPs.txt", row.names=F, col.names=c("SNP", "POS", "PVAL", "TYPE", "RSQR"), quote=F, sep=" ")
+head(region)
+```
+
+The regional association plot is generated by `make.fancy.locus.plot`. The arguments in this function is:
+1. specify which SNP is the key association ("rs8138080")
+2. provide a header title ("rs8138080")
+3. specify which chromosome it is ("22")
+4. provide the locus of the SNP
+5. specify the range of p-value
+6. provide the adjusted p-value for the top SNP (1.709e-15)(The blue diamond will represent this data point with the red diamond representing the initial P-value (present in the result file). 
+
+**The following codes might generate several warning messages and you can safely ignore them.**
+
+The souce code "**regional_association_plot.r**", the estimated recombination rate from HapMap and the gene annotations from the UCSC genome browser (using Build 35 coordinates) should be available in the same folder. 
+
+```{r}
+# R codes- run in R Console
+source("regional_association_plot.r") #load source function
+locus=read.table("regional_SNPs.txt", header=T, row.names=1) #read information of regional SNPs
+png("assocplot_rs8138080.png")
+make.fancy.locus.plot("rs8138080", "rs8138080", "22", locus, 25, 1.709e-15) 
+#specify which SNP is the key association ("rs8138080"), 
+# provide a header title ("rs8138080"), 
+# specify which chromosome it is ("22"), 
+# provide the locus of the SNP, 
+# specify the range of p-value, 
+# provide the replication or joint p-value (4.335e-14)
+dev.off()
+```
+
+```{r}
+# R codes- run in R Console
+img_fancy <- readPNG("assocplot_rs8138080.png")
+grid::grid.raster(img_fancy)
+
+```
+
+There are definitely a lot more ways to generate a regional association plot. We can use the `manhattan` function in the `qqman` package by input a subset of the results. `QCGWAS` package also has a `plot_regional` function where you can specify the chromosome or zoom-in region. If you are familiar with R, you can also write your own functions with ggplot or base plot to enable more flexibility in customizing the plots. Below is an example for the `plot_regional` function.
+
+We need to combine the SNP information and test results in P3.assoc and P3.assoc.adjusted. We use the `match` function to match the SNP ID in these two files.
+
+```{r}
+# R codes- run in R Console
+# read in, the SNP doesn't match
+qassoc=fread(paste0("P3.qassoc"), header=T)
+qassoc.adjusted=fread("P3.qassoc.adjusted", header=T)
+head(qassoc.adjusted)
+head(qassoc)
+```
+
+```{r}
+# R codes- run in R Console
+# match and merge data
+qassoc<-qassoc[!is.na(qassoc$P),]
+idx<-match(qassoc.adjusted$SNP,qassoc$SNP)
+qassoc_sub<- qassoc[idx,]
+qassoc.adjusted$BP<-qassoc_sub$BP
+qassoc.adjusted$P<-qassoc_sub$P
+```
+
+Next, we are able to call the `plot_regional` function to generate regional plot for our specified chromosome number and region. This function uses the base plot function in R instead of ggplot. The `col` option enables a conditional coloring by highlighting the significant SNPs as yellow. Finally, the function directly saves the figure to PNG under current directory in "regional_association_plot.png". You can specify the cutoff value for the SNPs you want to label in the plot with `name_cutoff_p`. By default, this option is NULL and there is no label.
+
+```{r}
+# R codes- run in R Console
+# generate plot
+dev.off()
+colnames(qassoc.adjusted)<-c("CHR","MARKER","PVALUE","FDR_BH","POSITION","P2")
+# label the most significant SNP
+# color all significant SNPs
+plot_regional(qassoc.adjusted, chr=22, start_pos=41000000,end_pos=51000000,
+              name_cutoff_p=min(qassoc.adjusted$PVALUE),
+             col=ifelse( qassoc.adjusted$FDR_BH<=0.05 , "darkgoldenrod1","dimgray"))
+#plot_regional(qassoc.region, chr=22, start_pos=41000000,end_pos=51000000,name_cutoff_p=NULL) #no label 
+```
+
+```{r}
+# R codes- run in R Console
+regional_plot <- readPNG("regional_association_plot.png")
+grid::grid.raster(regional_plot)
+```
+
+## Distribution of Z-endoxifen ratio for rs8138080
+
+After an overview of the regional association plot, it might also be intersting to look at the distribution of phenotype on a specific SNP. Here, we pick the most significant SNP rs8138080 as an example.
+
+### Obtain phenotype data (Z-endoxifen ratio) (using R)
+
+The imputed phenotype is in file phenotype0.txt.
+```{r}
+# R codes- run in R Console
+pheno=read.table("phenotype0.txt") #read phenotype data
+zr=pheno[,3] #obtain phenotype data of Z-endoxifen ratio (Col 3)
+write.table(zr,"z_endoxifen_ratio.txt",row.names=F,col.names=F,quote=F,sep=" ") #save phenotype data of Z-endoxifen ratio
+```
+
+### Obtain genotype for significant SNPs (using R)
+The following code finds index for the significant SNPs rs8138080 in the genotype.map file and then extract the genotype from the genotype.ped file. Note that the number of columns in PED file doesn't match that in MAP file. PED file has 6 column of family information in front, and there are 2 alleles for each SNP.
+
+```{r}
+# R codes- run in R Console
+# index of significant SNPs in PED file (using R)
+map=fread("genotype_1k.map",header=F) #read MAP file
+names(map)=c("CHR", "SNP", "GP", "BP") #specify names of MAP file
+index=which(map$SNP %in% "rs8138080") #index of rs8138080 in MAP file
+genoidx=sort(c(2*index+5, 2*index+6)) #index of rs8138080 alleles in PED file
+genoidx
+# 1901 1902 # this is the index of rs8138080 alleles in PED file
+```
+
+```{bash}
+# bash codes- run in terminal
+# Windows user need to run in Powershell App 
+# extract genotype for rs8138080
+awk '{print $1901 $1902}' < genotype_1k.ped > rs8138080.txt
+```
+
+### Create Box plot (using R)
+The following code generate the box plot for the phenotype z-endoxifen ratio by the genotypes of SNP rs8138080.
+
+```{r}
+# R codes- run in R Console
+pheno=read.table("z_endoxifen_ratio.txt") #read phenotype data of Z-endoxifen ratio
+geno=read.table("rs8138080.txt", sep="\t") #read genotype data of rs8138080
+pheno=as.matrix(pheno) #create a matrix from the phenotype data
+geno=as.matrix(geno) #create a matrix from the genotype data
+table(geno) #number of individuals having AA, AG and GG
+boxplot(pheno~geno, xlab="Genotype of SNP rs8138080", ylab="Z-endoxifen Ratio") #create Box Plot
+```
+
+## Proportion of Variation Explained by rs8138080
+Marginal $R^2$ reveals the coefficient of determination of a full regression model that contains one or more SNPs. Here we calculate the marginal $R^2$ to assess proportion of variation that can be explained by SNP rs8138080.
+
+### Recode genotype of significant SNPs (using R)
+We wll first recode the genotype into numbers:
+
+- AA as "0"
+- AG as "1"
+- GG as "2"
+
+```{r}
+# R codes- run in R Console
+geno=read.table("rs8138080.txt") #read genotype data of rs8138080
+geno=as.matrix(geno) #create a matrix from the genotype data
+geno[geno=="GG"]=2 #replace GG with 2
+geno[geno=="AG"|geno=="GA"]=1 #replace AG and GA with 1
+geno[geno=="AA"]=0 #replace AA with 0
+write.table(geno, "rs8138080_geno.txt", row.names=F, col.names=F, quote=F, sep=" ") #save recoded genotype data
+```
+
+### Calculate marginal $R^2$ (using R)
+
+The $R^2$ value is included in the linear regression results.
+
+```{r}
+# R codes- run in R Console
+pheno=read.table("z_endoxifen_ratio.txt") #read phenotype data 
+geno=read.table("rs8138080_geno.txt") #read genotype data of rs8138080
+pheno=as.matrix(pheno) #create a matrix from the phenotype data
+geno=as.matrix(geno) #create a matrix from the genotype data
+fit=lm(pheno~geno) #fit a linear regression of phenotype against genotype
+summary(fit)$r.squared #R squared of the regression
+```
+
+The $R^2$ is 0.374 in this case, meaning that about 37.4% of variation is explained by rs8138080.
+
+## PRACTICE TIME
+### Practice 1
+**Calculate the marginal $R^2$ for other significant SNPs, how large is it compared with the most significant SNP `rs8138080`? Write several sentences regarding your results.**
+
+**Instruction**: The first 4 significant SNPs besides rs8138080, with p-values from smallest to largest, are , `rs4467371`,`rs2011944`, `rs1062753`, `rs4453786`. The genotype data for these 4 SNPs is already prepared for you.(`rsXXXX_geno.txt`,replace `XXXX` with SNP ID.) Following the codes in **section 11.2**, read in the data and perform linear regression of phenotype against genotype, then calculate their $R^2$. Report their values.
+
+```{r}
+# R codes- run in R Console
+# write your code here
+
+
+
+```
+
+### Practice 2
+**In Practice 1, we calculated the $R^2$, proportion of variation, explained by single SNP. What will happen if we include all these 5 most significant SNP in the linear regression model? How will this affect $R^2$? Write a few sentences to describe what you observe.** 
+
+**Instructions**: The codes to read in genotype for all 5 SNPs is already provided. `geno` is a combined genotype data with 5 columns, with each represents a SNP. Repeat the last two lines in section 11.2 to calculate the $R^2$.
+
+```{r}
+# R codes- run in R Console
+# here is the code to read in phenotype and combine genotype data for all 5 SNPs
+pheno=read.table("z_endoxifen_ratio.txt") #read phenotype data 
+geno1=read.table("rs8138080_geno.txt") #read genotype data of rs8138080
+geno2=read.table("rs4467371_geno.txt")
+geno3=read.table("rs2011944_geno.txt")
+geno4=read.table("rs1062753_geno.txt")
+geno5=read.table("rs4453786_geno.txt")
+geno=cbind(geno1, geno2, geno3, geno4, geno5)
+pheno=as.matrix(pheno) #create a matrix from the phenotype data
+geno=as.matrix(geno) #create a matrix from the genotype data
+```
+
+```{r}
+# R codes- run in R Console
+## write your code here to fit linear regression and calculate R^2
+
+
+
+```
+
+

@@ -189,7 +189,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html"><i class="fa fa-check"></i><b>7</b> Unit 3. GWAS Case Study-Continuous Trait</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-preprocessing"><i class="fa fa-check"></i><b>7.1</b> Data Preprocessing</a></li>
+<li class="chapter" data-level="7.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#environment-setting-and-packages-1"><i class="fa fa-check"></i><b>7.1</b> Environment setting and packages</a></li>
+<li class="chapter" data-level="7.2" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#accessing-data"><i class="fa fa-check"></i><b>7.2</b> Accessing data</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-availability"><i class="fa fa-check"></i><b>7.2.1</b> Data availability</a></li>
+<li class="chapter" data-level="7.2.2" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-files-documentation"><i class="fa fa-check"></i><b>7.2.2</b> Data files documentation</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>8</b> Applications</a>
 <ul>
@@ -223,19 +228,256 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In many cases, raw sequence data may have missing values. Then, an imputation step will be neccessary. <strong>IMPUTE2</strong> is a popular software package for imputation. Below is a simple example for conducting imputation by IMPUTE2. For more information about IMPUTE2, please refer its website <a href="http://mathgen.stats.ox.ac.uk/impute/impute_v2.html" class="uri">http://mathgen.stats.ox.ac.uk/impute/impute_v2.html</a> and the associated publication <a href="http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1000529" class="uri">http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1000529</a></p>
 <p>Here is the example provided by <strong>IMPUTE2 package</strong>. The link is <a href="https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#ex1" class="uri">https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#ex1</a></p>
 <p>Files used for example are saved in folder <code>./Data/impute2_example</code>.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="an-imputation-example.html#cb28-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb28-2"><a href="an-imputation-example.html#cb28-2" tabindex="-1"></a><span class="co"># IMPUTE2 only works for macOS or Linux users, Windows users can&#39;t run it</span></span>
-<span id="cb28-3"><a href="an-imputation-example.html#cb28-3" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="an-imputation-example.html#cb28-4" tabindex="-1"></a><span class="co"># macOS user only</span></span>
-<span id="cb28-5"><a href="an-imputation-example.html#cb28-5" tabindex="-1"></a><span class="co"># modify the path to &quot;impute2&quot; program</span></span>
-<span id="cb28-6"><a href="an-imputation-example.html#cb28-6" tabindex="-1"></a><span class="ex">./Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2</span> <span class="dt">\</span></span>
-<span id="cb28-7"><a href="an-imputation-example.html#cb28-7" tabindex="-1"></a>-m ./Data/impute2_example/example.chr22.map <span class="dt">\</span></span>
-<span id="cb28-8"><a href="an-imputation-example.html#cb28-8" tabindex="-1"></a>-h ./Data/impute2_example/example.chr22.1kG.haps <span class="dt">\</span></span>
-<span id="cb28-9"><a href="an-imputation-example.html#cb28-9" tabindex="-1"></a>-l ./Data/impute2_example/example.chr22.1kG.legend <span class="dt">\</span></span>
-<span id="cb28-10"><a href="an-imputation-example.html#cb28-10" tabindex="-1"></a>-g ./Data/impute2_example/example.chr22.study.gens <span class="dt">\</span></span>
-<span id="cb28-11"><a href="an-imputation-example.html#cb28-11" tabindex="-1"></a>-strand_g ./Data/impute2_example/example.chr22.study.strand <span class="dt">\</span></span>
-<span id="cb28-12"><a href="an-imputation-example.html#cb28-12" tabindex="-1"></a>-int 20.4e6 20.5e6 <span class="at">-Ne</span> 20000 <span class="dt">\</span></span>
-<span id="cb28-13"><a href="an-imputation-example.html#cb28-13" tabindex="-1"></a>-o ./Data/impute2_example/example.chr22.one.phased.impute2</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a href="an-imputation-example.html#cb38-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb38-2"><a href="an-imputation-example.html#cb38-2" tabindex="-1"></a><span class="co"># IMPUTE2 only works for macOS or Linux users, Windows users can&#39;t run it</span></span>
+<span id="cb38-3"><a href="an-imputation-example.html#cb38-3" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="an-imputation-example.html#cb38-4" tabindex="-1"></a><span class="co"># macOS user only</span></span>
+<span id="cb38-5"><a href="an-imputation-example.html#cb38-5" tabindex="-1"></a><span class="co"># modify the path to &quot;impute2&quot; program</span></span>
+<span id="cb38-6"><a href="an-imputation-example.html#cb38-6" tabindex="-1"></a><span class="ex">./Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2</span> <span class="dt">\</span></span>
+<span id="cb38-7"><a href="an-imputation-example.html#cb38-7" tabindex="-1"></a>-m ./Data/impute2_example/example.chr22.map <span class="dt">\</span></span>
+<span id="cb38-8"><a href="an-imputation-example.html#cb38-8" tabindex="-1"></a>-h ./Data/impute2_example/example.chr22.1kG.haps <span class="dt">\</span></span>
+<span id="cb38-9"><a href="an-imputation-example.html#cb38-9" tabindex="-1"></a>-l ./Data/impute2_example/example.chr22.1kG.legend <span class="dt">\</span></span>
+<span id="cb38-10"><a href="an-imputation-example.html#cb38-10" tabindex="-1"></a>-g ./Data/impute2_example/example.chr22.study.gens <span class="dt">\</span></span>
+<span id="cb38-11"><a href="an-imputation-example.html#cb38-11" tabindex="-1"></a>-strand_g ./Data/impute2_example/example.chr22.study.strand <span class="dt">\</span></span>
+<span id="cb38-12"><a href="an-imputation-example.html#cb38-12" tabindex="-1"></a>-int 20.4e6 20.5e6 <span class="at">-Ne</span> 20000 <span class="dt">\</span></span>
+<span id="cb38-13"><a href="an-imputation-example.html#cb38-13" tabindex="-1"></a>-o ./Data/impute2_example/example.chr22.one.phased.impute2</span></code></pre></div>
+<pre><code>## 
+## ======================
+##  IMPUTE version 2.3.2 
+## ======================
+## 
+## Copyright 2008 Bryan Howie, Peter Donnelly, and Jonathan Marchini
+## Please see the LICENCE file included with this program for conditions of use.
+## 
+## The seed for the random number generator is 1120774186.
+## 
+## Command-line input: ./Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2 -m ./Data/impute2_example/example.chr22.map -h ./Data/impute2_example/example.chr22.1kG.haps -l ./Data/impute2_example/example.chr22.1kG.legend -g ./Data/impute2_example/example.chr22.study.gens -strand_g ./Data/impute2_example/example.chr22.study.strand -int 20.4e6 20.5e6 -Ne 20000 -o ./Data/impute2_example/example.chr22.one.phased.impute2
+## 
+## ---------------------------------
+##  Nomenclature and data structure 
+## ---------------------------------
+## 
+##      Panel 0: phased reference haplotypes
+##      Panel 2: unphased study genotypes
+## 
+## For optimal results, each successive panel (0,1,2) should contain a subset of the SNPs in the previous panel. When the data structure deviates from this ideal configuration, IMPUTE2 tries to use as much of the available information as possible; see documentation for details.
+## 
+## -------------
+##  Input files 
+## -------------
+## 
+##          Panel 0 haplotypes: ./Data/impute2_example/example.chr22.1kG.haps
+##          Panel 0 hap legend: ./Data/impute2_example/example.chr22.1kG.legend
+##           Panel 2 genotypes: ./Data/impute2_example/example.chr22.study.gens
+##         Panel 2 strand info: ./Data/impute2_example/example.chr22.study.strand
+##                 genetic map: ./Data/impute2_example/example.chr22.map
+## 
+## --------------
+##  Output files 
+## --------------
+## 
+##                 main output: ./Data/impute2_example/example.chr22.one.phased.impute2
+##                 SNP QC info: ./Data/impute2_example/example.chr22.one.phased.impute2_info
+##              sample QC info: ./Data/impute2_example/example.chr22.one.phased.impute2_info_by_sample
+##                 run summary: ./Data/impute2_example/example.chr22.one.phased.impute2_summary
+##                 warning log: ./Data/impute2_example/example.chr22.one.phased.impute2_warnings
+## 
+## -----------------
+##  Data processing 
+## -----------------
+## 
+## -reading genetic map from -m file
+##  --filename=[./Data/impute2_example/example.chr22.map]
+##  --read 262 SNPs in the analysis interval+buffer region
+## 
+## -reading strand info for Panel 2 from -strand_g file
+##  --filename=[./Data/impute2_example/example.chr22.study.strand]
+##  --read strand info for 33 SNPs in the analysis region
+## 
+## -reading Panel 2 genotypes from -g file
+##  --filename=[./Data/impute2_example/example.chr22.study.gens]
+##  --detected 250 individuals
+##  --read 33 SNPs in the analysis interval+buffer region
+## 
+## -using -strand_g file to align Panel 2 allele labels
+##  --flipped strand at 14 out of 33 SNPs
+## 
+## -reading Panel 0 haplotypes from -h and -l files
+##  --filename=[./Data/impute2_example/example.chr22.1kG.haps]
+##  --filename=[./Data/impute2_example/example.chr22.1kG.legend]
+##  --detected 112 haplotypes
+##  --read 790 SNPs in the analysis interval+buffer region
+## 
+## -removing SNPs that violate the hierarchical data requirements
+##  --no SNPs removed
+## 
+## -removing reference-only SNPs from buffer region
+##  --removed 538 SNPs
+## 
+## -checking strand alignment between Panel 2 and Panel 0 by allele labels
+##  --flipped strand due to allele mismatch at 0 out of 33 SNPs in Panel 2
+## 
+## -aligning allele labels between panels
+## 
+## -removing non-aligned genotyped SNPs
+##  --removed 0 out of 27 SNPs with data in multiple panels
+## 
+## --------------
+##  Data summary 
+## --------------
+## 
+## [type 0 = SNP in Panel 0 only]
+## [type 1 = SNP in Panel 1]
+## [type 2 = SNP in Panel 2 and all ref panels]
+## [type 3 = SNP in Panel 2 only]
+## 
+## -Upstream buffer region
+##  --0 type 0 SNPs
+##  --0 type 1 SNPs
+##  --10 type 2 SNPs
+##  --2 type 3 SNPs
+##  --12 total SNPs
+## 
+## -Downstream buffer region
+##  --0 type 0 SNPs
+##  --0 type 1 SNPs
+##  --5 type 2 SNPs
+##  --1 type 3 SNPs
+##  --6 total SNPs
+## 
+## -Analysis region (as defined by -int argument)
+##  --225 type 0 SNPs
+##  --0 type 1 SNPs
+##  --12 type 2 SNPs
+##  --3 type 3 SNPs
+##  --240 total SNPs
+## 
+## -Output file
+##  --225 type 0 SNPs
+##  --0 type 1 SNPs
+##  --12 type 2 SNPs
+##  --3 type 3 SNPs
+## 
+## -In total, 258 SNPs will be used in the analysis, including 27 Panel 2 SNPs
+## 
+## -making initial haplotype guesses for Panel 2 by phasing hets at random and imputing missing genotypes from allele freqs
+## 
+## -setting storage space
+## -setting mutation matrices
+## -setting switch rates
+## 
+## ----------------
+##  Run parameters 
+## ----------------
+## 
+##         reference haplotypes: 112 [Panel 0]
+##            study individuals: 250 [Panel 2]
+##            sequence interval: [20400000,20500000]
+##                       buffer: 250 kb
+##                           Ne: 20000
+##            input call thresh: 0.900
+##      burn-in MCMC iterations: 10
+##        total MCMC iterations: 30 (20 used for inference)
+##       HMM states for phasing: 80 [Panel 2]
+##    HMM states for imputation: 112 [Panel 0-&gt;2]
+## 
+## ---------
+##  Run log 
+## ---------
+## 
+## MCMC iteration [1/30]
+## 
+## MCMC iteration [2/30]
+## 
+## MCMC iteration [3/30]
+## 
+## RESETTING PARAMETERS FOR &quot;SURROGATE FAMILY&quot; MODELING
+## -setting mutation matrices
+## -setting switch rates
+## 
+## MCMC iteration [4/30]
+## 
+## MCMC iteration [5/30]
+## 
+## MCMC iteration [6/30]
+## 
+## MCMC iteration [7/30]
+## 
+## MCMC iteration [8/30]
+## 
+## MCMC iteration [9/30]
+## 
+## MCMC iteration [10/30]
+## 
+## MCMC iteration [11/30]
+## 
+## MCMC iteration [12/30]
+## 
+## MCMC iteration [13/30]
+## 
+## MCMC iteration [14/30]
+## 
+## MCMC iteration [15/30]
+## 
+## MCMC iteration [16/30]
+## 
+## MCMC iteration [17/30]
+## 
+## MCMC iteration [18/30]
+## 
+## MCMC iteration [19/30]
+## 
+## MCMC iteration [20/30]
+## 
+## MCMC iteration [21/30]
+## 
+## MCMC iteration [22/30]
+## 
+## MCMC iteration [23/30]
+## 
+## MCMC iteration [24/30]
+## 
+## MCMC iteration [25/30]
+## 
+## MCMC iteration [26/30]
+## 
+## MCMC iteration [27/30]
+## 
+## MCMC iteration [28/30]
+## 
+## MCMC iteration [29/30]
+## 
+## MCMC iteration [30/30]
+## 
+## 
+## diploid sampling success rate: 0.987
+## 
+## haploid sampling success rate: (no haploid sampling performed)
+## 
+## 
+## --------------------------------
+##  Imputation accuracy assessment 
+## --------------------------------
+## 
+## The table below is based on an internal cross-validation that is performed during each IMPUTE2 run. For this analysis, the program masks the genotypes of one variant at a time in the study data (Panel 2) and imputes the masked genotypes by using the remaining study and reference data. The imputed genotypes are then compared with the original genotypes to produce the concordance statistics shown in the table. You can learn more about this procedure and the contents of the table at http://mathgen.stats.ox.ac.uk/impute/concordance_table_description.html.
+## 
+## In the current analysis, IMPUTE2 masked, imputed, and evaluated 2985 genotypes that were called with high confidence (maximum probability &gt;= 0.90) in the Panel 2 input file (-g or -known_haps_g).
+## 
+## When the masked study genotypes were imputed with reference data from Panel 0, the concordance between original and imputed genotypes was as follows:
+## 
+##   Interval  #Genotypes %Concordance         Interval  %Called %Concordance
+##   [0.0-0.1]          0          0.0         [ &gt;= 0.0]   100.0         97.5
+##   [0.1-0.2]          0          0.0         [ &gt;= 0.1]   100.0         97.5
+##   [0.2-0.3]          0          0.0         [ &gt;= 0.2]   100.0         97.5
+##   [0.3-0.4]          0          0.0         [ &gt;= 0.3]   100.0         97.5
+##   [0.4-0.5]          0          0.0         [ &gt;= 0.4]   100.0         97.5
+##   [0.5-0.6]          8        100.0         [ &gt;= 0.5]   100.0         97.5
+##   [0.6-0.7]          6         83.3         [ &gt;= 0.6]    99.7         97.5
+##   [0.7-0.8]          4        100.0         [ &gt;= 0.7]    99.5         97.5
+##   [0.8-0.9]         50         88.0         [ &gt;= 0.8]    99.4         97.5
+##   [0.9-1.0]       2917         97.7         [ &gt;= 0.9]    97.7         97.7
+## 
+## Have a nice day!</code></pre>
 </div>
             </section>
 

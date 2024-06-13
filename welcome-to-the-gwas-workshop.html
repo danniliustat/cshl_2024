@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Welcome to the GWAS Workshop | README</title>
+  <meta name="description" content="" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Welcome to the GWAS Workshop | README" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Welcome to the GWAS Workshop | README" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path=""><a href="#welcome-to-the-gwas-workshop"><i class="fa fa-check"></i><b>1</b> Welcome to the GWAS Workshop</a>
+<ul>
+<li class="chapter" data-level="1.0.1" data-path=""><a href="#overview"><i class="fa fa-check"></i><b>1.0.1</b> Overview</a></li>
+<li class="chapter" data-level="1.0.2" data-path=""><a href="#folder-structure"><i class="fa fa-check"></i><b>1.0.2</b> Folder structure:</a></li>
+<li class="chapter" data-level="1.0.3" data-path=""><a href="#programming-languages"><i class="fa fa-check"></i><b>1.0.3</b> Programming Languages:</a></li>
+<li class="chapter" data-level="1.0.4" data-path=""><a href="#required-gwas-tools"><i class="fa fa-check"></i><b>1.0.4</b> Required GWAS Tools</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<!--bookdown:title:end-->
+<!--bookdown:title:start-->
+<div id="welcome-to-the-gwas-workshop" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Welcome to the GWAS Workshop<a href="#welcome-to-the-gwas-workshop" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This repository is for CSHL 2024 Summer Course on GWAS analysis.</p>
+<p>Speaker: Min Zhang, Danni Liu, University of California, Irvine</p>
+<p><strong>Before you start, please download this whole repository to your personal laptop. Click “Code”-&gt; Select “Local” tab-&gt; “Download ZIP”. A ZIP file (likely with name “bigcare-main”) will be saved to your laptop. Unzip the file to access all datasets and materials.</strong>
+<img src="image/download.png" alt="Download" /></p>
+<div id="overview" class="section level3 hasAnchor" number="1.0.1">
+<h3><span class="header-section-number">1.0.1</span> Overview<a href="#overview" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In this course, we will explore the fundamentals of Genome-Wide Association Study (GWAS) analysis using both toy example datasets and a subsetted dataset from a real-world case study. By the end of this course, we hope you will have a basic understanding of GWAS analysis pipeline and be able to carry out similar analysis using your own data.</p>
+<p>The course is divided into five chapters, starting with the initial overview of the tools and pipeline using toy or example datasets. This section will give you a general idea of the different steps involved in GWAS analysis. The subsequent chapters will focus on the breast cancer case study from GEO. These chapters will provide a hands-on experience of analyzing real-world data.</p>
+</div>
+<div id="folder-structure" class="section level3 hasAnchor" number="1.0.2">
+<h3><span class="header-section-number">1.0.2</span> Folder structure:<a href="#folder-structure" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Five .HTML files for Chapter 1-5 started with “ch1_…” to “ch5_…”</strong>: These are the course materials with instructions, codes and outputs. Double click on them or drag these files to your browser to open.</p>
+<ul>
+<li>We will begin with two chapters that provide an overview of the tools and pipeline, using toy or example datasets. These small datasets will allow you to grasp the different steps involved in GWAS analysis. Additionally, these toy examples will enable you to explore the data structure and manipulate the results easily, as they are small and can be easily opened.</li>
+<li>The remaining chapters 3-5 will delve into a detailed case study on breast cancer, utilizing a dataset downloaded from the Gene Expression Omnibus (GEO). To facilitate running the analysis on a personal laptop, we have subsetted the genotype data to include only 1000 Single Nucleotide Polymorphisms (SNPs).</li>
+</ul></li>
+<li><p><strong>Data</strong>: This folder includes the necessary data files, including the toy example datasets, case study data, and the corresponding results. We will read data and write outputs to this folder.</p></li>
+<li><p><strong>Tools</strong>: This folder contains installation packages for other programs that we will use in our course.</p></li>
+</ul>
+</div>
+<div id="programming-languages" class="section level3 hasAnchor" number="1.0.3">
+<h3><span class="header-section-number">1.0.3</span> Programming Languages:<a href="#programming-languages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Throughout this course, we will primarily use the programming languages Bash and R. It is essential that you have a working knowledge of both languages before carrying out your own analysis. Please ensure that you have <strong>RStudio</strong> installed on your laptop to actively participate in the course.</p>
+<p><strong>Install R and RStudio</strong>:</p>
+<p>You can download R and RStudio at <a href="https://posit.co/download/rstudio-desktop/">https://posit.co/download/rstudio-desktop/</a>. Choose the installation files that are suitable for your laptop system. You have to install R before installing RStudio.</p>
+<p>After you launch RStudio, locate the bottom left panel which has two tabs “Console” and “Terminal”. We will mainly use these two tabs for our course. “Console” window is used to run R codes and “Terminal” window can access your system shell.</p>
+<p>For macOS users, “Terminal” can run Bash commands directly. You will start by setting your working directory to the downloaded “bigcare-main” folder by typing: <code>cd /path/to/bigcare-main</code> (change this path to where you saved it) in the RStudio Terminal.</p>
+<p>However, Windows users need to use another “Powershell” App to run Bash codes because the default system shell language for Windows is Windows Commands, which is different from Bash commands. See notes below.</p>
+<blockquote>
+<p>👉<strong>Special Notes to Windows Users</strong>:</p>
+<p>Windows has two command-line shells, Windows Command shell and Windows Powershell. Windows Command shell is default for Windows system and can be run in “Command Prompt” App or in RStudio Terminal. But Windows commands are NOT the same as Bash commands! Powershell App is the only place to run Bash commands for Windows users. For example, Bash codes such as <code>ls</code>, <code>head</code> or <code>awk</code> can’t be recogonized from RStudio Terminal, but can be run from Powershell.</p>
+<p>To open Powershell, search for “Powershell” App in Windows menu.(Don’t choose ‘Command Prompt’.) You can also find it by pressing “Windows+X” key and select “Terminal” in the menu appeared. Test whether you can run bash codes by typing <code>ls</code> in the terminal window. Then set your working directory to the downloaded “bigcare-main” folder by typing: <code>cd /path/to/bigcare-main</code> (change this path to where you saved it).</p>
+</blockquote>
+</div>
+<div id="required-gwas-tools" class="section level3 hasAnchor" number="1.0.4">
+<h3><span class="header-section-number">1.0.4</span> Required GWAS Tools<a href="#required-gwas-tools" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In GWAS analysis, we also use additional command-line tools to handle large scale datasets. The primary tools we use in this course are <strong>PLINK</strong> and <strong>IMPUTE2</strong>. Participants need to install these tools on your own laptops before calling them.</p>
+<p>Before you install, you need to check whether these tools are compatible to run on your laptop system. Usually, bioinformatics analyses are run on computational servers with Linux system given the large data volumn and high computational power required. So most bioinformatic programs are developed for Linux and only some of them are available to run on personal laptops. For the tools used in our course, <strong>PLINK</strong> is compatible with Windows, macOS, and Linux, while <strong>IMPUTE2</strong> is only available for macOS and Linux users. We also use another tool, Eigensoft, in “ch2_Summary_of_Data_Preprocess…”, but this tool can only be executed on a Linux operating system. We will directly show the codes and outputs for “Eigensoft”” so you don’t have to run it.</p>
+<p><strong>Installation instructions</strong></p>
+<p>You can find installation packages for PLINK and IMPUTE2 in your downloaded “bigcare-main/Tools” folder. You need to locate the corresponding program ZIP files that are suitable for your laptop system then unzip it before use.</p>
+<ul>
+<li><p><strong>For macOS users</strong>: You can run both PLINK and IMPUTE2.
+PLINK installation ZIP file can be found in “/bigcare-main/Tools/PLINK/plink_mac_20230116.zip”. Unzip this file by double-click and a folder “plink_mac_20230116” will be created. The PLINK program file “plink” is within this folder. You can call PLINK program in RStudio Terminal by specifying the absolute path to this “plink” file: <code>/path/to/bigcare-main/Tools/PLINK/plink_mac_20230116/plink</code>. Similar for IMPUTE2, you can unzip the installation ZIP file for macOS in “/bigcare-main/Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel.tgz”. IMPUTE2 program can be called with <code>/path/to/bigcare-main/Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2</code>. An example of codes in RStudio Terminal is as below:</p>
+<pre><code>cd /path/to/bigcare-main
+./Tools/PLINK/plink_mac_20230116/plink --help</code></pre>
+<blockquote>
+<p>👉 <strong>macOS needs to authorize programs before use:</strong></p>
+<p>When you try to call PLINK or IMPUTE2 with the above commands, you might get a pop-up window with the following message <code>“plink” cannot be opened because the developer cannot be verified</code>.(Fig1) Select “Cancel” and we will authorize PLINK and IMPUTE2 first. Please go to macOS “System Settings”-&gt;“Privacy &amp; Security”, and scroll down until you see a message <code>"plink" was blocked from use because it is not from an identified developer</code>.(Fig2) Click “Allow Anyway” and you will be prompt to enter your Mac username and password. Click “Unlock” and then “Allow Anyway” again, and the previous message will disappear. Then try to run the same codes again in RStudio Terminal. You will get another pop-up window saying <code>macOS cannot verify the developer of “plink”. Are you sure you want to open it?</code>,(Fig3) select “Open” then you can see PLINK or IMPUTE2 commands options shown up in Terminal.</p>
+</blockquote></li>
+</ul>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Fig1. Pop-up window when you try to run program for the first time</th>
+<th align="center">Fig2. Authorize program in System Settings</th>
+<th align="center">Fig3. Second pop-up window when you run it again after authorization</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><img src="image/popup1.png" alt="pop-up1" /></td>
+<td align="center"><img src="image/auth.png" alt="auth" /></td>
+<td align="center"><img src="image/popup2.png" alt="popup2" /></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><strong>For Windows users</strong>: You can <strong>ONLY</strong> run PLINK program codes.
+PLINK installation file for Windows can be found in “/bigcare-main/Tools/PLINK/plink_win64_20230116.zip”. Unzip “plink_win64_20230116.zip” with right click-&gt;“Extract All…” and a folder “plink_win64_20230116” will be created.(Double clicking the folder won’t unzip it. You have to extract it into an unzipped folder. ) The PLINK program file “plink.exe” is within this folder. You can call PLINK program in RStudio Terminal by specifying the absolute path to this “plink.exe” file: <code>/path/to/bigcare-main/Tools/PLINK/plink_win64_20230116/plink.exe</code>. An example of codes in RStudio Terminal is as below:</p>
+<pre><code>cd /path/to/bigcare-main
+./Tools/PLINK/plink_win64_20230116/plink.exe --help</code></pre>
+<p><strong>Note: Windows users can run PLINK in RStudio Terminal ONLY, but not in Powershell. For other Bash codes, please still use “Windows Powershell” app.</strong></p></li>
+</ul>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/%s",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,311 @@
+# GWAS with Binary Trait
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "./Data/case_data_binary")
+getwd
+```
+
+```{r eval=T, echo=F,message=FALSE, warnings=FALSE}
+# R codes- run in R Console
+#load R packages
+library(data.table)
+library(GEOquery)
+library(qqman)
+library(png)
+library(QCGWAS)
+```
+
+This section introduces a hands-on practice of a genome-wide association study with binary traits. The reference paper provided a criteria to define the binary groups. The groups were divided based on MR(metabolite ratio) values, such that groups are coded as 1 if MR < 0.0146 and 0 if MR>= 0.0146. We will adopt their citeria in this notebook to define the binary groups. Then we perform a genome-wide case/control association analysis for the binary traits.
+
+Reference paper: Hennig EE, Piatkowska M, Goryca K, Pospiech E, Paziewska A, Karczmarski J, Kluska A, Brewczynska E, Ostrowski J "[Non-CYP2D6 variants selected by GWAS improved the prediction of impaired tamoxifen metabolism in breast cancer patients](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6722498/)." J Clin Med. 2019 Aug; 8(8): 1087. doi: 10.3390/jcm8081087
+
+## Data Preparation
+1. Phenotype data (using R):
+  + We convert the continuous trait of `Z-endoxifen ratio` from the previous notebook to binary traits based on the cut-off value 0.0146:
+  + Values greater than 0.0146 are coded as 1
+  + Values less than 0.0146 are coded as 2
+2. Genotype data:
+  + genotype.ped
+  + genotype.map
+
+```{bash eval=F}
+# change the path below to where you saved "bigcare-main" folder
+## run in R Terminal
+#mydir="/path/to/bigcare-main/Data/case_data"
+mydir="./Data/case_data_binary"
+cd $mydir
+```
+
+```{r eval=F}
+# R codes- run in R Console
+#setwd("/path/to/bigcare-main/Data/case_data")
+setwd("./Data/case_data_binary")
+mydir<-getwd()
+```
+
+
+The following code load the imputed phenotype data `phenotype0.txt` and extract our target phenotype data of `Z-endoxifen ratio`. Then, we convert the continuous traits into binary traits, and save the binary group variable `binary_pheno0` to file `binary_phenotype0.txt`.
+
+```{r}
+# R codes- run in R Console
+pheno0=fread("phenotype0.txt",header=F) #read phenotype data
+binary_pheno0=pheno0[,3]
+binary_pheno0[binary_pheno0>=0.0146]=1 #code values greater than 0 as 1
+binary_pheno0[binary_pheno0<0.0146]=2 #code values less than 0 as 2
+write.table(binary_pheno0,"binary_phenotype0.txt",quote=F,row.names=F,col.names=F,sep=" ") #save binary phenotype data
+head(binary_pheno0)
+```
+
+After the binary group is ready, we use the same procedure in section 5.3 of last notebook to prepare PLINK alternate phenotype file (in Linux):
+
+Note: famID.txt and samID.txt are both required for PLINK step. They are already prepared in last notebook.
+
+```{bash}
+## bash codes- run in terminal
+# Windows user need to run in Powershell App 
+paste famID.txt samID.txt binary_phenotype0.txt > binary_phenotype.txt
+```
+
+Take a look at the prepared phenotype data.
+
+```{r}
+# R codes- run in R Console
+binary_pheno<-read.table("binary_phenotype.txt")
+head(binary_pheno)
+```
+
+## Genome-Wide Case/Control Association Test (in PLINK)
+Similar as last notebook, we will still use PLINK to perform association test. The only change is the phenotype file.
+
+The following code conducts the genome-wide association test by PLINK in bash code. This code will take several minutes to finish.
+```{bash eval=F}
+## # both Mac and Windows can run in Terminal
+# windows users
+../../Tools/PLINK/plink_win64/plink.exe \
+--noweb --file genotype_1k --assoc --pheno binary_phenotype.txt --adjust --all-pheno --out younameit
+```
+```{bash}
+# macOS users
+../../Tools/PLINK/plink_mac/plink \
+--noweb --file genotype_1k --assoc --pheno binary_phenotype.txt --adjust --all-pheno --out younameit
+```
+
+1. **--noweb** suppress checking for new version,
+2. **--file** specifies .ped and .map files, 
+3. **--assoc** performs case/control or QTL association, you can also perform other tests by changing the options,
+4. **--pheno** specifies alternate phenotype, 
+5. **--adjust** generates a file of adjusted significance values that correct for all tests performed and other metrics, 
+6. **--all-pheno** performs association test for all phenotypes in binary_phenotype.tix file, 
+7. **--out** specifies output filename. 
+
+This will generate the files **younameit.P1.assoc** with fields as follows:
+
+     CHR     Chromosome
+     
+     SNP     SNP ID
+     
+     BP      Physical position (base-pair)
+     
+     A1      Minor allele name (based on whole sample)
+     
+     F_A     Frequency of this allele in cases
+     
+     F_U     Frequency of this allele in controls
+     
+     A2      Major allele name
+     
+     CHISQ   Basic allelic test chi-square (1df)
+     
+     P       Asymptotic p-value for this test
+     
+     OR      Estimated odds ratio (for A1, i.e. A2 is reference)     
+
+**--adjust** generates the file **younameit.adjust**, which contains the following fields
+
+     CHR         Chromosome number
+           
+     SNP         SNP identifer
+           
+     UNADJ       Unadjusted p-value
+           
+     GC          Genomic-control corrected p-values
+           
+     BONF        Bonferroni single-step adjusted p-values
+           
+     HOLM        Holm (1979) step-down adjusted p-values
+           
+     SIDAK_SS    Sidak single-step adjusted p-values
+           
+     SIDAK_SD    Sidak step-down adjusted p-values
+           
+     FDR_BH      Benjamini & Hochberg (1995) step-up FDR control
+           
+     FDR_BY      Benjamini & Yekutieli (2001) step-up FDR control 
+     
+## Manhattan Plot and Q-Q Plot
+Similar to the GWAS study for continuous traits, we generate Manhattan Plot and Q-Q Plot to visualize the results of GWAS test.
+
+The Manhattan plot is a good way to visualize the resuls of GWAS test. For more details, please refer: https://en.wikipedia.org/wiki/Manhattan_plot
+
+The Q-Q plot for GWAS is another way to visualize the signals. For more details, please refer:https://genome.sph.umich.edu/wiki/Code_Sample:_Generating_QQ_Plots_in_R
+
+qqman is an R package for creating Q-Q and manhattan plots from GWAS results. See the reference page http://www.gettinggeneticsdone.com/2014/05/qqman-r-package-for-qq-and-manhattan-plots-for-gwas-results.html.
+
+The qqman R package assumes you have columns named SNP, CHR, BP, and P, corresponding to the SNP name (rs number), chromosome number, base-pair position, and p-value.
+
+The following code prepares qqman R input files (CHR, SNP, BP, P) (in Linux)
+```{bash}
+## bash codes- run in terminal
+# Windows user need to run in Powershell App 
+awk '{print $1,$2,$3,$9}' younameit.P1.assoc > P1.assoc
+```
+
+Here is sample data for P1.assoc
+
+    CHR     SNP        BP     P
+
+     1      rs9701055  565433 0.757
+
+     1      rs3094315  752566 0.7004
+
+     1      rs2073813  753541 0.467
+
+     1      rs3131969  754182 0.131
+
+Load association results. Loaded results are in `assoc`.
+
+```{r}
+# R codes- run in R Console
+assoc=fread("P1.assoc", header=T)
+assoc=assoc[(assoc$CHR!=0) & (!is.na(assoc$P)),]
+head(assoc)
+```
+
+## Generate Manhattan plot
+
+We use the same commands as continuous trait to generate a Manhattan plot. The following code will take several minutes to finish.
+```{r}
+# R codes- run in R Console
+png(filename=paste0("Manhattan_Plot_for_binary_z-endoxifen_ratio.png"), type="cairo")
+manhattan(assoc, col=c("dimgray", "darkgoldenrod1"), suggestiveline=F, genomewideline=F)
+dev.off()
+```
+
+```{r}
+# R codes- run in R Console
+img <- readPNG("Manhattan_Plot_for_binary_z-endoxifen_ratio.png")
+grid::grid.raster(img)
+```
+
+This plot is very similar compared with the Manhattan plot we got for continuous trait. They both contain a very significant SNP in chromosome 22, however, this SNP for binary trait is not so significant as for continuous trait. The y-axis value for continuous trait is about 20.
+
+## Generate Q-Q plot
+
+Similarly, a Q-Q plot is generated with qq function to visualize the test results. This code will take several minutes to finish.
+```{r}
+# R codes- run in R Console
+png(filename=paste0("Q-Q_Plot_for_binary_z-endoxifen_ratio.png"), type="cairo")
+qq(assoc$P)
+dev.off()
+```
+```{r}
+# R codes- run in R Console
+img <- readPNG("Q-Q_Plot_for_binary_z-endoxifen_ratio.png")
+grid::grid.raster(img)
+```
+
+Q-Q plot still has a long tail, meaning that there are causal polymorphisms.
+
+## Multiple-Test Correction
+Again, since we simultaneously test the significance of each SNP, we need to control the overall type-I error rate using false discovery rate (FDR).
+
+**Prepare R input files (in Linux)**
+The following code extracts the CHR, SNP, UNADJ, FDR_BH from the PLINK output younameit.adjusted. The results are stored in the files: P1.assoc.adjusted.
+```{bash}
+## bash codes- run in terminal
+# Windows user need to run in Powershell App 
+awk '{print $1,$2,$3,$9}' younameit.P1.assoc.adjusted > P1.assoc.adjusted
+```
+
+**Significant SNPs after a multiple-test correction of FDR (using R)**
+The following code identifies the significant SNPs by the FDR adjusted p-values with cutoff 0.05.
+```{r}
+# R codes- run in R Console
+assoc.adjusted=fread("P1.assoc.adjusted")#load association results
+sigidx=which(assoc.adjusted$FDR_BH<0.05) #index of significant SNPs
+sigSNP=assoc.adjusted[sigidx,] #extract association results for significant SNPs
+write.table(sigSNP, "significant_SNPs_for_z-endoxifen_ratio.txt", row.names=F, col.names=T, quote=F, sep=" ") #save results
+
+#view result
+dim(sigSNP)
+head(sigSNP)
+```
+
+There are 79 significant SNPs identified. However, remember that we have many SNPs with kgp identifiers, we still need to check if they have matched rs identifiers using UCSC Table Browser.
+
+First we need to match genotype information such as position.
+
+```{r}
+# R codes- run in R Console
+map<- fread("genotype_1k.map",header=F)
+names(map) <- c("CHR","SNP","GP","BP") # assign header
+zr_result <- fread("significant_SNPs_for_z-endoxifen_ratio.txt")
+idx <- match(zr_result$SNP, map$SNP)#index of map that match with SNP in result
+zr_result$BP <- map$BP[idx]
+head(zr_result)
+dim(zr_result) #get number of significant SNPs
+```
+
+Next, we will extract the SNPs with kgp identifier, and prepare the table that will be submitted to UCSC.
+
+```{r}
+# R codes- run in R Console
+kgp_snps <- zr_result[grepl("kgp",zr_result$SNP),]
+head(kgp_snps)
+kgp_snps$CHR<- paste0("chr",kgp_snps$CHR)
+kgp_snps$BP_1<- kgp_snps$BP-1
+fwrite(kgp_snps[,c("CHR","BP_1","BP","SNP")], "kgp_snps.txt", sep=" ", quote=F, row.name=F, col.name=F)
+```
+
+After matching, we again got only 2 matched SNPs, same as in continuous study.
+
+```{r}
+# R codes- run in R Console
+kgp_rs<- fread("kgp_rs.txt",header=F)
+names(kgp_rs)<- c("CHR","BP_1","BP","SNP")# assign header
+idx <- match(kgp_rs$BP, kgp_snps$BP)# get index of these matched SNPs in results
+kgp_match<- kgp_snps[idx[!is.na(idx)],]
+kgp_match$SNP<- kgp_rs$SNP[!is.na(idx)] # replace kgp identifier with rs identifier
+kgp_match
+```
+
+After combining with other rs identified SNPs, we got a total of 29 significant SNPs after multiple test correction.
+```{r}
+# R codes- run in R Console
+rs_snps <- zr_result[grepl("rs",zr_result$SNP),]
+kgp_match$CHR <- "22"
+rs_snps <- rbind(rs_snps, kgp_match[,-6])
+fwrite(rs_snps, "significant_snps_with_rs_for_z-endoxifen-ratio.txt", sep=" ", quote=F, row.name=F, col.name=T)
+dim(rs_snps)
+rs_snps
+```
+
+## Top 10 SNPs
+Here, we present the Top 10 SNPs and p-values for both binary and continuous Z-endoxifen ratio trait.
+
+```{r}
+# R codes- run in R Console
+# binary trait
+assoc_binary=read.table("significant_snps_with_rs_for_z-endoxifen-ratio.txt",header=T) #load association results for binary_r_met
+ordered_assoc_binary=assoc_binary[order(assoc_binary$FDR_BH),] #order association results based on p-value
+head(ordered_assoc_binary,10) #association results for the top 10 SNPs with the 10 smallest p-values
+```
+
+```{r}
+# R codes- run in R Console
+# continuous trait
+assoc_cont=read.table("../case_data/significant_snps_with_rs_for_z-endoxifen-ratio.txt",header=T) #load association results for binary_r_met
+ordered_assoc_cont=assoc_cont[order(assoc_cont$FDR_BH),] #order association results based on p-value
+head(ordered_assoc_cont,10) #association results for the top 10 SNPs with the 10 smallest p-values
+```
+

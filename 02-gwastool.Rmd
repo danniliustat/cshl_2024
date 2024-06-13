@@ -21,12 +21,13 @@ Before we can run any analysis, we need to set the working directory path to the
 ```{r eval=F}
 # change the paths to where you saved "bigcare-main"
 ## run in Terminal
-mydir="/path/to/bigcare-main"
+mydir="/path/to/cshl_2024"
 cd $mydir
 
 # R codes- run in R Console
-setwd("/path/to/bigcare-main")
+setwd("/path/to/cshl_2024")
 ```
+
 
 ## GWAS Tools
 We will use two main program tools in this notebook, PLINK and IMPUTE2.
@@ -122,13 +123,17 @@ The following commands compute the **missingness** for each SNP and each subject
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
-# for macoS users
-./Tools/PLINK/plink_mac_20230116/plink \
+# for windows users
+./Tools/PLINK/plink_win64/plink.exe \
 --noweb --file ./Data/QC/5SNPs --missing --out ./Data/QC/younameit
 
-# for windows users
-./Tools/PLINK/plink_win64_20230116/plink.exe \
+```
+
+```{bash}
+# for macoS users
+./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/QC/5SNPs --missing --out ./Data/QC/younameit
+
 ```
 
 This option creates two output files in 'results' folder:
@@ -173,14 +178,14 @@ The following command computes the **allele frequencies**. (The output will prin
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
-# macOS user
-./Tools/PLINK/plink_mac_20230116/plink \
---noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
-
 # Windows user
-./Tools/PLINK/plink_win64_20230116/plink.exe \
+./Tools/PLINK/plink_win64/plink.exe \
 --noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
-
+```
+```{bash}
+# macOS user
+./Tools/PLINK/plink_mac/plink \
+--noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
 ```
 
 This command will create a output file **"younameit.frq"** with six columns:
@@ -211,12 +216,13 @@ The following command computes the **Hardy-Weiberg test**. (The output will prin
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
-# macOS user
-./Tools/PLINK/plink_mac_20230116/plink \
---noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
-
 # Windows user
-./Tools/PLINK/plink_win64_20230116/plink.exe \
+./Tools/PLINK/plink_win64/plink.exe \
+--noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
+```
+```{bash}
+# macOS user
+./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
 ```
 
@@ -263,13 +269,14 @@ The following command performs **multiple quality controls**. (The output will p
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
-# macOS user
-./Tools/PLINK/plink_mac_20230116/plink \
+# Windows user
+./Tools/PLINK/plink_win64/plink.exe \
 --noweb --file ./Data/QC/5SNPs \
 --mind 0.1 --geno 0.1 --maf 0.05 --hwe 0.001 --recode --out ./Data/QC/younameit
-
-# Windows user
-./Tools/PLINK/plink_win64_20230116/plink.exe \
+```
+```{bash}
+# macOS user
+./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/QC/5SNPs \
 --mind 0.1 --geno 0.1 --maf 0.05 --hwe 0.001 --recode --out ./Data/QC/younameit
 
@@ -291,12 +298,13 @@ The following command will calculate **indentical by descent (IBS) distances** b
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
-# macOS user
-./Tools/PLINK/plink_mac_20230116/plink \
---noweb --file ./Data/QC/5SNPs --genome --out ./Data/QC/younameit
-
 # Windows user
-./Tools/PLINK/plink_win64_20230116/plink.exe \
+./Tools/PLINK/plink_win64/plink.exe \
+--noweb --file ./Data/QC/5SNPs --genome --out ./Data/QC/younameit
+```
+```{bash}
+# macOS user
+./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/QC/5SNPs --genome --out ./Data/QC/younameit
 ```
 
@@ -347,7 +355,7 @@ Here is the example provided by **IMPUTE2 package**. The link is https://mathgen
 
 Files used for example are saved in folder `./Data/impute2_example`.
 
-```{bash eval=F}
+```{bash}
 # bash codes- run in terminal
 # IMPUTE2 only works for macOS or Linux users, Windows users can't run it
 
@@ -580,12 +588,13 @@ The following commands perform the **simple association test**
 ```{bash eval=F}
 # both Mac and Windows can run in Terminal
 
-# macOS user
-./Tools/PLINK/plink_mac_20230116/plink \
---noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/conty.txt --out ./Data/Assoc/younameit.conty
-
 # Windows user
-./Tools/PLINK/plink_win64_20230116/plink.exe \
+./Tools/PLINK/plink_win64/plink.exe \
+--noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/conty.txt --out ./Data/Assoc/younameit.conty
+```
+```{bash}
+# macOS user
+./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/conty.txt --out ./Data/Assoc/younameit.conty
 ```
 
@@ -637,12 +646,13 @@ The following commands perform the **simple association test**
 
 ```{bash eval=F}
 # both Mac and Windows can run in Terminal
-# macOS user
-./Tools/PLINK/plink_mac_20230116/plink \
---noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/biny.txt --out ./Data/Assoc/younameit.biny
-
 # Windows user
-./Tools/PLINK/plink_win64_20230116/plink.exe \
+./Tools/PLINK/plink_win64/plink.exe \
+--noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/biny.txt --out ./Data/Assoc/younameit.biny
+```
+```{bash}
+# macOS user
+./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/biny.txt --out ./Data/Assoc/younameit.biny
 ```
 
@@ -658,6 +668,7 @@ The output is **"younameit.biny.assoc"**, which contains the fields:
      CHISQ   Basic allelic test chi-square (1df)
      P       Asymptotic p-value for this test
      OR      Estimated odds ratio (for A1, i.e. A2 is reference)
+     
 ```{bash}
 # bash codes- run in terminal
 # Windows user need to run in Powershell App
@@ -725,14 +736,14 @@ After adjusting the phenotype using a set of covariates, we use the residual as 
 
 ```{bash eval=F}
 # both Mac and Windows can run in Terminal
-
-# macOS user
-./Tools/PLINK/plink_mac_20230116/plink \
+# Windows user
+./Tools/PLINK/plink_win64/plink.exe \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/resid_phenotype_assoc.txt \
 --out ./Data/Assoc/younameit_resid
-
-# Windows user
-./Tools/PLINK/plink_win64_20230116/plink.exe \
+```
+```{bash}
+# macOS user
+./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/resid_phenotype_assoc.txt \
 --out ./Data/Assoc/younameit_resid
 ```
