@@ -115,3 +115,9 @@ continuous-study-with-continuous-gxe-interaction
 sample-size-calculation
 case-study-with-binary-outcome-1
 case-study-with-continuous-outcome-1
+binary-study-with-binary-gxe-interactions
+ldsc-and-gene-set-analysis
+ldsc-linkage-disequilibrium-score-regression
+magma-for-gene-level-analysis
+prepare-annotation-file
+use-magma-for-gene-set-analysis
