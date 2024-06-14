@@ -275,9 +275,13 @@ head(me$cis$eqtls)
 head(me$trans$eqtls)
 ```
 
-```{r}
+```{r eval=T,echo=F, fig.cap='Histogram of p-values for cis- and trans-eQTL', out.width='100%', fig.asp=1.2, fig.align='center'}
 ## Make the histogram of local and distant p-values
+# y-axis is density, which is rescaled frequency to make the sum of area of bars equal to 1
 plot(me)
+# to look at original frequency, use this code
+# hist(me$cis$eqtls$pvalue)
+# hist(me$trans$eqtls$pvalue)
 ```
 
 ```{r}

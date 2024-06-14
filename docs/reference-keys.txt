@@ -132,3 +132,4 @@ covariates
 using-principle-components-as-covariates
 cis-eqtl-and-trans-eqtl-analysis
 gene-regional-manhanttan-plots
+fig:unnamed-chunk-18
