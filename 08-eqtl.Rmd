@@ -122,7 +122,7 @@ head(covar)
 ```
 Need to recode categorical variables as 0,1
 ```{r}
-covar_recode<-covar
+covar_recode<-covar                                                                  
 covar_recode$gender[covar_recode$gender=="male"]<-1
 covar_recode$gender[covar_recode$gender=="female"]<-0
 covar_recode$race[covar_recode$race=="white"]<-1

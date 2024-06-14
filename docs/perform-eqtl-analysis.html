@@ -437,7 +437,7 @@ In an eQTL study often a minimum MAF is required. Since MAF essentially reflects
 ## 5 TCGA-J2-8192  65 female                     white
 ## 6 TCGA-69-7760  73   male                     white</code></pre>
 <p>Need to recode categorical variables as 0,1</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="perform-eqtl-analysis.html#cb24-1" tabindex="-1"></a>covar_recode<span class="ot">&lt;-</span>covar</span>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="perform-eqtl-analysis.html#cb24-1" tabindex="-1"></a>covar_recode<span class="ot">&lt;-</span>covar                                                                  </span>
 <span id="cb24-2"><a href="perform-eqtl-analysis.html#cb24-2" tabindex="-1"></a>covar_recode<span class="sc">$</span>gender[covar_recode<span class="sc">$</span>gender<span class="sc">==</span><span class="st">&quot;male&quot;</span>]<span class="ot">&lt;-</span><span class="dv">1</span></span>
 <span id="cb24-3"><a href="perform-eqtl-analysis.html#cb24-3" tabindex="-1"></a>covar_recode<span class="sc">$</span>gender[covar_recode<span class="sc">$</span>gender<span class="sc">==</span><span class="st">&quot;female&quot;</span>]<span class="ot">&lt;-</span><span class="dv">0</span></span>
 <span id="cb24-4"><a href="perform-eqtl-analysis.html#cb24-4" tabindex="-1"></a>covar_recode<span class="sc">$</span>race[covar_recode<span class="sc">$</span>race<span class="sc">==</span><span class="st">&quot;white&quot;</span>]<span class="ot">&lt;-</span><span class="dv">1</span></span>
@@ -579,7 +579,7 @@ Matrix eQTL can distinguish local (cis-) and distant (trans-) eQTLs and perform 
 <span id="cb42-2"><a href="perform-eqtl-analysis.html#cb42-2" tabindex="-1"></a><span class="fu">unlink</span>(output_file_name_cis);</span>
 <span id="cb42-3"><a href="perform-eqtl-analysis.html#cb42-3" tabindex="-1"></a>  </span>
 <span id="cb42-4"><a href="perform-eqtl-analysis.html#cb42-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&#39;Analysis done in: &#39;</span>, me<span class="sc">$</span>time.in.sec, <span class="st">&#39; seconds&#39;</span>, <span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>);</span></code></pre></div>
-<pre><code>## Analysis done in:  0.111  seconds</code></pre>
+<pre><code>## Analysis done in:  0.104  seconds</code></pre>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="perform-eqtl-analysis.html#cb44-1" tabindex="-1"></a><span class="fu">head</span>(me<span class="sc">$</span>cis<span class="sc">$</span>eqtls)</span></code></pre></div>
 <pre><code>##          snps   gene statistic       pvalue          FDR       beta
 ## 1   1_3511864  MEGF6  6.026756 3.535416e-09 7.944080e-06  0.4127312
