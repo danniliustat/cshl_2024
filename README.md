@@ -8,7 +8,7 @@ Speaker: Min Zhang, Danni Liu, University of California, Irvine
 ![Download](./image/download.png)
 
 ### Overview
-In this course, we will explore the fundamentals of Genome-Wide Association Study (GWAS) analysis using both toy example datasets and a subsetted dataset from a real-world case study. By the end of this course, we hope you will have a basic understanding of GWAS analysis pipeline and be able to carry out similar analysis using your own data. 
+In this course, we will explore the fundamentals of Genome-Wide Association Study (GWAS) analysis using both toy example datasets and a subsetted dataset from a real-world case study. We will also introduce gene-set and eQTL analysis using a subsetted data. By the end of this course, we hope you will have a basic understanding of GWAS and related analysis pipeline and be able to carry out similar analysis using your own data. 
 
 The course is divided into five chapters, starting with the initial overview of the tools and pipeline using toy or example datasets. This section will give you a general idea of the different steps involved in GWAS analysis. The subsequent chapters will focus on the breast cancer case study from GEO. These chapters will provide a hands-on experience of analyzing real-world data.
 
