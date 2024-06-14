@@ -136,3 +136,8 @@ fig:unnamed-chunk-18
 filtering-snps-by-maf
 eqtl-analysis
 multiple-testing-correction
+welcome-to-the-gwas-and-eqtl-workshop
+overview
+folder-structure
+programming-languages
+required-gwas-tools
