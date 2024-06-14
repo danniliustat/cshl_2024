@@ -23,7 +23,7 @@
 <meta name="author" content="Danni Liu - Purdue University" />
 
 
-<meta name="date" content="2024-06-12" />
+<meta name="date" content="2024-06-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,21 +180,110 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.12.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#association-test-using-plink"><i class="fa fa-check"></i><b>3.12.3</b> Association test using plink</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html"><i class="fa fa-check"></i><b>4</b> Unit 3. GWAS Case Study-Continuous Trait</a>
+<li class="chapter" data-level="4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html"><i class="fa fa-check"></i><b>4</b> GWAS Case Study-Data Preparation</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#environment-setting-and-packages-1"><i class="fa fa-check"></i><b>4.1</b> Environment setting and packages</a></li>
-<li class="chapter" data-level="4.2" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#accessing-data"><i class="fa fa-check"></i><b>4.2</b> Accessing data</a>
+<li class="chapter" data-level="4.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#environment-setting-and-packages-1"><i class="fa fa-check"></i><b>4.1</b> Environment setting and packages</a></li>
+<li class="chapter" data-level="4.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#accessing-data"><i class="fa fa-check"></i><b>4.2</b> Accessing data</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-availability"><i class="fa fa-check"></i><b>4.2.1</b> Data availability</a></li>
-<li class="chapter" data-level="4.2.2" data-path="unit-3.-gwas-case-study-continuous-trait.html"><a href="unit-3.-gwas-case-study-continuous-trait.html#data-files-documentation"><i class="fa fa-check"></i><b>4.2.2</b> Data files documentation</a></li>
+<li class="chapter" data-level="4.2.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#data-availability"><i class="fa fa-check"></i><b>4.2.1</b> Data availability</a></li>
+<li class="chapter" data-level="4.2.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#data-files-documentation"><i class="fa fa-check"></i><b>4.2.2</b> Data files documentation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#preprocessing-phenotype-data"><i class="fa fa-check"></i><b>4.3</b> Preprocessing Phenotype Data</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#extracting-phenotype-data"><i class="fa fa-check"></i><b>4.3.1</b> Extracting phenotype data</a></li>
+<li class="chapter" data-level="4.3.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#summary-of-phenotypes-data"><i class="fa fa-check"></i><b>4.3.2</b> Summary of Phenotypes Data</a></li>
+<li class="chapter" data-level="4.3.3" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#histogram-of-each-trait"><i class="fa fa-check"></i><b>4.3.3</b> Histogram of each trait</a></li>
+<li class="chapter" data-level="4.3.4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#handling-the-missing-values-in-the-phenotypes-and-covariates"><i class="fa fa-check"></i><b>4.3.4</b> Handling the missing values in the phenotypes and covariates</a></li>
+<li class="chapter" data-level="4.3.5" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#checking-normality-assumptions-for-each-trait"><i class="fa fa-check"></i><b>4.3.5</b> Checking normality assumptions for each trait</a></li>
+<li class="chapter" data-level="4.3.6" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#normalize-phenotype-data"><i class="fa fa-check"></i><b>4.3.6</b> Normalize phenotype data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#covariates-adjustment"><i class="fa fa-check"></i><b>4.4</b> Covariates Adjustment</a></li>
+<li class="chapter" data-level="4.5" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#prepare-plink-data"><i class="fa fa-check"></i><b>4.5</b> Prepare PLINK data</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file"><i class="fa fa-check"></i><b>4.5.1</b> Step 1: prepare PLINK ped file</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file-1"><i class="fa fa-check"></i><b>4.6</b> Step 1: prepare PLINK ped file</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-2-prepare-plink-map-file"><i class="fa fa-check"></i><b>4.6.1</b> Step 2: prepare PLINK map file</a></li>
+<li class="chapter" data-level="4.6.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-3-prepare-plink-alternate-phenotype-file-in-linux"><i class="fa fa-check"></i><b>4.6.2</b> Step 3 : prepare PLINK alternate phenotype file (in Linux)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<li class="chapter" data-level="5" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html"><i class="fa fa-check"></i><b>5</b> GWAS with Continuous Trait</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
-<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+<li class="chapter" data-level="5.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#manhattan-plot-and-q-q-plot"><i class="fa fa-check"></i><b>5.1</b> Manhattan Plot and Q-Q Plot</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#generate-manhattan-plot"><i class="fa fa-check"></i><b>5.1.1</b> Generate manhattan plot</a></li>
+<li class="chapter" data-level="5.1.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#generate-q-q-plot"><i class="fa fa-check"></i><b>5.1.2</b> Generate Q-Q plot</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="5.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#multiple-test-correction"><i class="fa fa-check"></i><b>5.2</b> Multiple-Test Correction</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#prepare-r-input-files-in-linux"><i class="fa fa-check"></i><b>5.2.1</b> Prepare R input files (in Linux)</a></li>
+<li class="chapter" data-level="5.2.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#significant-snps-after-a-multiple-test-correction-of-fdr-using-r"><i class="fa fa-check"></i><b>5.2.2</b> Significant SNPs after a multiple-test correction of FDR (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#regional-association-plot"><i class="fa fa-check"></i><b>5.3</b> Regional Association Plot</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#obtain-regional-snps-using-r"><i class="fa fa-check"></i><b>5.3.1</b> Obtain regional SNPs (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#distribution-of-z-endoxifen-ratio-for-rs8138080"><i class="fa fa-check"></i><b>5.4</b> Distribution of Z-endoxifen ratio for rs8138080</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#obtain-phenotype-data-z-endoxifen-ratio-using-r"><i class="fa fa-check"></i><b>5.4.1</b> Obtain phenotype data (Z-endoxifen ratio) (using R)</a></li>
+<li class="chapter" data-level="5.4.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#obtain-genotype-for-significant-snps-using-r"><i class="fa fa-check"></i><b>5.4.2</b> Obtain genotype for significant SNPs (using R)</a></li>
+<li class="chapter" data-level="5.4.3" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#create-box-plot-using-r"><i class="fa fa-check"></i><b>5.4.3</b> Create Box plot (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#proportion-of-variation-explained-by-rs8138080"><i class="fa fa-check"></i><b>5.5</b> Proportion of Variation Explained by rs8138080</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#recode-genotype-of-significant-snps-using-r"><i class="fa fa-check"></i><b>5.5.1</b> Recode genotype of significant SNPs (using R)</a></li>
+<li class="chapter" data-level="5.5.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#calculate-marginal-r2-using-r"><i class="fa fa-check"></i><b>5.5.2</b> Calculate marginal <span class="math inline">\(R^2\)</span> (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#practice-time"><i class="fa fa-check"></i><b>5.6</b> PRACTICE TIME</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#practice-1"><i class="fa fa-check"></i><b>5.6.1</b> Practice 1</a></li>
+<li class="chapter" data-level="5.6.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#practice-2"><i class="fa fa-check"></i><b>5.6.2</b> Practice 2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html"><i class="fa fa-check"></i><b>6</b> GWAS with Binary Trait</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#data-preparation"><i class="fa fa-check"></i><b>6.1</b> Data Preparation</a></li>
+<li class="chapter" data-level="6.2" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#genome-wide-casecontrol-association-test-in-plink"><i class="fa fa-check"></i><b>6.2</b> Genome-Wide Case/Control Association Test (in PLINK)</a></li>
+<li class="chapter" data-level="6.3" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#manhattan-plot-and-q-q-plot-1"><i class="fa fa-check"></i><b>6.3</b> Manhattan Plot and Q-Q Plot</a></li>
+<li class="chapter" data-level="6.4" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#generate-manhattan-plot-1"><i class="fa fa-check"></i><b>6.4</b> Generate Manhattan plot</a></li>
+<li class="chapter" data-level="6.5" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#generate-q-q-plot-1"><i class="fa fa-check"></i><b>6.5</b> Generate Q-Q plot</a></li>
+<li class="chapter" data-level="6.6" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#multiple-test-correction-1"><i class="fa fa-check"></i><b>6.6</b> Multiple-Test Correction</a></li>
+<li class="chapter" data-level="6.7" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#top-10-snps"><i class="fa fa-check"></i><b>6.7</b> Top 10 SNPs</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><i class="fa fa-check"></i><b>7</b> GxG and GxE Interactions, Power and Sample Size Calculation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#prepare-files"><i class="fa fa-check"></i><b>7.1</b> Prepare Files</a></li>
+<li class="chapter" data-level="7.2" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#test-for-epistasis-gxg"><i class="fa fa-check"></i><b>7.2</b> Test for Epistasis (GxG)</a></li>
+<li class="chapter" data-level="7.3" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#gene-environment-interaction-gxe"><i class="fa fa-check"></i><b>7.3</b> Gene-Environment Interaction (GxE)</a></li>
+<li class="chapter" data-level="7.4" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-and-sample-size-calculation-for-gwas"><i class="fa fa-check"></i><b>7.4</b> Power and sample size calculation for GWAS</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-calculation"><i class="fa fa-check"></i><b>7.4.1</b> Power calculation</a></li>
+<li class="chapter" data-level="7.4.2" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#sample-size-calculation"><i class="fa fa-check"></i><b>7.4.2</b> Sample size calculation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html"><i class="fa fa-check"></i><b>8</b> LDSC and Gene-Set Analysis</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#ldsc-linkage-disequilibrium-score-regression"><i class="fa fa-check"></i><b>8.1</b> LDSC (Linkage Disequilibrium Score Regression)</a></li>
+<li class="chapter" data-level="8.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#magma-for-gene-level-analysis"><i class="fa fa-check"></i><b>8.2</b> MAGMA (for Gene-Level Analysis)</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#prepare-annotation-file"><i class="fa fa-check"></i><b>8.2.1</b> Prepare Annotation File</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#use-magma-for-gene-set-analysis"><i class="fa fa-check"></i><b>8.2.2</b> Use MAGMA for Gene-Set Analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html"><i class="fa fa-check"></i><b>9</b> Perform eQTL Analysis</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#filtering-snps-by-maf"><i class="fa fa-check"></i><b>9.1</b> Filtering SNPs by MAF</a></li>
+<li class="chapter" data-level="9.2" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#gene-expression-profiling"><i class="fa fa-check"></i><b>9.2</b> Gene expression profiling</a></li>
+<li class="chapter" data-level="9.3" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#covariates"><i class="fa fa-check"></i><b>9.3</b> Covariates</a></li>
+<li class="chapter" data-level="9.4" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#using-principle-components-as-covariates"><i class="fa fa-check"></i><b>9.4</b> Using principle components as covariates</a></li>
+<li class="chapter" data-level="9.5" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#eqtl-analysis"><i class="fa fa-check"></i><b>9.5</b> eQTL analysis</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#cis-eqtl-and-trans-eqtl-analysis"><i class="fa fa-check"></i><b>9.5.1</b> cis-eQTL and trans-eQTL analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#multiple-testing-correction"><i class="fa fa-check"></i><b>9.6</b> Multiple testing correction</a></li>
+<li class="chapter" data-level="9.7" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#gene-regional-manhanttan-plots"><i class="fa fa-check"></i><b>9.7</b> Gene regional Manhanttan plots</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -235,13 +324,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="an-overview-of-regression-with-toy-examples.html#cb1-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;bigcare-main&quot; folder</span></span>
 <span id="cb1-2"><a href="an-overview-of-regression-with-toy-examples.html#cb1-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/gwas&quot;</span>)</span></code></pre></div>
 <p>In this notebook, we will use R packages “data.table”, “GEOquery”, “plyr” and “ROCR”. You can install the R base packages using install.packages(). “GEOquery” is a BioConductor package that needs to be installed with BioManager. The codes below show you how to install these packages in R. They are commented out with # here, so if you want to run them on your own laptop, please remove # before the codes.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="an-overview-of-regression-with-toy-examples.html#cb2-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;data.table&quot;</span>)</span>
-<span id="cb2-2"><a href="an-overview-of-regression-with-toy-examples.html#cb2-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;plyr&quot;</span>)</span>
-<span id="cb2-3"><a href="an-overview-of-regression-with-toy-examples.html#cb2-3" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;ROCR&quot;</span>)</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="an-overview-of-regression-with-toy-examples.html#cb2-1" tabindex="-1"></a><span class="co">#install.packages(&quot;data.table&quot;)</span></span>
+<span id="cb2-2"><a href="an-overview-of-regression-with-toy-examples.html#cb2-2" tabindex="-1"></a><span class="co">#install.packages(&quot;plyr&quot;)</span></span>
+<span id="cb2-3"><a href="an-overview-of-regression-with-toy-examples.html#cb2-3" tabindex="-1"></a><span class="co">#install.packages(&quot;ROCR&quot;)</span></span>
 <span id="cb2-4"><a href="an-overview-of-regression-with-toy-examples.html#cb2-4" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="an-overview-of-regression-with-toy-examples.html#cb2-5" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb2-6"><a href="an-overview-of-regression-with-toy-examples.html#cb2-6" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
-<span id="cb2-7"><a href="an-overview-of-regression-with-toy-examples.html#cb2-7" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;GEOquery&quot;</span>)</span></code></pre></div>
+<span id="cb2-5"><a href="an-overview-of-regression-with-toy-examples.html#cb2-5" tabindex="-1"></a><span class="co">#if (!require(&quot;BiocManager&quot;, quietly = TRUE))</span></span>
+<span id="cb2-6"><a href="an-overview-of-regression-with-toy-examples.html#cb2-6" tabindex="-1"></a><span class="co">#    install.packages(&quot;BiocManager&quot;)</span></span>
+<span id="cb2-7"><a href="an-overview-of-regression-with-toy-examples.html#cb2-7" tabindex="-1"></a><span class="co">#BiocManager::install(&quot;GEOquery&quot;)</span></span></code></pre></div>
 <p>After installation, The list of packages are loaded with library() function.</p>
 <p>The following code might generate multiple messages when loading the packages, such as “The following objects are masked from XXX”, which is normal. You can ignore them.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="an-overview-of-regression-with-toy-examples.html#cb3-1" tabindex="-1"></a><span class="co">#load R packages</span></span>
