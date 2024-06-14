@@ -4,18 +4,20 @@ This repository is for CSHL 2024 Summer Course on GWAS analysis.
 
 Speaker: Min Zhang, Danni Liu, University of California, Irvine
 
-**Before you start, please download this whole repository to your personal laptop. Click "Code"-> Select "Local" tab-> "Download ZIP". A ZIP file (likely with name "bigcare-main") will be saved to your laptop. Unzip the file to access all datasets and materials.**
-![Download](./image/download.png)
+**Before you start, please clone this whole repository to your personal laptop. Click "File"-> "New Project". Select "Version Control" -> "Git". In the next window, "Repository URL" is the github URL `https://github.com/danniliustat/cshl_2024.git` we will clone, "Project directory name" is "cshl_2024", "Create project as subdirectory of" should be where you want the project folder to save. I recommend using a top-level directory in your system, such as "Documents", so that it's easier to navigate and retrive the path. A ZIP file (likely with name "bigcare-main") will be saved to your laptop. Unzip the file to access all datasets and materials.**
+Fig1. Import and clone GitHub repository
+:-------------------------:|:-------------------------:|:-------------------------:
+![step1](./image/clone1.png)  |![step2](./image/clone2.png)|  ![step3](./image/clone3.png)
 
 ### Overview
 In this course, we will explore the fundamentals of Genome-Wide Association Study (GWAS) analysis using both toy example datasets and a subsetted dataset from a real-world case study. We will also introduce gene-set and eQTL analysis using a subsetted data. By the end of this course, we hope you will have a basic understanding of GWAS and related analysis pipeline and be able to carry out similar analysis using your own data. 
 
-The course is divided into five chapters, starting with the initial overview of the tools and pipeline using toy or example datasets. This section will give you a general idea of the different steps involved in GWAS analysis. The subsequent chapters will focus on the breast cancer case study from GEO. These chapters will provide a hands-on experience of analyzing real-world data.
+The course is divided into chapters, starting with the initial overview of the tools and pipeline using toy or example datasets in CHapter 2-3. This section will give you a general idea of the different steps involved in GWAS analysis. The subsequent chapters will focus on the breast cancer case study from GEO. These chapters will provide a hands-on experience of analyzing real-world data.
 
 ### Folder structure:
-- **Five .HTML files for Chapter 1-5 started with "ch1_..." to "ch5_..."**: These are the course materials with instructions, codes and outputs. Double click on them or drag these files to your browser to open.
+- **.Rmd**: These are the course materials with instructions, codes and outputs in R Markdown files. 
   - We will begin with two chapters that provide an overview of the tools and pipeline, using toy or example datasets. These small datasets will allow you to grasp the different steps involved in GWAS analysis. Additionally, these toy examples will enable you to explore the data structure and manipulate the results easily, as they are small and can be easily opened.
-  - The remaining chapters 3-5 will delve into a detailed case study on breast cancer, utilizing a dataset downloaded from the Gene Expression Omnibus (GEO). To facilitate running the analysis on a personal laptop, we have subsetted the genotype data to include only 1000 Single Nucleotide Polymorphisms (SNPs).
+  - The remaining chapters will delve into a detailed case study on breast cancer, utilizing a dataset downloaded from the Gene Expression Omnibus (GEO). To facilitate running the analysis on a personal laptop, we have subsetted the genotype data to include only 1000 Single Nucleotide Polymorphisms (SNPs).
 
 - **Data**: This folder includes the necessary data files, including the toy example datasets, case study data, and the corresponding results. We will read data and write outputs to this folder.
 
