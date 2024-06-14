@@ -23,7 +23,7 @@
 <meta name="author" content="Danni Liu - Purdue University" />
 
 
-<meta name="date" content="2024-06-13" />
+<meta name="date" content="2024-06-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="gwas-with-binary-trait.html"/>
-<link rel="next" href="references.html"/>
+<link rel="next" href="ldsc-and-gene-set-analysis.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -262,6 +262,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.4.2" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#sample-size-calculation"><i class="fa fa-check"></i><b>7.4.2</b> Sample size calculation</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="8" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html"><i class="fa fa-check"></i><b>8</b> LDSC and Gene-Set Analysis</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#ldsc-linkage-disequilibrium-score-regression"><i class="fa fa-check"></i><b>8.1</b> LDSC (Linkage Disequilibrium Score Regression)</a></li>
+<li class="chapter" data-level="8.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#magma-for-gene-level-analysis"><i class="fa fa-check"></i><b>8.2</b> MAGMA (for Gene-Level Analysis)</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#prepare-annotation-file"><i class="fa fa-check"></i><b>8.2.1</b> Prepare Annotation File</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#use-magma-for-gene-set-analysis"><i class="fa fa-check"></i><b>8.2.2</b> Use MAGMA for Gene-Set Analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html"><i class="fa fa-check"></i><b>9</b> LDSC and Gene-Set Analysis</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#ldsc-linkage-disequilibrium-score-regression-1"><i class="fa fa-check"></i><b>9.1</b> LDSC (Linkage Disequilibrium Score Regression)</a></li>
+<li class="chapter" data-level="9.2" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#magma-for-gene-level-analysis-1"><i class="fa fa-check"></i><b>9.2</b> MAGMA (for Gene-Level Analysis)</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#prepare-annotation-file-1"><i class="fa fa-check"></i><b>9.2.1</b> Prepare Annotation File</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#use-magma-for-gene-set-analysis-1"><i class="fa fa-check"></i><b>9.2.2</b> Use MAGMA for Gene-Set Analysis</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -286,13 +304,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="gxg-and-gxe-interactions-power-and-sample-size-calculation" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">Chapter 7</span> GxG and GxE Interactions, Power and Sample Size Calculation<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#gxg-and-gxe-interactions-power-and-sample-size-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>In this section we select the top 5 SNPs for continuous Z-endoxifen ratio, and demonstrate how to use PLINK to perform tests of GxG [G(Gene) by G(Gene)] and GxE [G(Gene) by E(Environment)] interactions.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb1-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;bigcare-main&quot; folder</span></span>
+<span id="cb1-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb1-2" tabindex="-1"></a><span class="co">## run in R Terminal</span></span>
+<span id="cb1-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb1-3" tabindex="-1"></a><span class="co">#mydir=&quot;/path/to/bigcare-main/Data/case_data&quot;</span></span>
+<span id="cb1-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb1-4" tabindex="-1"></a><span class="va">mydir</span><span class="op">=</span><span class="st">&quot;./Data/case_interaction&quot;</span></span>
+<span id="cb1-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb1-5" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$mydir</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb2-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb2-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb2-2" tabindex="-1"></a><span class="co">#setwd(&quot;/path/to/bigcare-main/Data/case_data&quot;)</span></span>
+<span id="cb2-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb2-3" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;./Data/case_interaction&quot;</span>)</span>
+<span id="cb2-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb2-4" tabindex="-1"></a>mydir<span class="ot">&lt;-</span><span class="fu">getwd</span>()</span></code></pre></div>
 <div id="prepare-files" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Prepare Files<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#prepare-files" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can obtain the top 5 SNPs and p-values for continuous Z-endoxifen ratio (using R)</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb1-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb1-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb1-2" tabindex="-1"></a>qassoc<span class="ot">=</span><span class="fu">fread</span>(<span class="st">&quot;../case_data/significant_snps_with_rs_for_z-endoxifen-ratio.txt&quot;</span>,<span class="at">header=</span>T) <span class="co">#load association results for continuous r_met</span></span>
-<span id="cb1-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb1-3" tabindex="-1"></a>ordered_qassoc<span class="ot">=</span>qassoc[<span class="fu">order</span>(qassoc<span class="sc">$</span>FDR_BH),] <span class="co">#order association results based on p-value</span></span>
-<span id="cb1-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb1-4" tabindex="-1"></a><span class="fu">head</span>(ordered_qassoc,<span class="dv">5</span>) <span class="co">#association results for the top 5 SNPs with the 5 smallest p-values</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb3-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb3-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb3-2" tabindex="-1"></a>qassoc<span class="ot">=</span><span class="fu">fread</span>(<span class="st">&quot;../case_data/significant_snps_with_rs_for_z-endoxifen-ratio.txt&quot;</span>,<span class="at">header=</span>T) <span class="co">#load association results for continuous r_met</span></span>
+<span id="cb3-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb3-3" tabindex="-1"></a>ordered_qassoc<span class="ot">=</span>qassoc[<span class="fu">order</span>(qassoc<span class="sc">$</span>FDR_BH),] <span class="co">#order association results based on p-value</span></span>
+<span id="cb3-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb3-4" tabindex="-1"></a><span class="fu">head</span>(ordered_qassoc,<span class="dv">5</span>) <span class="co">#association results for the top 5 SNPs with the 5 smallest p-values</span></span></code></pre></div>
 <pre><code>##      CHR       SNP     UNADJ    FDR_BH       BP
 ##    &lt;int&gt;    &lt;char&gt;     &lt;num&gt;     &lt;num&gt;    &lt;int&gt;
 ## 1:    22 rs8138080 3.318e-20 1.335e-17 42396371
@@ -307,40 +334,40 @@ chr22 rs2011944
 chr22 rs1062753
 chr22 rs4453786</code></pre>
 <p>The following code generates <strong>map</strong> idx &amp; <strong>map</strong> file of the top 5 SNPs (using R)</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb4-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb4-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb4-2" tabindex="-1"></a>map<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;genotype_1k.map&quot;</span>) <span class="co">#read map file</span></span>
-<span id="cb4-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb4-3" tabindex="-1"></a>map<span class="ot">=</span><span class="fu">as.matrix</span>(map) <span class="co">#create a matrix from the MAP file</span></span>
-<span id="cb4-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb4-4" tabindex="-1"></a>top5SNPs<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;rs8138080&quot;</span>, <span class="st">&quot;rs4467371&quot;</span>,<span class="st">&quot;rs2011944&quot;</span>,<span class="st">&quot;rs1062753&quot;</span>,<span class="st">&quot;rs4453786&quot;</span>) <span class="co">#SNP ID of the top 5 SNPs</span></span>
-<span id="cb4-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb4-5" tabindex="-1"></a>top5_idx<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">1</span>) <span class="co">#create an empty matrix</span></span>
-<span id="cb4-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb4-6" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>){</span>
-<span id="cb4-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb4-7" tabindex="-1"></a>  top5_idx[i]<span class="ot">=</span><span class="fu">which</span>(map[,<span class="dv">2</span>]<span class="sc">==</span>top5SNPs[i]) <span class="co">#index of the top 5 SNPs in the MAP file</span></span>
-<span id="cb4-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb4-8" tabindex="-1"></a>}</span>
-<span id="cb4-9"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb4-9" tabindex="-1"></a><span class="fu">as.vector</span>(top5_idx)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb6-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-2" tabindex="-1"></a>map<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;genotype_1k.map&quot;</span>) <span class="co">#read map file</span></span>
+<span id="cb6-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-3" tabindex="-1"></a>map<span class="ot">=</span><span class="fu">as.matrix</span>(map) <span class="co">#create a matrix from the MAP file</span></span>
+<span id="cb6-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-4" tabindex="-1"></a>top5SNPs<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;rs8138080&quot;</span>, <span class="st">&quot;rs4467371&quot;</span>,<span class="st">&quot;rs2011944&quot;</span>,<span class="st">&quot;rs1062753&quot;</span>,<span class="st">&quot;rs4453786&quot;</span>) <span class="co">#SNP ID of the top 5 SNPs</span></span>
+<span id="cb6-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-5" tabindex="-1"></a>top5_idx<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">1</span>) <span class="co">#create an empty matrix</span></span>
+<span id="cb6-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-6" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>){</span>
+<span id="cb6-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-7" tabindex="-1"></a>  top5_idx[i]<span class="ot">=</span><span class="fu">which</span>(map[,<span class="dv">2</span>]<span class="sc">==</span>top5SNPs[i]) <span class="co">#index of the top 5 SNPs in the MAP file</span></span>
+<span id="cb6-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-8" tabindex="-1"></a>}</span>
+<span id="cb6-9"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-9" tabindex="-1"></a><span class="fu">as.vector</span>(top5_idx)</span></code></pre></div>
 <pre><code>## [1] 948 943 927 922 928</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-1" tabindex="-1"></a>top5SNPs.map<span class="ot">=</span>map[top5_idx,] <span class="co">#MAP file of the top 5 SNPs</span></span>
-<span id="cb6-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb6-2" tabindex="-1"></a><span class="fu">write.table</span>(top5SNPs.map,<span class="st">&quot;top5SNPs.map&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save MAP file of the top 5 SNPs</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb8-1" tabindex="-1"></a>top5SNPs.map<span class="ot">=</span>map[top5_idx,] <span class="co">#MAP file of the top 5 SNPs</span></span>
+<span id="cb8-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb8-2" tabindex="-1"></a><span class="fu">write.table</span>(top5SNPs.map,<span class="st">&quot;top5SNPs.map&quot;</span>, <span class="at">row.names=</span>F, <span class="at">col.names=</span>F, <span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>) <span class="co">#save MAP file of the top 5 SNPs</span></span></code></pre></div>
 <p>The following code generates <strong>ped</strong> file of the top 5 SNPs (in Linux) using the index of these 5 SNPs above. Since the first 6 columns are sample information and each SNP has two alleles in .ped file, the index of each pair of allele for each SNP= [6+2(top5_idx)-1, 6+2(top5_idx)].</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb7-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb7-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb7-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
-<span id="cb7-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb7-3" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;{print $1,$2,$3,$4,$5,$6, $1901,$1902, $1891,$1892, $1859, $1860, $1849,$1850, $1861, $1862}&#39;</span> <span class="dt">\</span></span>
-<span id="cb7-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb7-4" tabindex="-1"></a>genotype_1k.ped <span class="op">&gt;</span> top5SNPs.ped</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb9-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb9-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb9-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb9-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb9-3" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;{print $1,$2,$3,$4,$5,$6, $1901,$1902, $1891,$1892, $1859, $1860, $1849,$1850, $1861, $1862}&#39;</span> <span class="dt">\</span></span>
+<span id="cb9-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb9-4" tabindex="-1"></a>genotype_1k.ped <span class="op">&gt;</span> top5SNPs.ped</span></code></pre></div>
 <p>Phenotype data:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb8-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb8-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb8-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
-<span id="cb8-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb8-3" tabindex="-1"></a><span class="fu">paste</span> famID.txt samID.txt z_endoxifen_ratio.txt <span class="op">&gt;</span> ZR.txt</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb10-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb10-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb10-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb10-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb10-3" tabindex="-1"></a><span class="fu">paste</span> famID.txt samID.txt z_endoxifen_ratio.txt <span class="op">&gt;</span> ZR.txt</span></code></pre></div>
 </div>
 <div id="test-for-epistasis-gxg" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Test for Epistasis (GxG)<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#test-for-epistasis-gxg" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For disease-trait population-based samples, it is possible to test for epistasis. All pairwise combinations of SNPs can be tested using PLINK (computationally feasible). For more detailed information for this test, please refer: <a href="http://zzz.bwh.harvard.edu/plink/epi.shtml" class="uri">http://zzz.bwh.harvard.edu/plink/epi.shtml</a></p>
 <p>PLINK produces a model based on allele dosage for each SNP, A and B, and fits the model in the form of</p>
 <pre><code> Y ~ b0 + b1.A + b2.B + b3.AB + e </code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb10-1" tabindex="-1"></a><span class="co">## # both Mac and Windows can run in Terminal</span></span>
-<span id="cb10-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb10-2" tabindex="-1"></a><span class="co"># windows users</span></span>
-<span id="cb10-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb10-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
-<span id="cb10-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb10-4" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--epistasis</span> <span class="at">--epi1</span> 1 <span class="at">--pheno</span> ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb11-1" tabindex="-1"></a><span class="co"># macOS users</span></span>
-<span id="cb11-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb11-2" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
-<span id="cb11-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb11-3" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--epistasis</span> <span class="at">--epi1</span> 1 <span class="at">--pheno</span> ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb12-1" tabindex="-1"></a><span class="co">## # both Mac and Windows can run in Terminal</span></span>
+<span id="cb12-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb12-2" tabindex="-1"></a><span class="co"># windows users</span></span>
+<span id="cb12-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb12-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb12-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb12-4" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--epistasis</span> <span class="at">--epi1</span> 1 <span class="at">--pheno</span> ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb13-1" tabindex="-1"></a><span class="co"># macOS users</span></span>
+<span id="cb13-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb13-2" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb13-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb13-3" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--epistasis</span> <span class="at">--epi1</span> 1 <span class="at">--pheno</span> ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
 <pre><code>## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
 ## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
 ## Logging to younameit.log.
@@ -369,9 +396,9 @@ chr22 rs4453786</code></pre>
 ## Phenotype data is quantitative.
 ## QT --epistasis to younameit.epi.qt ... 0% [processing]writing]             done.
 ## 9 valid tests performed, summary written to younameit.epi.qt.summary .</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb13-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb13-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb13-2" tabindex="-1"></a>epi_res <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&#39;younameit.epi.qt&#39;</span>)</span>
-<span id="cb13-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb13-3" tabindex="-1"></a>epi_res[<span class="sc">!</span><span class="fu">is.na</span>(epi_res<span class="sc">$</span>P),]</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb15-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb15-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb15-2" tabindex="-1"></a>epi_res <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&#39;younameit.epi.qt&#39;</span>)</span>
+<span id="cb15-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb15-3" tabindex="-1"></a>epi_res[<span class="sc">!</span><span class="fu">is.na</span>(epi_res<span class="sc">$</span>P),]</span></code></pre></div>
 <pre><code>##     CHR1      SNP1  CHR2      SNP2    BETA_INT        STAT      P
 ##    &lt;int&gt;    &lt;char&gt; &lt;int&gt;    &lt;char&gt;       &lt;num&gt;       &lt;num&gt;  &lt;num&gt;
 ## 1:    22 rs1062753    22 rs8138080  0.00395402 0.000909368 0.9759
@@ -397,13 +424,13 @@ chr22 rs4453786</code></pre>
  STAT    Chi-square statistic, df=1
      
  P       Asymptotic p-value</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb16-1" tabindex="-1"></a><span class="co">## # both Mac and Windows can run in Terminal</span></span>
-<span id="cb16-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb16-2" tabindex="-1"></a><span class="co"># windows users</span></span>
-<span id="cb16-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb16-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
-<span id="cb16-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb16-4" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--epistasis</span> <span class="at">--epi1</span> 0.05 <span class="at">--pheno</span> ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb17-1" tabindex="-1"></a><span class="co"># macOS users</span></span>
-<span id="cb17-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb17-2" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
-<span id="cb17-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb17-3" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--epistasis</span> <span class="at">--epi1</span> 0.05 <span class="at">--pheno</span> ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb18-1" tabindex="-1"></a><span class="co">## # both Mac and Windows can run in Terminal</span></span>
+<span id="cb18-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb18-2" tabindex="-1"></a><span class="co"># windows users</span></span>
+<span id="cb18-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb18-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb18-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb18-4" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--epistasis</span> <span class="at">--epi1</span> 0.05 <span class="at">--pheno</span> ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb19-1" tabindex="-1"></a><span class="co"># macOS users</span></span>
+<span id="cb19-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb19-2" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb19-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb19-3" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--epistasis</span> <span class="at">--epi1</span> 0.05 <span class="at">--pheno</span> ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
 <pre><code>## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
 ## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
 ## Logging to younameit.log.
@@ -434,9 +461,9 @@ chr22 rs4453786</code></pre>
 ## 9 valid tests performed, summary written to younameit.epi.qt.summary .</code></pre>
 <p>It only records results that are significant, i.e., p&lt;=0.05, which prevents generating too many outputs.</p>
 <p>The results are shown as below. There is nothing in the table so no Epistasis.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb19-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb19-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb19-2" tabindex="-1"></a>epi_res <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&#39;younameit.epi.qt&#39;</span>)</span>
-<span id="cb19-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb19-3" tabindex="-1"></a>epi_res</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb21-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb21-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb21-2" tabindex="-1"></a>epi_res <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&#39;younameit.epi.qt&#39;</span>)</span>
+<span id="cb21-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb21-3" tabindex="-1"></a>epi_res</span></code></pre></div>
 <pre><code>## Empty data.table (0 rows and 7 cols): CHR1,SNP1,CHR2,SNP2,BETA_INT,STAT...</code></pre>
 </div>
 <div id="gene-environment-interaction-gxe" class="section level2 hasAnchor" number="7.3">
@@ -450,26 +477,26 @@ Col 2 is sample ID
 
 Col 3 is age (need to be in 2 groups: 1: old, 2: young)</code></pre>
 <p>Our current covariate file <code>age.txt</code> is a continuous variable. So we need to manually separate it in 2 groups: old(recode as 1) and young(recode as 2). As median age is 55.5, we will assign the sample to “old” if its age is older than 55.5, otherwise to “young”.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb22-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb22-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb22-2" tabindex="-1"></a>age<span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;age.txt&quot;</span>, <span class="at">header=</span>F) <span class="co"># read in age</span></span>
-<span id="cb22-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb22-3" tabindex="-1"></a><span class="fu">names</span>(age)<span class="ot">&lt;-</span><span class="st">&quot;age&quot;</span></span>
-<span id="cb22-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb22-4" tabindex="-1"></a>age_recode <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>,<span class="dv">192</span>,<span class="dv">1</span>) <span class="co"># create a new data with all 1</span></span>
-<span id="cb22-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb22-5" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(age<span class="sc">$</span>age<span class="sc">&lt;</span><span class="fl">55.5</span>) <span class="co"># which sample has age &lt; 55.5</span></span>
-<span id="cb22-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb22-6" tabindex="-1"></a>age_recode[idx,]<span class="ot">&lt;-</span><span class="dv">2</span> <span class="co"># assign those with age &lt;55.5 as 2</span></span>
-<span id="cb22-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb22-7" tabindex="-1"></a><span class="fu">fwrite</span>(age_recode,<span class="st">&quot;age_binary.txt&quot;</span>,<span class="at">quote=</span>F,<span class="at">col.name=</span>F, <span class="at">row.name=</span>F) <span class="co"># save data</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb23-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
-<span id="cb23-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb23-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
-<span id="cb23-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb23-3" tabindex="-1"></a><span class="fu">paste</span> famID.txt samID.txt age_binary.txt <span class="op">&gt;</span> covar_age.txt</span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-1" tabindex="-1"></a><span class="co">## # both Mac and Windows can run in Terminal</span></span>
-<span id="cb24-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-2" tabindex="-1"></a><span class="co"># windows users</span></span>
-<span id="cb24-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
-<span id="cb24-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-4" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--gxe</span> <span class="at">--covar</span> covar_age.txt <span class="dt">\</span></span>
-<span id="cb24-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-5" tabindex="-1"></a>--pheno ZR.txt <span class="at">--out</span> younameit</span>
-<span id="cb24-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-6" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-7" tabindex="-1"></a><span class="co"># macOS users</span></span>
-<span id="cb24-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-8" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
-<span id="cb24-9"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-9" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--gxe</span> <span class="at">--covar</span> covar_age.txt <span class="dt">\</span></span>
-<span id="cb24-10"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-10" tabindex="-1"></a>--pheno ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb24-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-2" tabindex="-1"></a>age<span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;age.txt&quot;</span>, <span class="at">header=</span>F) <span class="co"># read in age</span></span>
+<span id="cb24-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-3" tabindex="-1"></a><span class="fu">names</span>(age)<span class="ot">&lt;-</span><span class="st">&quot;age&quot;</span></span>
+<span id="cb24-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-4" tabindex="-1"></a>age_recode <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>,<span class="dv">192</span>,<span class="dv">1</span>) <span class="co"># create a new data with all 1</span></span>
+<span id="cb24-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-5" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(age<span class="sc">$</span>age<span class="sc">&lt;</span><span class="fl">55.5</span>) <span class="co"># which sample has age &lt; 55.5</span></span>
+<span id="cb24-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-6" tabindex="-1"></a>age_recode[idx,]<span class="ot">&lt;-</span><span class="dv">2</span> <span class="co"># assign those with age &lt;55.5 as 2</span></span>
+<span id="cb24-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb24-7" tabindex="-1"></a><span class="fu">fwrite</span>(age_recode,<span class="st">&quot;age_binary.txt&quot;</span>,<span class="at">quote=</span>F,<span class="at">col.name=</span>F, <span class="at">row.name=</span>F) <span class="co"># save data</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb25-1" tabindex="-1"></a><span class="co"># bash codes- run in terminal</span></span>
+<span id="cb25-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb25-2" tabindex="-1"></a><span class="co"># Windows user need to run in Powershell App </span></span>
+<span id="cb25-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb25-3" tabindex="-1"></a><span class="fu">paste</span> famID.txt samID.txt age_binary.txt <span class="op">&gt;</span> covar_age.txt</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-1" tabindex="-1"></a><span class="co">## # both Mac and Windows can run in Terminal</span></span>
+<span id="cb26-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-2" tabindex="-1"></a><span class="co"># windows users</span></span>
+<span id="cb26-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb26-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-4" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--gxe</span> <span class="at">--covar</span> covar_age.txt <span class="dt">\</span></span>
+<span id="cb26-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-5" tabindex="-1"></a>--pheno ZR.txt <span class="at">--out</span> younameit</span>
+<span id="cb26-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-6" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-7" tabindex="-1"></a><span class="co"># macOS users</span></span>
+<span id="cb26-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-8" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb26-9"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-9" tabindex="-1"></a>--noweb <span class="at">--file</span> top5SNPs <span class="at">--gxe</span> <span class="at">--covar</span> covar_age.txt <span class="dt">\</span></span>
+<span id="cb26-10"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb26-10" tabindex="-1"></a>--pheno ZR.txt <span class="at">--out</span> younameit</span></code></pre></div>
 <pre><code>## bash: line 3: ../../Tools/PLINK/plink_win64/plink.exe: No such file or directory
 ## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
 ## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
@@ -520,9 +547,9 @@ Col 3 is age (need to be in 2 groups: 1: old, 2: young)</code></pre>
      
  P_GXE     Asymptotic p-value for this test</code></pre>
 <p>The results are shown as below:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb27-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb27-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb27-2" tabindex="-1"></a>gxe_res <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&#39;younameit.qassoc.gxe&#39;</span>)</span>
-<span id="cb27-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb27-3" tabindex="-1"></a>gxe_res</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb29-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-2" tabindex="-1"></a>gxe_res <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&#39;younameit.qassoc.gxe&#39;</span>)</span>
+<span id="cb29-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-3" tabindex="-1"></a>gxe_res</span></code></pre></div>
 <pre><code>##      CHR       SNP NMISS1   BETA1    SE1 NMISS2   BETA2    SE2   Z_GXE  P_GXE
 ##    &lt;int&gt;    &lt;char&gt;  &lt;int&gt;   &lt;num&gt;  &lt;num&gt;  &lt;int&gt;   &lt;num&gt;  &lt;num&gt;   &lt;num&gt;  &lt;num&gt;
 ## 1:    22 rs1062753     96 -0.8618 0.1239     96 -0.9168 0.1229 0.31530 0.7525
@@ -553,15 +580,15 @@ Col 3 is age (need to be in 2 groups: 1: old, 2: young)</code></pre>
 provided that two of the three above variables are entered into the appropriate genpwr function.</li>
 </ul>
 <p>First, we need to install this package from GitHub using “devtools”. The codes below show you how to install it on your laptop.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb29-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-2" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-3" tabindex="-1"></a><span class="co"># installation</span></span>
-<span id="cb29-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-4" tabindex="-1"></a><span class="co">#install.packages(&quot;devtools&quot;)</span></span>
-<span id="cb29-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-5" tabindex="-1"></a><span class="co">#library(devtools)</span></span>
-<span id="cb29-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-6" tabindex="-1"></a><span class="co">#install_github(&quot;camillemmoore/Power_Genetics&quot;, subdir=&quot;genpwr&quot;)</span></span>
-<span id="cb29-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-7" tabindex="-1"></a></span>
-<span id="cb29-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-8" tabindex="-1"></a><span class="co"># use package</span></span>
-<span id="cb29-9"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb29-9" tabindex="-1"></a><span class="fu">library</span>(genpwr)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb31-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb31-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb31-2" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb31-3" tabindex="-1"></a><span class="co"># installation</span></span>
+<span id="cb31-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb31-4" tabindex="-1"></a><span class="co">#install.packages(&quot;devtools&quot;)</span></span>
+<span id="cb31-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb31-5" tabindex="-1"></a><span class="co">#library(devtools)</span></span>
+<span id="cb31-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb31-6" tabindex="-1"></a><span class="co">#install_github(&quot;camillemmoore/Power_Genetics&quot;, subdir=&quot;genpwr&quot;)</span></span>
+<span id="cb31-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb31-7" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb31-8" tabindex="-1"></a><span class="co"># use package</span></span>
+<span id="cb31-9"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb31-9" tabindex="-1"></a><span class="fu">library</span>(genpwr)</span></code></pre></div>
 <div id="power-calculation" class="section level3 hasAnchor" number="7.4.1">
 <h3><span class="header-section-number">7.4.1</span> Power calculation<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We will determine the above parameters using our case study data.</p>
@@ -569,13 +596,13 @@ provided that two of the three above variables are entered into the appropriate 
 <h4><span class="header-section-number">7.4.1.1</span> Case study with binary outcome:<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#case-study-with-binary-outcome" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Based on Chapter 4, we have a case-control study with 192 individuals, including 95 cases and 97 controls (case rate of approximately 50%). The SNPs included in the GWAS analysis have MAF over a range of 0 to 0.5. (This can be calculated using plink –freq. Check Chapter 2.) But we will only focus on common alleles with MAF &gt;0.1. We want to calculate the statistical power to detect an odds ratio of 3, for all possible combinations of true and test models, assuming an alpha of 0.05.</p>
 <p>We need to specify the calculation is for power with calc=“power” and use model=“logistic” for binary outcome. The function genpwr.calc with calculate power for all alleles with MAF between 0.1 and 0.5 with an increment of 0.01 based on the study design. Then a plot is generated to visualize the power change vs MAF under different genetic models .</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb30-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb30-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb30-2" tabindex="-1"></a>pw <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;power&quot;</span>, <span class="at">model =</span> <span class="st">&quot;logistic&quot;</span>, </span>
-<span id="cb30-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb30-3" tabindex="-1"></a>                  <span class="at">ge.interaction =</span> <span class="cn">NULL</span>, <span class="at">N=</span><span class="dv">192</span>, <span class="at">Case.Rate=</span><span class="fl">0.5</span>, <span class="at">k=</span><span class="cn">NULL</span>,</span>
-<span id="cb30-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb30-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.01</span>), <span class="at">OR=</span><span class="dv">3</span>, <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
-<span id="cb30-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb30-5" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>), </span>
-<span id="cb30-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb30-6" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
-<span id="cb30-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb30-7" tabindex="-1"></a><span class="fu">power.plot</span>(pw)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb32-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb32-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb32-2" tabindex="-1"></a>pw <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;power&quot;</span>, <span class="at">model =</span> <span class="st">&quot;logistic&quot;</span>, </span>
+<span id="cb32-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb32-3" tabindex="-1"></a>                  <span class="at">ge.interaction =</span> <span class="cn">NULL</span>, <span class="at">N=</span><span class="dv">192</span>, <span class="at">Case.Rate=</span><span class="fl">0.5</span>, <span class="at">k=</span><span class="cn">NULL</span>,</span>
+<span id="cb32-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb32-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.01</span>), <span class="at">OR=</span><span class="dv">3</span>, <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
+<span id="cb32-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb32-5" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>), </span>
+<span id="cb32-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb32-6" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
+<span id="cb32-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb32-7" tabindex="-1"></a><span class="fu">power.plot</span>(pw)</span></code></pre></div>
 <pre><code>## Warning: Use of `temp2$Power` is discouraged.
 ## ℹ Use `Power` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
@@ -584,15 +611,15 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `Power` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 <div id="case-study-with-continuous-outcome" class="section level4 hasAnchor" number="7.4.1.2">
 <h4><span class="header-section-number">7.4.1.2</span> Case study with continuous outcome:<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#case-study-with-continuous-outcome" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>For continuous phenotype, we need to obtain the phenotype SD instead of case rate. The codes below read in the phenotype data from Chapter 3 and calculate the standard deviation for all metabolites.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb35-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb35-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb35-2" tabindex="-1"></a><span class="co"># Read data</span></span>
-<span id="cb35-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb35-3" tabindex="-1"></a>phenotype<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;../case_data/phenotype.txt&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb35-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb35-4" tabindex="-1"></a><span class="fu">head</span>(phenotype)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb37-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb37-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb37-2" tabindex="-1"></a><span class="co"># Read data</span></span>
+<span id="cb37-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb37-3" tabindex="-1"></a>phenotype<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">&quot;../case_data/phenotype.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb37-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb37-4" tabindex="-1"></a><span class="fu">head</span>(phenotype)</span></code></pre></div>
 <pre><code>##   sample_ID e.a.oh.tam e.endoxifen z.4.oh.tam_3.oh.tam z.a.oh.tam
 ## 1       3TX      0.390           0                2.10      0.000
 ## 2      23TX      0.546           0                1.77      0.041
@@ -621,9 +648,9 @@ provided that two of the three above variables are entered into the appropriate 
 ## 4       0.006079783
 ## 5       0.007010690
 ## 6       0.002365497</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb37-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb37-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb37-2" tabindex="-1"></a><span class="co"># get sd</span></span>
-<span id="cb37-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb37-3" tabindex="-1"></a><span class="fu">apply</span>(phenotype[,<span class="sc">-</span><span class="dv">1</span>],<span class="dv">2</span>,<span class="cf">function</span>(x){<span class="fu">sd</span>(x,<span class="at">na.rm=</span>T)})</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb39-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-2" tabindex="-1"></a><span class="co"># get sd</span></span>
+<span id="cb39-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-3" tabindex="-1"></a><span class="fu">apply</span>(phenotype[,<span class="sc">-</span><span class="dv">1</span>],<span class="dv">2</span>,<span class="cf">function</span>(x){<span class="fu">sd</span>(x,<span class="at">na.rm=</span>T)})</span></code></pre></div>
 <pre><code>##               e.a.oh.tam              e.endoxifen      z.4.oh.tam_3.oh.tam 
 ##             1.752448e-01             6.007286e-02             1.232891e+00 
 ##               z.a.oh.tam z.endoxifen_3.oh.ndm.tam       V4.oh.ndm.tam.gluc 
@@ -637,14 +664,14 @@ provided that two of the three above variables are entered into the appropriate 
 <p>We will use tamoxifen as an example of continuous phenotype. The SD of tamoxifen is approximately 67.</p>
 <p>We still focus on common alleles with MAF &gt;0.1. and the goal is to calculate the statistical power to detect an effect size of 30 (~45% of the phenotype SD) under alpha of 0.05. Note that the effect size (ES) can’t exceed the total SD of outcome.</p>
 <p>Similar as in binary study, we use <code>calc="power"</code> but specify continuous study model with <code>model="linear"</code>.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb39-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-2" tabindex="-1"></a>pw <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;power&quot;</span>, <span class="at">model =</span> <span class="st">&quot;linear&quot;</span>,</span>
-<span id="cb39-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-3" tabindex="-1"></a>   <span class="at">N=</span><span class="dv">192</span>, <span class="at">sd_y=</span><span class="dv">67</span>, <span class="at">k=</span><span class="cn">NULL</span>,</span>
-<span id="cb39-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-4" tabindex="-1"></a>   <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.01</span>), <span class="at">ES=</span><span class="dv">30</span>, <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
-<span id="cb39-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-5" tabindex="-1"></a>   <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>), </span>
-<span id="cb39-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-6" tabindex="-1"></a>   <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
-<span id="cb39-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-7" tabindex="-1"></a></span>
-<span id="cb39-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb39-8" tabindex="-1"></a><span class="fu">power.plot</span>(pw)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb41-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb41-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb41-2" tabindex="-1"></a>pw <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;power&quot;</span>, <span class="at">model =</span> <span class="st">&quot;linear&quot;</span>,</span>
+<span id="cb41-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb41-3" tabindex="-1"></a>   <span class="at">N=</span><span class="dv">192</span>, <span class="at">sd_y=</span><span class="dv">67</span>, <span class="at">k=</span><span class="cn">NULL</span>,</span>
+<span id="cb41-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb41-4" tabindex="-1"></a>   <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.01</span>), <span class="at">ES=</span><span class="dv">30</span>, <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
+<span id="cb41-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb41-5" tabindex="-1"></a>   <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>), </span>
+<span id="cb41-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb41-6" tabindex="-1"></a>   <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
+<span id="cb41-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb41-7" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb41-8" tabindex="-1"></a><span class="fu">power.plot</span>(pw)</span></code></pre></div>
 <pre><code>## Warning: Use of `temp2$Power` is discouraged.
 ## ℹ Use `Power` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
@@ -653,20 +680,20 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `Power` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 <div id="continuous-study-with-continuous-gxe-interaction" class="section level4 hasAnchor" number="7.4.1.3">
 <h4><span class="header-section-number">7.4.1.3</span> Continuous study with continuous GxE interaction:<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#continuous-study-with-continuous-gxe-interaction" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In addition to power calculation for main effects model, genpwr is also capable to calculate power for studies with GxE interactions. We just show you a continuous study with continuous GxE interactions here. You can also practice for a binary study with continuous GxE interactions, or study with binary GxE interactions.</p>
 <p>Besides the parameters above, we need to specify the effect size for both main effect environmental variables and GxE interactions. Also note that the sum of all effect size parameters shouldn’t exceed the total SD of phenotype. We also specify the type of GxE interactions with <code>ge.interaction="continuous"</code>.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb44-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb44-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb44-2" tabindex="-1"></a>pec <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;power&quot;</span>, <span class="at">model =</span> <span class="st">&quot;linear&quot;</span>,</span>
-<span id="cb44-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb44-3" tabindex="-1"></a>                 <span class="at">ge.interaction =</span> <span class="st">&quot;continuous&quot;</span>,</span>
-<span id="cb44-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb44-4" tabindex="-1"></a>                 <span class="at">N=</span><span class="dv">192</span>, <span class="at">sd_y=</span><span class="dv">67</span>, <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.01</span>), <span class="at">ES_G=</span><span class="dv">30</span>, </span>
-<span id="cb44-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb44-5" tabindex="-1"></a>                 <span class="at">ES_E=</span><span class="dv">5</span>, <span class="at">ES_GE=</span><span class="dv">20</span>, <span class="at">sd_e =</span><span class="dv">1</span>,  <span class="at">Alpha=</span><span class="fl">0.05</span>, </span>
-<span id="cb44-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb44-6" tabindex="-1"></a>                   <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>), </span>
-<span id="cb44-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb44-7" tabindex="-1"></a>                   <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
-<span id="cb44-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb44-8" tabindex="-1"></a><span class="fu">power.plot</span>(pec)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb46-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb46-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb46-2" tabindex="-1"></a>pec <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;power&quot;</span>, <span class="at">model =</span> <span class="st">&quot;linear&quot;</span>,</span>
+<span id="cb46-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb46-3" tabindex="-1"></a>                 <span class="at">ge.interaction =</span> <span class="st">&quot;continuous&quot;</span>,</span>
+<span id="cb46-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb46-4" tabindex="-1"></a>                 <span class="at">N=</span><span class="dv">192</span>, <span class="at">sd_y=</span><span class="dv">67</span>, <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.01</span>), <span class="at">ES_G=</span><span class="dv">30</span>, </span>
+<span id="cb46-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb46-5" tabindex="-1"></a>                 <span class="at">ES_E=</span><span class="dv">5</span>, <span class="at">ES_GE=</span><span class="dv">20</span>, <span class="at">sd_e =</span><span class="dv">1</span>,  <span class="at">Alpha=</span><span class="fl">0.05</span>, </span>
+<span id="cb46-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb46-6" tabindex="-1"></a>                   <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>), </span>
+<span id="cb46-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb46-7" tabindex="-1"></a>                   <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
+<span id="cb46-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb46-8" tabindex="-1"></a><span class="fu">power.plot</span>(pec)</span></code></pre></div>
 <pre><code>## Warning: Use of `temp2$Power` is discouraged.
 ## ℹ Use `Power` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
@@ -675,7 +702,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `Power` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>
 <div id="sample-size-calculation" class="section level3 hasAnchor" number="7.4.2">
@@ -685,71 +712,13 @@ provided that two of the three above variables are entered into the appropriate 
 <h4><span class="header-section-number">7.4.2.1</span> Case study with binary outcome:<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#case-study-with-binary-outcome-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>We still use the above binary case study with 192 individuals. Assuming the case rate is 50% and MAF of variants is 0.2-0.5, we want to calculate the sample size needed to detect an odds ratio of 3 with a power of 0.7 or 0.8.</p>
 <p>We need to spcific calculation type with <code>calc="ss"</code> and <code>Power=c(0.7,0.8)</code>.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb49-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb49-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb49-2" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;ss&quot;</span>, <span class="at">model =</span> <span class="st">&quot;logistic&quot;</span>, <span class="at">ge.interaction =</span> <span class="cn">NULL</span>,</span>
-<span id="cb49-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb49-3" tabindex="-1"></a>                  <span class="at">OR=</span><span class="dv">3</span>, <span class="at">Case.Rate=</span><span class="fl">0.5</span>, <span class="at">k=</span><span class="cn">NULL</span>,</span>
-<span id="cb49-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb49-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.01</span>), <span class="at">Power=</span><span class="fu">c</span>(<span class="fl">0.7</span>,<span class="fl">0.8</span>), <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
-<span id="cb49-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb49-5" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>), </span>
-<span id="cb49-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb49-6" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
-<span id="cb49-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb49-7" tabindex="-1"></a><span class="fu">ss.plot</span>(ss)</span></code></pre></div>
-<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
-## ℹ Use `N_total` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
-## ℹ Use `Test.Model` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
-## ℹ Use `N_total` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
-## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
-## ℹ Use `N_total` instead.
-## Use of `temp2$Test.Model` is discouraged.
-## ℹ Use `Test.Model` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
-## ℹ Use `N_total` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
-## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
-<p>As a general rule, under the same assumptions, the dominant model needs the smallest sample size to achieve adequate statistical power, whereas the recessive model is the one that requires the largest number of participants.</p>
-<p>We could check the dominant and additive model only and ignore the recessive model.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb57-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb57-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb57-2" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;ss&quot;</span>, <span class="at">model =</span> <span class="st">&quot;logistic&quot;</span>, <span class="at">ge.interaction =</span> <span class="cn">NULL</span>,</span>
-<span id="cb57-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb57-3" tabindex="-1"></a>                  <span class="at">OR=</span><span class="dv">3</span>, <span class="at">Case.Rate=</span><span class="fl">0.5</span>, <span class="at">k=</span><span class="cn">NULL</span>,</span>
-<span id="cb57-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb57-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.01</span>), <span class="at">Power=</span><span class="fu">c</span>(<span class="fl">0.7</span>,<span class="fl">0.8</span>), <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
-<span id="cb57-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb57-5" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>), </span>
-<span id="cb57-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb57-6" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
-<span id="cb57-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb57-7" tabindex="-1"></a><span class="fu">ss.plot</span>(ss)</span></code></pre></div>
-<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
-## ℹ Use `N_total` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
-## ℹ Use `Test.Model` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
-## ℹ Use `N_total` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
-## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
-## ℹ Use `N_total` instead.
-## Use of `temp2$Test.Model` is discouraged.
-## ℹ Use `Test.Model` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
-## ℹ Use `N_total` instead.</code></pre>
-<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
-## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
-<p>For both additive and dominant models, a sample size of about 200 individuals is sufficient to detect an OR of 3 if we test for additive or dominant genetic effects.</p>
-</div>
-<div id="case-study-with-continuous-outcome-1" class="section level4 hasAnchor" number="7.4.2.2">
-<h4><span class="header-section-number">7.4.2.2</span> Case study with continuous outcome<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#case-study-with-continuous-outcome-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Similar as above, we calculate the sample size needed to detect an effect size of 30 with 70% or 80% power. The continuous phenotype used is still tamoxifen with SD=76.</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb65-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb65-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb65-2" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;ss&quot;</span>, <span class="at">model =</span> <span class="st">&quot;linear&quot;</span>,</span>
-<span id="cb65-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb65-3" tabindex="-1"></a>                  <span class="at">sd_y=</span><span class="dv">67</span>, <span class="at">k=</span><span class="cn">NULL</span>, <span class="at">Power=</span><span class="fu">c</span>(<span class="fl">0.7</span>,<span class="fl">0.8</span>),</span>
-<span id="cb65-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb65-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.01</span>), <span class="at">ES=</span><span class="dv">30</span>, <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
-<span id="cb65-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb65-5" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>), </span>
-<span id="cb65-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb65-6" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
-<span id="cb65-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb65-7" tabindex="-1"></a></span>
-<span id="cb65-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb65-8" tabindex="-1"></a><span class="fu">ss.plot</span>(ss)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb51-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb51-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb51-2" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;ss&quot;</span>, <span class="at">model =</span> <span class="st">&quot;logistic&quot;</span>, <span class="at">ge.interaction =</span> <span class="cn">NULL</span>,</span>
+<span id="cb51-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb51-3" tabindex="-1"></a>                  <span class="at">OR=</span><span class="dv">3</span>, <span class="at">Case.Rate=</span><span class="fl">0.5</span>, <span class="at">k=</span><span class="cn">NULL</span>,</span>
+<span id="cb51-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb51-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.01</span>), <span class="at">Power=</span><span class="fu">c</span>(<span class="fl">0.7</span>,<span class="fl">0.8</span>), <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
+<span id="cb51-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb51-5" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>), </span>
+<span id="cb51-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb51-6" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
+<span id="cb51-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb51-7" tabindex="-1"></a><span class="fu">ss.plot</span>(ss)</span></code></pre></div>
 <pre><code>## Warning: Use of `temp2$N_total` is discouraged.
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
@@ -767,16 +736,16 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-25-2.png" width="672" />
-#### Binary study with binary GxE interactions</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb73-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb73-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb73-2" tabindex="-1"></a>sse <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;ss&quot;</span>, <span class="at">model =</span> <span class="st">&quot;logistic&quot;</span>,</span>
-<span id="cb73-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb73-3" tabindex="-1"></a>                  <span class="at">Case.Rate=</span><span class="fl">0.5</span>, <span class="at">ge.interaction =</span> <span class="st">&quot;binary&quot;</span>, <span class="at">Power=</span><span class="fl">0.8</span>,</span>
-<span id="cb73-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb73-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.01</span>), <span class="at">OR_G=</span><span class="dv">3</span>, </span>
-<span id="cb73-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb73-5" tabindex="-1"></a>                  <span class="at">OR_E=</span><span class="fl">0.5</span>, <span class="at">OR_GE=</span><span class="dv">4</span>, <span class="at">P_e =</span> <span class="fl">0.4</span>,  <span class="at">Alpha=</span><span class="fl">0.05</span>, </span>
-<span id="cb73-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb73-6" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>), </span>
-<span id="cb73-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb73-7" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
-<span id="cb73-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb73-8" tabindex="-1"></a><span class="fu">ss.plot</span>(sse)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p>As a general rule, under the same assumptions, the dominant model needs the smallest sample size to achieve adequate statistical power, whereas the recessive model is the one that requires the largest number of participants.</p>
+<p>We could check the dominant and additive model only and ignore the recessive model.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb59-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb59-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb59-2" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;ss&quot;</span>, <span class="at">model =</span> <span class="st">&quot;logistic&quot;</span>, <span class="at">ge.interaction =</span> <span class="cn">NULL</span>,</span>
+<span id="cb59-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb59-3" tabindex="-1"></a>                  <span class="at">OR=</span><span class="dv">3</span>, <span class="at">Case.Rate=</span><span class="fl">0.5</span>, <span class="at">k=</span><span class="cn">NULL</span>,</span>
+<span id="cb59-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb59-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.01</span>), <span class="at">Power=</span><span class="fu">c</span>(<span class="fl">0.7</span>,<span class="fl">0.8</span>), <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
+<span id="cb59-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb59-5" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>), </span>
+<span id="cb59-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb59-6" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
+<span id="cb59-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb59-7" tabindex="-1"></a><span class="fu">ss.plot</span>(ss)</span></code></pre></div>
 <pre><code>## Warning: Use of `temp2$N_total` is discouraged.
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
@@ -786,6 +755,64 @@ provided that two of the three above variables are entered into the appropriate 
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
 <p><img src="cshl_2024_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
+## ℹ Use `N_total` instead.
+## Use of `temp2$Test.Model` is discouraged.
+## ℹ Use `Test.Model` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
+## ℹ Use `N_total` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
+## ℹ Use `Test.Model` instead.</code></pre>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<p>For both additive and dominant models, a sample size of about 200 individuals is sufficient to detect an OR of 3 if we test for additive or dominant genetic effects.</p>
+</div>
+<div id="case-study-with-continuous-outcome-1" class="section level4 hasAnchor" number="7.4.2.2">
+<h4><span class="header-section-number">7.4.2.2</span> Case study with continuous outcome<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#case-study-with-continuous-outcome-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Similar as above, we calculate the sample size needed to detect an effect size of 30 with 70% or 80% power. The continuous phenotype used is still tamoxifen with SD=76.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb67-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb67-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb67-2" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;ss&quot;</span>, <span class="at">model =</span> <span class="st">&quot;linear&quot;</span>,</span>
+<span id="cb67-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb67-3" tabindex="-1"></a>                  <span class="at">sd_y=</span><span class="dv">67</span>, <span class="at">k=</span><span class="cn">NULL</span>, <span class="at">Power=</span><span class="fu">c</span>(<span class="fl">0.7</span>,<span class="fl">0.8</span>),</span>
+<span id="cb67-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb67-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.01</span>), <span class="at">ES=</span><span class="dv">30</span>, <span class="at">Alpha=</span><span class="fl">0.05</span>,</span>
+<span id="cb67-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb67-5" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>), </span>
+<span id="cb67-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb67-6" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
+<span id="cb67-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb67-7" tabindex="-1"></a></span>
+<span id="cb67-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb67-8" tabindex="-1"></a><span class="fu">ss.plot</span>(ss)</span></code></pre></div>
+<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
+## ℹ Use `N_total` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
+## ℹ Use `Test.Model` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
+## ℹ Use `N_total` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
+## ℹ Use `Test.Model` instead.</code></pre>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
+## ℹ Use `N_total` instead.
+## Use of `temp2$Test.Model` is discouraged.
+## ℹ Use `Test.Model` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
+## ℹ Use `N_total` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
+## ℹ Use `Test.Model` instead.</code></pre>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-27-2.png" width="672" />
+#### Binary study with binary GxE interactions</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb75-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-2" tabindex="-1"></a>sse <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;ss&quot;</span>, <span class="at">model =</span> <span class="st">&quot;logistic&quot;</span>,</span>
+<span id="cb75-3"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-3" tabindex="-1"></a>                  <span class="at">Case.Rate=</span><span class="fl">0.5</span>, <span class="at">ge.interaction =</span> <span class="st">&quot;binary&quot;</span>, <span class="at">Power=</span><span class="fl">0.8</span>,</span>
+<span id="cb75-4"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-4" tabindex="-1"></a>                  <span class="at">MAF=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.01</span>), <span class="at">OR_G=</span><span class="dv">3</span>, </span>
+<span id="cb75-5"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-5" tabindex="-1"></a>                  <span class="at">OR_E=</span><span class="fl">0.5</span>, <span class="at">OR_GE=</span><span class="dv">4</span>, <span class="at">P_e =</span> <span class="fl">0.4</span>,  <span class="at">Alpha=</span><span class="fl">0.05</span>, </span>
+<span id="cb75-6"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-6" tabindex="-1"></a>                  <span class="at">True.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>), </span>
+<span id="cb75-7"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-7" tabindex="-1"></a>                  <span class="at">Test.Model=</span><span class="fu">c</span>(<span class="st">&quot;Additive&quot;</span>,<span class="st">&quot;Dominant&quot;</span>, <span class="st">&quot;Recessive&quot;</span>))</span>
+<span id="cb75-8"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-8" tabindex="-1"></a><span class="fu">ss.plot</span>(sse)</span></code></pre></div>
+<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
+## ℹ Use `N_total` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
+## ℹ Use `Test.Model` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$N_total` is discouraged.
+## ℹ Use `N_total` instead.</code></pre>
+<pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
+## ℹ Use `Test.Model` instead.</code></pre>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 
 </div>
 </div>
@@ -797,7 +824,7 @@ provided that two of the three above variables are entered into the appropriate 
         </div>
       </div>
 <a href="gwas-with-binary-trait.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="ldsc-and-gene-set-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

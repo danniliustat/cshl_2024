@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 Perform eQTL Analysis | 2024 CSHL course - GWAS Hands-on Analysis</title>
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 Perform eQTL Analysis | 2024 CSHL course - GWAS Hands-on Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="github-repo" content="rstudio/cshl_2024" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 Perform eQTL Analysis | 2024 CSHL course - GWAS Hands-on Analysis" />
+  
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  
+
+<meta name="author" content="Danni Liu - Purdue University" />
+
+
+<meta name="date" content="2024-06-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ldsc-and-gene-set-analysis.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html"><i class="fa fa-check"></i><b>2</b> An Overview of Regression with Toy Examples</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#environment-setting-and-packages"><i class="fa fa-check"></i><b>2.1</b> Environment Setting and Packages</a></li>
+<li class="chapter" data-level="2.2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#toy-example-data"><i class="fa fa-check"></i><b>2.2</b> Toy Example Data</a></li>
+<li class="chapter" data-level="2.3" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#logistic-regression"><i class="fa fa-check"></i><b>2.3</b> Logistic Regression</a></li>
+<li class="chapter" data-level="2.4" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#roc-curve-and-auc-for-hoxb13"><i class="fa fa-check"></i><b>2.4</b> ROC curve and AUC for HOXB13</a></li>
+<li class="chapter" data-level="2.5" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#practice"><i class="fa fa-check"></i><b>2.5</b> Practice</a></li>
+<li class="chapter" data-level="2.6" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#comparison-of-hoxb13-roc-curve-and-nhlh1-roc-curve"><i class="fa fa-check"></i><b>2.6</b> Comparison of HOXB13 ROC curve and NHLH1 ROC curve</a></li>
+<li class="chapter" data-level="2.7" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression"><i class="fa fa-check"></i><b>2.7</b> Linear Regression</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression-of-hoxb13-vs.-il17br"><i class="fa fa-check"></i><b>2.7.1</b> Linear regression of HOXB13 vs. IL17BR</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><i class="fa fa-check"></i><b>3</b> GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#environment-setting"><i class="fa fa-check"></i><b>3.1</b> Environment Setting</a></li>
+<li class="chapter" data-level="3.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools"><i class="fa fa-check"></i><b>3.2</b> GWAS Tools</a></li>
+<li class="chapter" data-level="3.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quality-control"><i class="fa fa-check"></i><b>3.3</b> Quality Control</a></li>
+<li class="chapter" data-level="3.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics"><i class="fa fa-check"></i><b>3.4</b> An Example of Summary Statistics</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#input-files"><i class="fa fa-check"></i><b>3.4.1</b> Input files</a></li>
+<li class="chapter" data-level="3.4.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-missing-rate"><i class="fa fa-check"></i><b>3.4.2</b> Calculating missing rate</a></li>
+<li class="chapter" data-level="3.4.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-allel-frequencies"><i class="fa fa-check"></i><b>3.4.3</b> Calculating allel frequencies</a></li>
+<li class="chapter" data-level="3.4.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#hardy-weinberg-equilibrium"><i class="fa fa-check"></i><b>3.4.4</b> Hardy-Weinberg Equilibrium</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-inclusion-thresholds-for-qc"><i class="fa fa-check"></i><b>3.5</b> An Example of Inclusion Thresholds for QC</a></li>
+<li class="chapter" data-level="3.6" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#remove-closely-related-individuals"><i class="fa fa-check"></i><b>3.6</b> Remove Closely Related Individuals</a></li>
+<li class="chapter" data-level="3.7" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#eigenstrat-input-files"><i class="fa fa-check"></i><b>3.7</b> EIGENSTRAT input files</a></li>
+<li class="chapter" data-level="3.8" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#run-eigenstrat-using-input-genotype-data"><i class="fa fa-check"></i><b>3.8</b> Run EIGENSTRAT Using Input Genotype Data</a></li>
+<li class="chapter" data-level="3.9" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#test-the-significance-of-principle-components-pcs"><i class="fa fa-check"></i><b>3.9</b> Test the Significance of Principle Components (PCs)</a></li>
+<li class="chapter" data-level="3.10" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quantitative-trait-association-test-for-continuous-trait"><i class="fa fa-check"></i><b>3.10</b> Quantitative Trait Association Test for Continuous Trait</a></li>
+<li class="chapter" data-level="3.11" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#casecontrol-asssociation-test-for-binary-trait"><i class="fa fa-check"></i><b>3.11</b> Case/Control Asssociation Test for Binary Trait</a></li>
+<li class="chapter" data-level="3.12" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quantitative-trait-association-test-for-continuous-trait-with-covariates"><i class="fa fa-check"></i><b>3.12</b> Quantitative Trait Association Test for Continuous Trait with Covariates</a>
+<ul>
+<li class="chapter" data-level="3.12.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#covariates-adjustments-using-r"><i class="fa fa-check"></i><b>3.12.1</b> Covariates adjustments (using R):</a></li>
+<li class="chapter" data-level="3.12.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#residual-phenotype-data-after-covariates-adjustments-in-unix"><i class="fa fa-check"></i><b>3.12.2</b> Residual phenotype data after covariates adjustments (in UNIX):</a></li>
+<li class="chapter" data-level="3.12.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#association-test-using-plink"><i class="fa fa-check"></i><b>3.12.3</b> Association test using plink</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html"><i class="fa fa-check"></i><b>4</b> GWAS Case Study-Data Preparation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#environment-setting-and-packages-1"><i class="fa fa-check"></i><b>4.1</b> Environment setting and packages</a></li>
+<li class="chapter" data-level="4.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#accessing-data"><i class="fa fa-check"></i><b>4.2</b> Accessing data</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#data-availability"><i class="fa fa-check"></i><b>4.2.1</b> Data availability</a></li>
+<li class="chapter" data-level="4.2.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#data-files-documentation"><i class="fa fa-check"></i><b>4.2.2</b> Data files documentation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#preprocessing-phenotype-data"><i class="fa fa-check"></i><b>4.3</b> Preprocessing Phenotype Data</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#extracting-phenotype-data"><i class="fa fa-check"></i><b>4.3.1</b> Extracting phenotype data</a></li>
+<li class="chapter" data-level="4.3.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#summary-of-phenotypes-data"><i class="fa fa-check"></i><b>4.3.2</b> Summary of Phenotypes Data</a></li>
+<li class="chapter" data-level="4.3.3" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#histogram-of-each-trait"><i class="fa fa-check"></i><b>4.3.3</b> Histogram of each trait</a></li>
+<li class="chapter" data-level="4.3.4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#handling-the-missing-values-in-the-phenotypes-and-covariates"><i class="fa fa-check"></i><b>4.3.4</b> Handling the missing values in the phenotypes and covariates</a></li>
+<li class="chapter" data-level="4.3.5" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#checking-normality-assumptions-for-each-trait"><i class="fa fa-check"></i><b>4.3.5</b> Checking normality assumptions for each trait</a></li>
+<li class="chapter" data-level="4.3.6" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#normalize-phenotype-data"><i class="fa fa-check"></i><b>4.3.6</b> Normalize phenotype data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#covariates-adjustment"><i class="fa fa-check"></i><b>4.4</b> Covariates Adjustment</a></li>
+<li class="chapter" data-level="4.5" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#prepare-plink-data"><i class="fa fa-check"></i><b>4.5</b> Prepare PLINK data</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file"><i class="fa fa-check"></i><b>4.5.1</b> Step 1: prepare PLINK ped file</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file-1"><i class="fa fa-check"></i><b>4.6</b> Step 1: prepare PLINK ped file</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-2-prepare-plink-map-file"><i class="fa fa-check"></i><b>4.6.1</b> Step 2: prepare PLINK map file</a></li>
+<li class="chapter" data-level="4.6.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-3-prepare-plink-alternate-phenotype-file-in-linux"><i class="fa fa-check"></i><b>4.6.2</b> Step 3 : prepare PLINK alternate phenotype file (in Linux)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html"><i class="fa fa-check"></i><b>5</b> GWAS with Continuous Trait</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#manhattan-plot-and-q-q-plot"><i class="fa fa-check"></i><b>5.1</b> Manhattan Plot and Q-Q Plot</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#generate-manhattan-plot"><i class="fa fa-check"></i><b>5.1.1</b> Generate manhattan plot</a></li>
+<li class="chapter" data-level="5.1.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#generate-q-q-plot"><i class="fa fa-check"></i><b>5.1.2</b> Generate Q-Q plot</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#multiple-test-correction"><i class="fa fa-check"></i><b>5.2</b> Multiple-Test Correction</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#prepare-r-input-files-in-linux"><i class="fa fa-check"></i><b>5.2.1</b> Prepare R input files (in Linux)</a></li>
+<li class="chapter" data-level="5.2.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#significant-snps-after-a-multiple-test-correction-of-fdr-using-r"><i class="fa fa-check"></i><b>5.2.2</b> Significant SNPs after a multiple-test correction of FDR (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#regional-association-plot"><i class="fa fa-check"></i><b>5.3</b> Regional Association Plot</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#obtain-regional-snps-using-r"><i class="fa fa-check"></i><b>5.3.1</b> Obtain regional SNPs (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#distribution-of-z-endoxifen-ratio-for-rs8138080"><i class="fa fa-check"></i><b>5.4</b> Distribution of Z-endoxifen ratio for rs8138080</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#obtain-phenotype-data-z-endoxifen-ratio-using-r"><i class="fa fa-check"></i><b>5.4.1</b> Obtain phenotype data (Z-endoxifen ratio) (using R)</a></li>
+<li class="chapter" data-level="5.4.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#obtain-genotype-for-significant-snps-using-r"><i class="fa fa-check"></i><b>5.4.2</b> Obtain genotype for significant SNPs (using R)</a></li>
+<li class="chapter" data-level="5.4.3" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#create-box-plot-using-r"><i class="fa fa-check"></i><b>5.4.3</b> Create Box plot (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#proportion-of-variation-explained-by-rs8138080"><i class="fa fa-check"></i><b>5.5</b> Proportion of Variation Explained by rs8138080</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#recode-genotype-of-significant-snps-using-r"><i class="fa fa-check"></i><b>5.5.1</b> Recode genotype of significant SNPs (using R)</a></li>
+<li class="chapter" data-level="5.5.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#calculate-marginal-r2-using-r"><i class="fa fa-check"></i><b>5.5.2</b> Calculate marginal <span class="math inline">\(R^2\)</span> (using R)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#practice-time"><i class="fa fa-check"></i><b>5.6</b> PRACTICE TIME</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#practice-1"><i class="fa fa-check"></i><b>5.6.1</b> Practice 1</a></li>
+<li class="chapter" data-level="5.6.2" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html#practice-2"><i class="fa fa-check"></i><b>5.6.2</b> Practice 2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html"><i class="fa fa-check"></i><b>6</b> GWAS with Binary Trait</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#data-preparation"><i class="fa fa-check"></i><b>6.1</b> Data Preparation</a></li>
+<li class="chapter" data-level="6.2" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#genome-wide-casecontrol-association-test-in-plink"><i class="fa fa-check"></i><b>6.2</b> Genome-Wide Case/Control Association Test (in PLINK)</a></li>
+<li class="chapter" data-level="6.3" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#manhattan-plot-and-q-q-plot-1"><i class="fa fa-check"></i><b>6.3</b> Manhattan Plot and Q-Q Plot</a></li>
+<li class="chapter" data-level="6.4" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#generate-manhattan-plot-1"><i class="fa fa-check"></i><b>6.4</b> Generate Manhattan plot</a></li>
+<li class="chapter" data-level="6.5" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#generate-q-q-plot-1"><i class="fa fa-check"></i><b>6.5</b> Generate Q-Q plot</a></li>
+<li class="chapter" data-level="6.6" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#multiple-test-correction-1"><i class="fa fa-check"></i><b>6.6</b> Multiple-Test Correction</a></li>
+<li class="chapter" data-level="6.7" data-path="gwas-with-binary-trait.html"><a href="gwas-with-binary-trait.html#top-10-snps"><i class="fa fa-check"></i><b>6.7</b> Top 10 SNPs</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><i class="fa fa-check"></i><b>7</b> GxG and GxE Interactions, Power and Sample Size Calculation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#prepare-files"><i class="fa fa-check"></i><b>7.1</b> Prepare Files</a></li>
+<li class="chapter" data-level="7.2" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#test-for-epistasis-gxg"><i class="fa fa-check"></i><b>7.2</b> Test for Epistasis (GxG)</a></li>
+<li class="chapter" data-level="7.3" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#gene-environment-interaction-gxe"><i class="fa fa-check"></i><b>7.3</b> Gene-Environment Interaction (GxE)</a></li>
+<li class="chapter" data-level="7.4" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-and-sample-size-calculation-for-gwas"><i class="fa fa-check"></i><b>7.4</b> Power and sample size calculation for GWAS</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-calculation"><i class="fa fa-check"></i><b>7.4.1</b> Power calculation</a></li>
+<li class="chapter" data-level="7.4.2" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#sample-size-calculation"><i class="fa fa-check"></i><b>7.4.2</b> Sample size calculation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html"><i class="fa fa-check"></i><b>8</b> LDSC and Gene-Set Analysis</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#ldsc-linkage-disequilibrium-score-regression"><i class="fa fa-check"></i><b>8.1</b> LDSC (Linkage Disequilibrium Score Regression)</a></li>
+<li class="chapter" data-level="8.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#magma-for-gene-level-analysis"><i class="fa fa-check"></i><b>8.2</b> MAGMA (for Gene-Level Analysis)</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#prepare-annotation-file"><i class="fa fa-check"></i><b>8.2.1</b> Prepare Annotation File</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#use-magma-for-gene-set-analysis"><i class="fa fa-check"></i><b>8.2.2</b> Use MAGMA for Gene-Set Analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html"><i class="fa fa-check"></i><b>9</b> Perform eQTL Analysis</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#gene-expression-profiling"><i class="fa fa-check"></i><b>9.1</b> Gene expression profiling</a></li>
+<li class="chapter" data-level="9.2" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#covariates"><i class="fa fa-check"></i><b>9.2</b> Covariates</a></li>
+<li class="chapter" data-level="9.3" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#using-principle-components-as-covariates"><i class="fa fa-check"></i><b>9.3</b> Using principle components as covariates</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#cis-eqtl-and-trans-eqtl-analysis"><i class="fa fa-check"></i><b>9.3.1</b> cis-eQTL and trans-eQTL analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#gene-regional-manhanttan-plots"><i class="fa fa-check"></i><b>9.4</b> Gene regional Manhanttan plots</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">2024 CSHL course - GWAS Hands-on Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="perform-eqtl-analysis" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> Perform eQTL Analysis<a href="perform-eqtl-analysis.html#perform-eqtl-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We will use “MatrixEQTL” package in R. To install the package use the codes: <code>install.packages("MatrixEQTL")</code></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="perform-eqtl-analysis.html#cb1-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb1-2"><a href="perform-eqtl-analysis.html#cb1-2" tabindex="-1"></a><span class="co">#load R packages</span></span>
+<span id="cb1-3"><a href="perform-eqtl-analysis.html#cb1-3" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-4"><a href="perform-eqtl-analysis.html#cb1-4" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-5"><a href="perform-eqtl-analysis.html#cb1-5" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-6"><a href="perform-eqtl-analysis.html#cb1-6" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-7"><a href="perform-eqtl-analysis.html#cb1-7" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb1-8"><a href="perform-eqtl-analysis.html#cb1-8" tabindex="-1"></a><span class="fu">library</span>(MatrixEQTL)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="perform-eqtl-analysis.html#cb2-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;bigcare-main&quot; folder</span></span>
+<span id="cb2-2"><a href="perform-eqtl-analysis.html#cb2-2" tabindex="-1"></a><span class="co">## run in R Terminal</span></span>
+<span id="cb2-3"><a href="perform-eqtl-analysis.html#cb2-3" tabindex="-1"></a><span class="co">#mydir=&quot;/path/to/bigcare-main/Data/case_data&quot;</span></span>
+<span id="cb2-4"><a href="perform-eqtl-analysis.html#cb2-4" tabindex="-1"></a><span class="va">mydir</span><span class="op">=</span><span class="st">&quot;./Data/eqtl&quot;</span></span>
+<span id="cb2-5"><a href="perform-eqtl-analysis.html#cb2-5" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$mydir</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="perform-eqtl-analysis.html#cb3-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb3-2"><a href="perform-eqtl-analysis.html#cb3-2" tabindex="-1"></a><span class="co">#setwd(&quot;/path/to/bigcare-main/Data/case_data&quot;)</span></span>
+<span id="cb3-3"><a href="perform-eqtl-analysis.html#cb3-3" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;./Data/eqtl&quot;</span>)</span>
+<span id="cb3-4"><a href="perform-eqtl-analysis.html#cb3-4" tabindex="-1"></a>mydir<span class="ot">&lt;-</span><span class="fu">getwd</span>()</span></code></pre></div>
+<p>Files:
+- <code>SNP.txt</code>: rows are SNPs with row names as SNP IDs, and columns are sample IDs.
+- <code>gexp.txt</code>: rows are genes are and columns are</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="perform-eqtl-analysis.html#cb4-1" tabindex="-1"></a>snps <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;geno.txt&quot;</span>,<span class="at">header=</span>T,<span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb4-2"><a href="perform-eqtl-analysis.html#cb4-2" tabindex="-1"></a>expr <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;gexp.txt&quot;</span>,<span class="at">header=</span>T,<span class="at">row.names =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="perform-eqtl-analysis.html#cb5-1" tabindex="-1"></a><span class="fu">dim</span>(expr)</span></code></pre></div>
+<pre><code>## [1]  95 446</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="perform-eqtl-analysis.html#cb7-1" tabindex="-1"></a><span class="fu">head</span>(expr)[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
+<pre><code>##         TCGA.95.7947 TCGA.44.2668 TCGA.67.3771 TCGA.44.5645 TCGA.J2.8192
+## MEGF6     -1.7039663   -0.8306681    0.4996123  -0.10811713   -1.3135328
+## CHD5      -1.5014151   -0.9932854    0.7771261   0.05612592   -1.6077701
+## ENO1      -0.4321024    0.5108690   -0.3609281  -0.54581900    1.3750899
+## DRAXIN     1.3684842    0.9638396   -1.3744826  -0.84216045    1.0581984
+## ZBTB17    -0.6143779    0.9830016    0.1736160   1.82123575   -0.7976982
+## FAM131C   -1.0363593   -0.7491167    0.1745167  -1.06965547   -0.3285437
+##         TCGA.69.7760 TCGA.86.8669 TCGA.55.6642 TCGA.78.7152 TCGA.73.4670
+## MEGF6     0.57720969   -0.4214555    0.6951667   0.02822393  -1.13412292
+## CHD5      0.61924638   -0.1614920    0.9675196   0.36484065  -0.81739662
+## ENO1      0.84316765   -0.8666666    0.3824851  -1.07588918   0.12118157
+## DRAXIN    0.06624432   -0.5230045   -0.3455284   0.40864125   0.09858754
+## ZBTB17   -0.52120134   -0.6104587    2.2036663  -0.56695639  -0.05699867
+## FAM131C   1.04442446   -1.1189474    1.3912519   0.60401049   0.99286065
+##         TCGA.44.3398 TCGA.64.5774
+## MEGF6     -0.5528690  -1.22563359
+## CHD5      -0.4844963  -0.88951313
+## ENO1      -0.1207141  -0.07861717
+## DRAXIN     1.7043598   0.64637444
+## ZBTB17    -1.0139111  -0.21597977
+## FAM131C   -0.2412090  -0.02636789</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="perform-eqtl-analysis.html#cb9-1" tabindex="-1"></a><span class="fu">dim</span>(snps)</span></code></pre></div>
+<pre><code>## [1] 1233  446</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="perform-eqtl-analysis.html#cb11-1" tabindex="-1"></a><span class="fu">head</span>(snps)[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
+<pre><code>##           TCGA.95.7947 TCGA.44.2668 TCGA.67.3771 TCGA.44.5645 TCGA.J2.8192
+## 1_1084461            0            0            0            0            0
+## 1_1085966            0            1            0            0            0
+## 1_1086028            0            0            0            0            0
+## 1_1086035            0            1            1            1            0
+## 1_1087043            0            0            0            0            0
+## 1_3494295            0            0            0            0            0
+##           TCGA.69.7760 TCGA.86.8669 TCGA.55.6642 TCGA.78.7152 TCGA.73.4670
+## 1_1084461            0            0            0            0            0
+## 1_1085966            1            1            0            1            0
+## 1_1086028            0            0            0            0            0
+## 1_1086035            1            0            1            0            0
+## 1_1087043            0            0            0            0            0
+## 1_3494295            0            1            1            0            0
+##           TCGA.44.3398 TCGA.64.5774
+## 1_1084461            0            0
+## 1_1085966            0            0
+## 1_1086028            0            0
+## 1_1086035            1            0
+## 1_1087043            0            0
+## 1_3494295            0            0</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="perform-eqtl-analysis.html#cb13-1" tabindex="-1"></a>maf<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;geno_maf.txt&quot;</span>)<span class="sc">$</span>V1</span>
+<span id="cb13-2"><a href="perform-eqtl-analysis.html#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="perform-eqtl-analysis.html#cb13-3" tabindex="-1"></a><span class="fu">truehist</span>(maf, <span class="at">main =</span> <span class="st">&quot;Histogram of MAF values.&quot;</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>)</span>
+<span id="cb13-4"><a href="perform-eqtl-analysis.html#cb13-4" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(maf), <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;darkorange&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+## Filtering SNPs by MAF
+In an eQTL study often a minimum MAF is required. Since MAF essentially reflects how often an allele has been observed in a population, it also defines how often the gene expression levels have been observed for heterozygous and homozygous alleles.</p>
+<p>Calculate the number of heterozygous and homozygous observations expected for SNPs with a MAF of 5%, 10% and 15% given Hardy-Weinberg equilibrium. What are useful MAF thresholds for SNPs to include in an eQTL analysis?</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="perform-eqtl-analysis.html#cb14-1" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.15</span>)</span>
+<span id="cb14-2"><a href="perform-eqtl-analysis.html#cb14-2" tabindex="-1"></a>q <span class="ot">=</span> <span class="dv">1</span><span class="sc">-</span>p</span>
+<span id="cb14-3"><a href="perform-eqtl-analysis.html#cb14-3" tabindex="-1"></a><span class="co"># Calulate frequency of minor allele being present in homozygous and heterozygous state</span></span>
+<span id="cb14-4"><a href="perform-eqtl-analysis.html#cb14-4" tabindex="-1"></a>f_hom <span class="ot">=</span> p<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb14-5"><a href="perform-eqtl-analysis.html#cb14-5" tabindex="-1"></a>f_het <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span>p<span class="sc">*</span>q</span>
+<span id="cb14-6"><a href="perform-eqtl-analysis.html#cb14-6" tabindex="-1"></a><span class="co"># Expected number of observations in a sample size of 10000</span></span>
+<span id="cb14-7"><a href="perform-eqtl-analysis.html#cb14-7" tabindex="-1"></a>sample_size <span class="ot">=</span> <span class="dv">500</span></span>
+<span id="cb14-8"><a href="perform-eqtl-analysis.html#cb14-8" tabindex="-1"></a><span class="fu">round</span>(f_hom <span class="sc">*</span> sample_size)</span></code></pre></div>
+<pre><code>## [1]  1  5 11</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="perform-eqtl-analysis.html#cb16-1" tabindex="-1"></a><span class="fu">round</span>(f_het <span class="sc">*</span> sample_size)</span></code></pre></div>
+<pre><code>## [1]  48  90 128</code></pre>
+<div id="gene-expression-profiling" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Gene expression profiling<a href="perform-eqtl-analysis.html#gene-expression-profiling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now that we have an idea of what is stored in the genotype data frame let’s take a look at the expression data. For eQTL analyses it is important for the gene expression to be normally distributed among samples, therefore RNA-seq data has to be transformed by, for example quantile normalization.</p>
+<p>Let’s check the distribution of gene expression levels across samples for the first gene in our expr data frame.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="perform-eqtl-analysis.html#cb18-1" tabindex="-1"></a>gname <span class="ot">=</span> <span class="fu">rownames</span>(expr)[<span class="dv">1</span>]</span>
+<span id="cb18-2"><a href="perform-eqtl-analysis.html#cb18-2" tabindex="-1"></a><span class="fu">truehist</span>(<span class="fu">as.numeric</span>(<span class="fu">filter</span>(expr, <span class="fu">rownames</span>(expr) <span class="sc">==</span> gname)[<span class="sc">-</span><span class="dv">1</span>]), <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">&quot;Gene expression profile for gene:&quot;</span>,gname), <span class="at">xlab =</span> <span class="st">&quot;Expression level&quot;</span>, <span class="at">col =</span> <span class="st">&quot;darkorange&quot;</span>)</span>
+<span id="cb18-3"><a href="perform-eqtl-analysis.html#cb18-3" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(<span class="fu">as.numeric</span>(<span class="fu">filter</span>(expr, <span class="fu">rownames</span>(expr) <span class="sc">==</span> gname)[<span class="sc">-</span><span class="dv">1</span>])), <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Now we’ll plot the expression levels of the first gene against the first SNP, 10th gene against the 10th SNP, 10th gene against the 1th SNP, as well as the 10th gene against the 6th SNP, depending on the genotypes of the samples by using simple dot plots. We’ll add a bit of random noise (jitter) to the genotype data to make it all look more comprehensible.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="perform-eqtl-analysis.html#cb19-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>))</span>
+<span id="cb19-2"><a href="perform-eqtl-analysis.html#cb19-2" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="perform-eqtl-analysis.html#cb19-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">jitter</span>(<span class="fu">as.numeric</span>(snps[<span class="dv">1</span>,]), <span class="at">factor =</span> <span class="fl">0.5</span>), <span class="fu">as.numeric</span>(expr[<span class="dv">1</span>,]),</span>
+<span id="cb19-4"><a href="perform-eqtl-analysis.html#cb19-4" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">rownames</span>(snps)[<span class="dv">1</span>], <span class="at">ylab =</span> <span class="fu">rownames</span>(expr)[<span class="dv">1</span>], <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb19-5"><a href="perform-eqtl-analysis.html#cb19-5" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste</span>(<span class="fu">rownames</span>(expr)[<span class="dv">1</span>], <span class="st">&quot;vs&quot;</span>, <span class="fu">rownames</span>(snps)[<span class="dv">1</span>]), <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">2.5</span>), <span class="at">xaxt=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb19-6"><a href="perform-eqtl-analysis.html#cb19-6" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span><span class="fu">c</span> (<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>))</span>
+<span id="cb19-7"><a href="perform-eqtl-analysis.html#cb19-7" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">jitter</span>(<span class="fu">as.numeric</span>(snps[<span class="dv">10</span>,]), <span class="at">factor =</span> <span class="fl">0.5</span>), <span class="fu">as.numeric</span>(expr[<span class="dv">10</span>,]),</span>
+<span id="cb19-8"><a href="perform-eqtl-analysis.html#cb19-8" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">rownames</span>(snps)[<span class="dv">10</span>], <span class="at">ylab =</span> <span class="fu">rownames</span>(expr)[<span class="dv">10</span>], <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb19-9"><a href="perform-eqtl-analysis.html#cb19-9" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste</span>(<span class="fu">rownames</span>(expr)[<span class="dv">10</span>], <span class="st">&quot;vs&quot;</span>, <span class="fu">rownames</span>(snps)[<span class="dv">10</span>]), <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">2.5</span>), <span class="at">xaxt=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb19-10"><a href="perform-eqtl-analysis.html#cb19-10" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span><span class="fu">c</span> (<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>))</span>
+<span id="cb19-11"><a href="perform-eqtl-analysis.html#cb19-11" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">jitter</span>(<span class="fu">as.numeric</span>(snps[<span class="dv">1</span>,]), <span class="at">factor =</span> <span class="fl">0.5</span>), <span class="fu">as.numeric</span>(expr[<span class="dv">10</span>,]),</span>
+<span id="cb19-12"><a href="perform-eqtl-analysis.html#cb19-12" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">rownames</span>(snps)[<span class="dv">1</span>], <span class="at">ylab =</span> <span class="fu">rownames</span>(expr)[<span class="dv">10</span>], <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb19-13"><a href="perform-eqtl-analysis.html#cb19-13" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste</span>(<span class="fu">rownames</span>(expr)[<span class="dv">10</span>], <span class="st">&quot;vs&quot;</span>, <span class="fu">rownames</span>(snps)[<span class="dv">1</span>]), <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">2.5</span>), <span class="at">xaxt=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb19-14"><a href="perform-eqtl-analysis.html#cb19-14" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span><span class="fu">c</span> (<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>))</span>
+<span id="cb19-15"><a href="perform-eqtl-analysis.html#cb19-15" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">jitter</span>(<span class="fu">as.numeric</span>(snps[<span class="dv">6</span>,]), <span class="at">factor =</span> <span class="fl">0.5</span>), <span class="fu">as.numeric</span>(expr[<span class="dv">10</span>,]),</span>
+<span id="cb19-16"><a href="perform-eqtl-analysis.html#cb19-16" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">rownames</span>(snps)[<span class="dv">6</span>], <span class="at">ylab =</span> <span class="fu">rownames</span>(expr)[<span class="dv">10</span>], <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb19-17"><a href="perform-eqtl-analysis.html#cb19-17" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste</span>(<span class="fu">rownames</span>(expr)[<span class="dv">10</span>], <span class="st">&quot;vs&quot;</span>, <span class="fu">rownames</span>(snps)[<span class="dv">6</span>]), <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">2.5</span>), <span class="at">xaxt=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb19-18"><a href="perform-eqtl-analysis.html#cb19-18" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span><span class="fu">c</span> (<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>))</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="covariates" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Covariates<a href="perform-eqtl-analysis.html#covariates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="perform-eqtl-analysis.html#cb20-1" tabindex="-1"></a>covar<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;covariates.txt&quot;</span>,<span class="at">header=</span>T,<span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span>
+<span id="cb20-2"><a href="perform-eqtl-analysis.html#cb20-2" tabindex="-1"></a><span class="fu">dim</span>(covar)</span></code></pre></div>
+<pre><code>## [1] 446   4</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="perform-eqtl-analysis.html#cb22-1" tabindex="-1"></a><span class="fu">head</span>(covar)</span></code></pre></div>
+<pre><code>##         sampid age gender                      race
+## 1 TCGA-95-7947  67   male                     white
+## 2 TCGA-44-2668  51   male                     white
+## 3 TCGA-67-3771  77 female black or african american
+## 4 TCGA-44-5645  61 female black or african american
+## 5 TCGA-J2-8192  65 female                     white
+## 6 TCGA-69-7760  73   male                     white</code></pre>
+<p>Need to recode categorical variables as 0,1</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="perform-eqtl-analysis.html#cb24-1" tabindex="-1"></a>covar_recode<span class="ot">&lt;-</span>covar</span>
+<span id="cb24-2"><a href="perform-eqtl-analysis.html#cb24-2" tabindex="-1"></a>covar_recode<span class="sc">$</span>gender[covar_recode<span class="sc">$</span>gender<span class="sc">==</span><span class="st">&quot;male&quot;</span>]<span class="ot">&lt;-</span><span class="dv">1</span></span>
+<span id="cb24-3"><a href="perform-eqtl-analysis.html#cb24-3" tabindex="-1"></a>covar_recode<span class="sc">$</span>gender[covar_recode<span class="sc">$</span>gender<span class="sc">==</span><span class="st">&quot;female&quot;</span>]<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb24-4"><a href="perform-eqtl-analysis.html#cb24-4" tabindex="-1"></a>covar_recode<span class="sc">$</span>race[covar_recode<span class="sc">$</span>race<span class="sc">==</span><span class="st">&quot;white&quot;</span>]<span class="ot">&lt;-</span><span class="dv">1</span></span>
+<span id="cb24-5"><a href="perform-eqtl-analysis.html#cb24-5" tabindex="-1"></a>covar_recode<span class="sc">$</span>race[covar_recode<span class="sc">$</span>race<span class="sc">==</span><span class="st">&quot;black or african american&quot;</span>]<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb24-6"><a href="perform-eqtl-analysis.html#cb24-6" tabindex="-1"></a><span class="fu">write.table</span>(<span class="fu">t</span>(covar_recode),<span class="st">&quot;covar_recode.txt&quot;</span>,<span class="at">quote=</span>F, <span class="at">sep=</span><span class="st">&quot; &quot;</span>,<span class="at">row.names=</span>T,<span class="at">col.names=</span>F)</span></code></pre></div>
+</div>
+<div id="using-principle-components-as-covariates" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Using principle components as covariates<a href="perform-eqtl-analysis.html#using-principle-components-as-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Further we will explore the use of principle components as covariates in linear models of gene expression to account for unknown sources of variation from genotype.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="perform-eqtl-analysis.html#cb25-1" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(<span class="fu">t</span>(snps), <span class="at">center=</span><span class="cn">TRUE</span>, <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-2"><a href="perform-eqtl-analysis.html#cb25-2" tabindex="-1"></a><span class="fu">sum</span>(pca<span class="sc">$</span>sdev[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">sum</span>(pca<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span>) <span class="co"># percentage of variance explained by first 5 PCs</span></span></code></pre></div>
+<pre><code>## [1] 0.0278079</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="perform-eqtl-analysis.html#cb27-1" tabindex="-1"></a><span class="fu">screeplot</span>(pca,<span class="at">type=</span><span class="st">&quot;lines&quot;</span>) </span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+## eQTL analysis
+Now that we’ve covered the basics let’s focus on real world expression and genotyping data. We’ll be using R’s MatrixEQTL package which is designed for fast eQTL analysis on large genomic data sets. MatrixEQTL can test for association between genotype and gene expression using linear regression with either additive or ANOVA genotype effects. The models can include covariates to account for factors as population stratification, gender, and clinical variables. It also supports models with heteroscedastic and/or correlated errors, false discovery rate estimation and separate treatment of local (cis) and distant (trans) eQTLs. You can learn more about MatrixEQTL <a href="http://www.bios.unc.edu/research/genomic_software/Matrix_eQTL/">here</a>.</p>
+<div id="cis-eqtl-and-trans-eqtl-analysis" class="section level3 hasAnchor" number="9.3.1">
+<h3><span class="header-section-number">9.3.1</span> cis-eQTL and trans-eQTL analysis<a href="perform-eqtl-analysis.html#cis-eqtl-and-trans-eqtl-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To perform an eQTL analysis we don’t only need to know the genotype and gene expression values for every sample, but also the genomic positions of genes and SNPs. This is necessary to define which SNPs should be tested against which genes. For cis-eQTL analyses SNPs in proximity to the gene are chosen and for trans-eQTL analyses SNPs further away, or on different chromosomes, are taken into account. The window in cis-eQTL analysis is commonly chosen to be 500kb-1Mb measured from gene’s TSS.</p>
+<p>Cis- and trans- eQTL analysis
+Matrix eQTL can distinguish local (cis-) and distant (trans-) eQTLs and perform separate correction for multiple comparisons for those groups. The second sample code shows how to run such analysis. The main Matrix eQTL function Matrix_eQTL_main requires several extra parameters for cis/trans analysis:</p>
+<ul>
+<li>pvOutputThreshold.cis – p-value threshold for cis-eQTLs.</li>
+<li>output_file_name.cis – detected cis-eQTLs are saved in this file.</li>
+<li>cisDist – maximum distance at which gene-SNP pair is considered local.</li>
+<li>snpspos – data frame with information about SNP locations, must have 3 columns - SNP name, chromosome, and position. See sample SNP location file.</li>
+<li>genepos – data frame with information about gene locations, must have 4 columns - the name, chromosome, and positions of the left and right ends. See sample gene location file.</li>
+</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="perform-eqtl-analysis.html#cb28-1" tabindex="-1"></a><span class="co"># eQTL mapping, cis/trans, no pcs</span></span>
+<span id="cb28-2"><a href="perform-eqtl-analysis.html#cb28-2" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(MatrixEQTL))</span>
+<span id="cb28-3"><a href="perform-eqtl-analysis.html#cb28-3" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="perform-eqtl-analysis.html#cb28-4" tabindex="-1"></a>  </span>
+<span id="cb28-5"><a href="perform-eqtl-analysis.html#cb28-5" tabindex="-1"></a>SNP_file_name <span class="ot">&lt;-</span>  <span class="st">&quot;geno.txt&quot;</span>;</span>
+<span id="cb28-6"><a href="perform-eqtl-analysis.html#cb28-6" tabindex="-1"></a>snps_location_file_name <span class="ot">&lt;-</span> <span class="st">&quot;snppos.txt&quot;</span>;</span>
+<span id="cb28-7"><a href="perform-eqtl-analysis.html#cb28-7" tabindex="-1"></a>expression_file_name <span class="ot">&lt;-</span> <span class="st">&quot;gexp.txt&quot;</span>;</span>
+<span id="cb28-8"><a href="perform-eqtl-analysis.html#cb28-8" tabindex="-1"></a>gene_location_file_name <span class="ot">&lt;-</span> <span class="st">&quot;genepos.txt&quot;</span>;</span>
+<span id="cb28-9"><a href="perform-eqtl-analysis.html#cb28-9" tabindex="-1"></a>covariates_file_name <span class="ot">&lt;-</span> <span class="st">&quot;covar_recode.txt&quot;</span>;</span>
+<span id="cb28-10"><a href="perform-eqtl-analysis.html#cb28-10" tabindex="-1"></a>cis_threshold <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb28-11"><a href="perform-eqtl-analysis.html#cb28-11" tabindex="-1"></a>trans_threshold <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb28-12"><a href="perform-eqtl-analysis.html#cb28-12" tabindex="-1"></a>cis_dist <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb28-13"><a href="perform-eqtl-analysis.html#cb28-13" tabindex="-1"></a>  </span>
+<span id="cb28-14"><a href="perform-eqtl-analysis.html#cb28-14" tabindex="-1"></a><span class="co"># Output file name</span></span>
+<span id="cb28-15"><a href="perform-eqtl-analysis.html#cb28-15" tabindex="-1"></a>output_file_name_cis <span class="ot">=</span> <span class="fu">tempfile</span>();</span>
+<span id="cb28-16"><a href="perform-eqtl-analysis.html#cb28-16" tabindex="-1"></a>output_file_name_tra <span class="ot">=</span> <span class="fu">tempfile</span>();</span>
+<span id="cb28-17"><a href="perform-eqtl-analysis.html#cb28-17" tabindex="-1"></a><span class="co"># output_file_name_cis = &quot;/Users/igorhut/Documents/eQTL/tools_comparison_R_proj/output_voja_cis_eqtls_1.txt&quot;;</span></span>
+<span id="cb28-18"><a href="perform-eqtl-analysis.html#cb28-18" tabindex="-1"></a><span class="co"># output_file_name_tra = &quot;/Users/igorhut/Documents/eQTL/tools_comparison_R_proj/output_voja_trans_eqtls_1.txt&quot;;</span></span>
+<span id="cb28-19"><a href="perform-eqtl-analysis.html#cb28-19" tabindex="-1"></a>  </span>
+<span id="cb28-20"><a href="perform-eqtl-analysis.html#cb28-20" tabindex="-1"></a><span class="do">## Settings</span></span>
+<span id="cb28-21"><a href="perform-eqtl-analysis.html#cb28-21" tabindex="-1"></a><span class="co"># Linear model to use, modelANOVA, modelLINEAR, or modelLINEAR_CROSS</span></span>
+<span id="cb28-22"><a href="perform-eqtl-analysis.html#cb28-22" tabindex="-1"></a>useModel <span class="ot">=</span> modelLINEAR; <span class="co"># modelANOVA, modelLINEAR, or modelLINEAR_CROSS</span></span>
+<span id="cb28-23"><a href="perform-eqtl-analysis.html#cb28-23" tabindex="-1"></a></span>
+<span id="cb28-24"><a href="perform-eqtl-analysis.html#cb28-24" tabindex="-1"></a><span class="co"># Only associations significant at this level will be saved</span></span>
+<span id="cb28-25"><a href="perform-eqtl-analysis.html#cb28-25" tabindex="-1"></a>pvOutputThreshold_cis <span class="ot">=</span> cis_threshold; </span>
+<span id="cb28-26"><a href="perform-eqtl-analysis.html#cb28-26" tabindex="-1"></a>pvOutputThreshold_tra <span class="ot">=</span> trans_threshold;</span>
+<span id="cb28-27"><a href="perform-eqtl-analysis.html#cb28-27" tabindex="-1"></a>  </span>
+<span id="cb28-28"><a href="perform-eqtl-analysis.html#cb28-28" tabindex="-1"></a><span class="co"># Set to character() for no covariates</span></span>
+<span id="cb28-29"><a href="perform-eqtl-analysis.html#cb28-29" tabindex="-1"></a><span class="co"># covariates_file_name = character();</span></span>
+<span id="cb28-30"><a href="perform-eqtl-analysis.html#cb28-30" tabindex="-1"></a>  </span>
+<span id="cb28-31"><a href="perform-eqtl-analysis.html#cb28-31" tabindex="-1"></a><span class="co"># Error covariance matrix</span></span>
+<span id="cb28-32"><a href="perform-eqtl-analysis.html#cb28-32" tabindex="-1"></a><span class="co"># Set to numeric() for identity.</span></span>
+<span id="cb28-33"><a href="perform-eqtl-analysis.html#cb28-33" tabindex="-1"></a>errorCovariance <span class="ot">=</span> <span class="fu">numeric</span>();</span>
+<span id="cb28-34"><a href="perform-eqtl-analysis.html#cb28-34" tabindex="-1"></a>  </span>
+<span id="cb28-35"><a href="perform-eqtl-analysis.html#cb28-35" tabindex="-1"></a><span class="co"># Distance for local gene-SNP pairs</span></span>
+<span id="cb28-36"><a href="perform-eqtl-analysis.html#cb28-36" tabindex="-1"></a>cisDist <span class="ot">=</span> cis_dist</span>
+<span id="cb28-37"><a href="perform-eqtl-analysis.html#cb28-37" tabindex="-1"></a>  </span>
+<span id="cb28-38"><a href="perform-eqtl-analysis.html#cb28-38" tabindex="-1"></a><span class="do">## Load genotype data</span></span>
+<span id="cb28-39"><a href="perform-eqtl-analysis.html#cb28-39" tabindex="-1"></a>snps <span class="ot">=</span> SlicedData<span class="sc">$</span><span class="fu">new</span>();</span>
+<span id="cb28-40"><a href="perform-eqtl-analysis.html#cb28-40" tabindex="-1"></a>snps<span class="sc">$</span>fileDelimiter <span class="ot">=</span> <span class="st">&quot; &quot;</span>; <span class="co"># the TAB character</span></span>
+<span id="cb28-41"><a href="perform-eqtl-analysis.html#cb28-41" tabindex="-1"></a>snps<span class="sc">$</span>fileOmitCharacters <span class="ot">=</span> <span class="st">&quot;NA&quot;</span>; <span class="co"># denote missing values;</span></span>
+<span id="cb28-42"><a href="perform-eqtl-analysis.html#cb28-42" tabindex="-1"></a>snps<span class="sc">$</span>fileSkipRows <span class="ot">=</span> <span class="dv">1</span>; <span class="co"># one row of column labels</span></span>
+<span id="cb28-43"><a href="perform-eqtl-analysis.html#cb28-43" tabindex="-1"></a>snps<span class="sc">$</span>fileSkipColumns <span class="ot">=</span> <span class="dv">1</span>; <span class="co"># one column of row labels</span></span>
+<span id="cb28-44"><a href="perform-eqtl-analysis.html#cb28-44" tabindex="-1"></a>snps<span class="sc">$</span>fileSliceSize <span class="ot">=</span> <span class="dv">2000</span>; <span class="co"># read file in slices of 2,000 rows</span></span>
+<span id="cb28-45"><a href="perform-eqtl-analysis.html#cb28-45" tabindex="-1"></a>snps<span class="sc">$</span><span class="fu">LoadFile</span>(SNP_file_name);</span></code></pre></div>
+<pre><code>## Rows read: 1233 done.</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="perform-eqtl-analysis.html#cb30-1" tabindex="-1"></a><span class="do">## Load gene expression data</span></span>
+<span id="cb30-2"><a href="perform-eqtl-analysis.html#cb30-2" tabindex="-1"></a>gene <span class="ot">=</span> SlicedData<span class="sc">$</span><span class="fu">new</span>();</span>
+<span id="cb30-3"><a href="perform-eqtl-analysis.html#cb30-3" tabindex="-1"></a>gene<span class="sc">$</span>fileDelimiter <span class="ot">=</span> <span class="st">&quot; &quot;</span>; <span class="co"># the TAB character</span></span>
+<span id="cb30-4"><a href="perform-eqtl-analysis.html#cb30-4" tabindex="-1"></a>gene<span class="sc">$</span>fileOmitCharacters <span class="ot">=</span> <span class="st">&quot;NA&quot;</span>; <span class="co"># denote missing values;</span></span>
+<span id="cb30-5"><a href="perform-eqtl-analysis.html#cb30-5" tabindex="-1"></a>gene<span class="sc">$</span>fileSkipRows <span class="ot">=</span> <span class="dv">1</span>; <span class="co"># one row of column labels</span></span>
+<span id="cb30-6"><a href="perform-eqtl-analysis.html#cb30-6" tabindex="-1"></a>gene<span class="sc">$</span>fileSkipColumns <span class="ot">=</span> <span class="dv">1</span>; <span class="co"># one column of row labels</span></span>
+<span id="cb30-7"><a href="perform-eqtl-analysis.html#cb30-7" tabindex="-1"></a>gene<span class="sc">$</span>fileSliceSize <span class="ot">=</span> <span class="dv">2000</span>; <span class="co"># read file in slices of 2,000 rows</span></span>
+<span id="cb30-8"><a href="perform-eqtl-analysis.html#cb30-8" tabindex="-1"></a>gene<span class="sc">$</span><span class="fu">LoadFile</span>(expression_file_name);</span></code></pre></div>
+<pre><code>## Rows read: 95 done.</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="perform-eqtl-analysis.html#cb32-1" tabindex="-1"></a><span class="do">## Load covariates</span></span>
+<span id="cb32-2"><a href="perform-eqtl-analysis.html#cb32-2" tabindex="-1"></a>cvrt <span class="ot">=</span> SlicedData<span class="sc">$</span><span class="fu">new</span>();</span>
+<span id="cb32-3"><a href="perform-eqtl-analysis.html#cb32-3" tabindex="-1"></a>cvrt<span class="sc">$</span>fileDelimiter <span class="ot">=</span> <span class="st">&quot; &quot;</span>; <span class="co"># the TAB character</span></span>
+<span id="cb32-4"><a href="perform-eqtl-analysis.html#cb32-4" tabindex="-1"></a>cvrt<span class="sc">$</span>fileOmitCharacters <span class="ot">=</span> <span class="st">&quot;NA&quot;</span>; <span class="co"># denote missing values;</span></span>
+<span id="cb32-5"><a href="perform-eqtl-analysis.html#cb32-5" tabindex="-1"></a>cvrt<span class="sc">$</span>fileSkipRows <span class="ot">=</span> <span class="dv">1</span>; <span class="co"># one row of column labels</span></span>
+<span id="cb32-6"><a href="perform-eqtl-analysis.html#cb32-6" tabindex="-1"></a>cvrt<span class="sc">$</span>fileSkipColumns <span class="ot">=</span> <span class="dv">1</span>; <span class="co"># one column of row labels</span></span>
+<span id="cb32-7"><a href="perform-eqtl-analysis.html#cb32-7" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(covariates_file_name)<span class="sc">&gt;</span><span class="dv">0</span>) {</span>
+<span id="cb32-8"><a href="perform-eqtl-analysis.html#cb32-8" tabindex="-1"></a>  cvrt<span class="sc">$</span><span class="fu">LoadFile</span>(covariates_file_name);</span>
+<span id="cb32-9"><a href="perform-eqtl-analysis.html#cb32-9" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## Rows read: 3 done.</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="perform-eqtl-analysis.html#cb34-1" tabindex="-1"></a><span class="do">## Run the analysis</span></span>
+<span id="cb34-2"><a href="perform-eqtl-analysis.html#cb34-2" tabindex="-1"></a>snpspos <span class="ot">=</span> <span class="fu">read.table</span>(snps_location_file_name, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>);</span>
+<span id="cb34-3"><a href="perform-eqtl-analysis.html#cb34-3" tabindex="-1"></a>genepos <span class="ot">=</span> <span class="fu">read.table</span>(gene_location_file_name, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>);</span>
+<span id="cb34-4"><a href="perform-eqtl-analysis.html#cb34-4" tabindex="-1"></a>  </span>
+<span id="cb34-5"><a href="perform-eqtl-analysis.html#cb34-5" tabindex="-1"></a>me <span class="ot">=</span> <span class="fu">Matrix_eQTL_main</span>(</span>
+<span id="cb34-6"><a href="perform-eqtl-analysis.html#cb34-6" tabindex="-1"></a>  <span class="at">snps =</span> snps,</span>
+<span id="cb34-7"><a href="perform-eqtl-analysis.html#cb34-7" tabindex="-1"></a>  <span class="at">gene =</span> gene,</span>
+<span id="cb34-8"><a href="perform-eqtl-analysis.html#cb34-8" tabindex="-1"></a>  <span class="at">cvrt =</span> cvrt,</span>
+<span id="cb34-9"><a href="perform-eqtl-analysis.html#cb34-9" tabindex="-1"></a>  <span class="at">output_file_name =</span> output_file_name_tra,</span>
+<span id="cb34-10"><a href="perform-eqtl-analysis.html#cb34-10" tabindex="-1"></a>  <span class="at">pvOutputThreshold =</span> pvOutputThreshold_tra,</span>
+<span id="cb34-11"><a href="perform-eqtl-analysis.html#cb34-11" tabindex="-1"></a>  <span class="at">useModel =</span> useModel,</span>
+<span id="cb34-12"><a href="perform-eqtl-analysis.html#cb34-12" tabindex="-1"></a>  <span class="at">errorCovariance =</span> errorCovariance,</span>
+<span id="cb34-13"><a href="perform-eqtl-analysis.html#cb34-13" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb34-14"><a href="perform-eqtl-analysis.html#cb34-14" tabindex="-1"></a>  <span class="at">output_file_name.cis =</span> output_file_name_cis,</span>
+<span id="cb34-15"><a href="perform-eqtl-analysis.html#cb34-15" tabindex="-1"></a>  <span class="at">pvOutputThreshold.cis =</span> pvOutputThreshold_cis,</span>
+<span id="cb34-16"><a href="perform-eqtl-analysis.html#cb34-16" tabindex="-1"></a>  <span class="at">snpspos =</span> snpspos,</span>
+<span id="cb34-17"><a href="perform-eqtl-analysis.html#cb34-17" tabindex="-1"></a>  <span class="at">genepos =</span> genepos,</span>
+<span id="cb34-18"><a href="perform-eqtl-analysis.html#cb34-18" tabindex="-1"></a>  <span class="at">cisDist =</span> cisDist,</span>
+<span id="cb34-19"><a href="perform-eqtl-analysis.html#cb34-19" tabindex="-1"></a>  <span class="at">pvalue.hist =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb34-20"><a href="perform-eqtl-analysis.html#cb34-20" tabindex="-1"></a>  <span class="at">min.pv.by.genesnp =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb34-21"><a href="perform-eqtl-analysis.html#cb34-21" tabindex="-1"></a>  <span class="at">noFDRsaveMemory =</span> <span class="cn">FALSE</span>);</span></code></pre></div>
+<pre><code>## 95 of 95 genes matched</code></pre>
+<pre><code>## 1233 of 1233 SNPs matched</code></pre>
+<pre><code>## 100.00% done, 41 cis-eQTLs, 2,816 trans-eQTLs</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="perform-eqtl-analysis.html#cb38-1" tabindex="-1"></a>me_qq <span class="ot">=</span> <span class="fu">Matrix_eQTL_main</span>(</span>
+<span id="cb38-2"><a href="perform-eqtl-analysis.html#cb38-2" tabindex="-1"></a>  <span class="at">snps =</span> snps,</span>
+<span id="cb38-3"><a href="perform-eqtl-analysis.html#cb38-3" tabindex="-1"></a>  <span class="at">gene =</span> gene,</span>
+<span id="cb38-4"><a href="perform-eqtl-analysis.html#cb38-4" tabindex="-1"></a>  <span class="at">cvrt =</span> cvrt,</span>
+<span id="cb38-5"><a href="perform-eqtl-analysis.html#cb38-5" tabindex="-1"></a>  <span class="at">output_file_name =</span> output_file_name_tra,</span>
+<span id="cb38-6"><a href="perform-eqtl-analysis.html#cb38-6" tabindex="-1"></a>  <span class="at">pvOutputThreshold =</span> pvOutputThreshold_tra,</span>
+<span id="cb38-7"><a href="perform-eqtl-analysis.html#cb38-7" tabindex="-1"></a>  <span class="at">useModel =</span> useModel,</span>
+<span id="cb38-8"><a href="perform-eqtl-analysis.html#cb38-8" tabindex="-1"></a>  <span class="at">errorCovariance =</span> errorCovariance,</span>
+<span id="cb38-9"><a href="perform-eqtl-analysis.html#cb38-9" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb38-10"><a href="perform-eqtl-analysis.html#cb38-10" tabindex="-1"></a>  <span class="at">output_file_name.cis =</span> output_file_name_cis,</span>
+<span id="cb38-11"><a href="perform-eqtl-analysis.html#cb38-11" tabindex="-1"></a>  <span class="at">pvOutputThreshold.cis =</span> pvOutputThreshold_cis,</span>
+<span id="cb38-12"><a href="perform-eqtl-analysis.html#cb38-12" tabindex="-1"></a>  <span class="at">snpspos =</span> snpspos,</span>
+<span id="cb38-13"><a href="perform-eqtl-analysis.html#cb38-13" tabindex="-1"></a>  <span class="at">genepos =</span> genepos,</span>
+<span id="cb38-14"><a href="perform-eqtl-analysis.html#cb38-14" tabindex="-1"></a>  <span class="at">cisDist =</span> cisDist,</span>
+<span id="cb38-15"><a href="perform-eqtl-analysis.html#cb38-15" tabindex="-1"></a>  <span class="at">pvalue.hist =</span> <span class="st">&quot;qqplot&quot;</span>,</span>
+<span id="cb38-16"><a href="perform-eqtl-analysis.html#cb38-16" tabindex="-1"></a>  <span class="at">min.pv.by.genesnp =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb38-17"><a href="perform-eqtl-analysis.html#cb38-17" tabindex="-1"></a>  <span class="at">noFDRsaveMemory =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## 95 of 95 genes matched</code></pre>
+<pre><code>## 1233 of 1233 SNPs matched</code></pre>
+<pre><code>## 100.00% done, 41 cis-eQTLs, 2,816 trans-eQTLs</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="perform-eqtl-analysis.html#cb42-1" tabindex="-1"></a><span class="fu">unlink</span>(output_file_name_tra);</span>
+<span id="cb42-2"><a href="perform-eqtl-analysis.html#cb42-2" tabindex="-1"></a><span class="fu">unlink</span>(output_file_name_cis);</span>
+<span id="cb42-3"><a href="perform-eqtl-analysis.html#cb42-3" tabindex="-1"></a>  </span>
+<span id="cb42-4"><a href="perform-eqtl-analysis.html#cb42-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&#39;Analysis done in: &#39;</span>, me<span class="sc">$</span>time.in.sec, <span class="st">&#39; seconds&#39;</span>, <span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>);</span></code></pre></div>
+<pre><code>## Analysis done in:  0.111  seconds</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="perform-eqtl-analysis.html#cb44-1" tabindex="-1"></a><span class="fu">head</span>(me<span class="sc">$</span>cis<span class="sc">$</span>eqtls)</span></code></pre></div>
+<pre><code>##          snps   gene statistic       pvalue          FDR       beta
+## 1   1_3511864  MEGF6  6.026756 3.535416e-09 7.944080e-06  0.4127312
+## 2   1_3510998  MEGF6  5.476550 7.297837e-08 8.199120e-05  0.6482393
+## 3   1_3595370  MEGF6  4.663200 4.132570e-06 3.095295e-03  0.3867170
+## 4  1_33276294 ZNF362 -4.397958 1.371402e-05 7.703849e-03 -0.3397077
+## 5 1_147201324   FMO5  4.017027 6.928076e-05 3.113477e-02  0.4584873
+## 6 1_147208691   FMO5  3.640420 3.044732e-04 1.140252e-01  1.5402443</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="perform-eqtl-analysis.html#cb46-1" tabindex="-1"></a><span class="fu">head</span>(me<span class="sc">$</span>trans<span class="sc">$</span>eqtls)</span></code></pre></div>
+<pre><code>##          snps     gene statistic        pvalue          FDR      beta
+## 1  1_44635806   ZRANB2  28.00674 6.471532e-100 7.435014e-95 1.0147980
+## 2  1_23079379     ERI3  15.96221  1.342469e-45 7.711681e-41 0.7810163
+## 3 1_160424115    WDTC1  13.53285  3.825718e-35 1.465097e-30 0.6954722
+## 4  1_15945755    TCEA3  12.87702  1.963422e-32 5.639342e-28 0.6521932
+## 5  1_23079372     ERI3  12.37956  2.036575e-30 4.679561e-26 1.1308205
+## 6 1_113973708 RABGAP1L  12.00316  6.445364e-29 1.234158e-24 0.8240020</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="perform-eqtl-analysis.html#cb48-1" tabindex="-1"></a><span class="do">## Make the histogram of local and distant p-values</span></span>
+<span id="cb48-2"><a href="perform-eqtl-analysis.html#cb48-2" tabindex="-1"></a><span class="fu">plot</span>(me)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="perform-eqtl-analysis.html#cb49-1" tabindex="-1"></a><span class="do">## Make the qq-plot of local and distant p-values</span></span>
+<span id="cb49-2"><a href="perform-eqtl-analysis.html#cb49-2" tabindex="-1"></a><span class="fu">plot</span>(me_qq)  </span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+## Multiple testing correction
+Whenever multiple statistical tests are performed, a multiple testing correction has to be performed. This is necessary because many hypotheses are tested. Therefore each calculated association p-value has to be corrected for multiple testing. MatrixEQTL does this for you automatically and returns the corrected p-value as a false discovery rate (FDR). Common thresholds on FDR are 5% or 10%.</p>
+</div>
+</div>
+<div id="gene-regional-manhanttan-plots" class="section level2 hasAnchor" number="9.4">
+<h2><span class="header-section-number">9.4</span> Gene regional Manhanttan plots<a href="perform-eqtl-analysis.html#gene-regional-manhanttan-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Manhattan plots are a way to depict association p-values of multiple SNPs at once. They are also very common in GWAS. Manhattan plots are a rather convinient modality for interpretation of eQTL signals in terms of LD.</p>
+<p>Let’s now generate a manhattan plot for gene ENSG00000172404.4, plotting the base-pair position on the x-axis and the −log10(pvalue)
+of the SNP in the y axis. Manhattan plots usually depict all tested SNPs, not only the ones passing a certain p-value threshold. Therefore we’ll first obtain all the association p-values for all tested SNPs for gene ENSG00000172404.4.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="perform-eqtl-analysis.html#cb50-1" tabindex="-1"></a>gene_id <span class="ot">=</span> <span class="st">&quot;CHD5&quot;</span></span>
+<span id="cb50-2"><a href="perform-eqtl-analysis.html#cb50-2" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="perform-eqtl-analysis.html#cb50-3" tabindex="-1"></a>gene_values <span class="ot">=</span> <span class="fu">read.table</span>(expression_file_name, <span class="at">row.names=</span><span class="dv">1</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb50-4"><a href="perform-eqtl-analysis.html#cb50-4" tabindex="-1"></a>single_gene_exp <span class="ot">=</span> SlicedData<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb50-5"><a href="perform-eqtl-analysis.html#cb50-5" tabindex="-1"></a>single_gene_exp<span class="sc">$</span><span class="fu">CreateFromMatrix</span>(<span class="fu">as.matrix</span>(gene_values[gene_id, , <span class="at">drop=</span><span class="cn">FALSE</span>]))</span>
+<span id="cb50-6"><a href="perform-eqtl-analysis.html#cb50-6" tabindex="-1"></a>single_gene_exp</span></code></pre></div>
+<pre><code>## SlicedData object. For more information type: ?SlicedData
+## Number of columns: 446 
+## Number of rows: 1 
+## Data is stored in 1 slices
+## Top left corner of the first slice (up to 10x10):
+##      TCGA.95.7947 TCGA.44.2668 TCGA.67.3771 TCGA.44.5645 TCGA.J2.8192
+## CHD5    -1.501415   -0.9932854    0.7771261   0.05612592     -1.60777
+##      TCGA.69.7760 TCGA.86.8669 TCGA.55.6642 TCGA.78.7152 TCGA.73.4670
+## CHD5    0.6192464    -0.161492    0.9675196    0.3648407   -0.8173966</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="perform-eqtl-analysis.html#cb52-1" tabindex="-1"></a>snpspos <span class="ot">=</span> <span class="fu">read.table</span>(snps_location_file_name, </span>
+<span id="cb52-2"><a href="perform-eqtl-analysis.html#cb52-2" tabindex="-1"></a>                     <span class="at">header =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb52-3"><a href="perform-eqtl-analysis.html#cb52-3" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb52-4"><a href="perform-eqtl-analysis.html#cb52-4" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="perform-eqtl-analysis.html#cb52-5" tabindex="-1"></a>genepos <span class="ot">=</span> <span class="fu">read.table</span>(gene_location_file_name, </span>
+<span id="cb52-6"><a href="perform-eqtl-analysis.html#cb52-6" tabindex="-1"></a>                     <span class="at">header =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb52-7"><a href="perform-eqtl-analysis.html#cb52-7" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb52-8"><a href="perform-eqtl-analysis.html#cb52-8" tabindex="-1"></a></span>
+<span id="cb52-9"><a href="perform-eqtl-analysis.html#cb52-9" tabindex="-1"></a>single_cis_eqtl_res <span class="ot">=</span> <span class="fu">Matrix_eQTL_main</span>(snps, </span>
+<span id="cb52-10"><a href="perform-eqtl-analysis.html#cb52-10" tabindex="-1"></a>                                       single_gene_exp,</span>
+<span id="cb52-11"><a href="perform-eqtl-analysis.html#cb52-11" tabindex="-1"></a>                                       <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb52-12"><a href="perform-eqtl-analysis.html#cb52-12" tabindex="-1"></a>                                       <span class="at">output_file_name.cis =</span> <span class="cn">NULL</span>,</span>
+<span id="cb52-13"><a href="perform-eqtl-analysis.html#cb52-13" tabindex="-1"></a>                                       <span class="at">output_file_name =</span> <span class="cn">NULL</span>,</span>
+<span id="cb52-14"><a href="perform-eqtl-analysis.html#cb52-14" tabindex="-1"></a>                                       <span class="at">pvOutputThreshold.cis=</span><span class="dv">1</span>, </span>
+<span id="cb52-15"><a href="perform-eqtl-analysis.html#cb52-15" tabindex="-1"></a>                                       <span class="at">snpspos =</span> snpspos,</span>
+<span id="cb52-16"><a href="perform-eqtl-analysis.html#cb52-16" tabindex="-1"></a>                                       <span class="at">genepos =</span> genepos)</span></code></pre></div>
+<pre><code>## 1 of 1 genes matched</code></pre>
+<pre><code>## 1233 of 1233 SNPs matched</code></pre>
+<pre><code>## 100.00% done, 36 cis-eQTLs, 4 trans-eQTLs</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="perform-eqtl-analysis.html#cb56-1" tabindex="-1"></a>manh_data <span class="ot">=</span> <span class="fu">merge</span>(single_cis_eqtl_res<span class="sc">$</span>cis<span class="sc">$</span>eqtls, snpspos, <span class="at">by.x =</span> <span class="st">&quot;snps&quot;</span>, <span class="at">by.y =</span> <span class="st">&quot;snpid&quot;</span>)</span>
+<span id="cb56-2"><a href="perform-eqtl-analysis.html#cb56-2" tabindex="-1"></a>manh_data <span class="ot">=</span> manh_data [,<span class="fu">c</span>(<span class="st">&quot;pos&quot;</span>, <span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pvalue&quot;</span>, <span class="st">&quot;snps&quot;</span>)]</span>
+<span id="cb56-3"><a href="perform-eqtl-analysis.html#cb56-3" tabindex="-1"></a><span class="fu">head</span>(manh_data)</span></code></pre></div>
+<pre><code>##       pos chr     pvalue      snps
+## 1 6124032   1 0.94742508 1_6124032
+## 2 6135133   1 0.66565394 1_6135133
+## 3 6142032   1 0.66151188 1_6142032
+## 4 6142185   1 0.02712406 1_6142185
+## 5 6144162   1 0.26531540 1_6144162
+## 6 6144343   1 0.71987569 1_6144343</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="perform-eqtl-analysis.html#cb58-1" tabindex="-1"></a><span class="co"># Plot the Manhattanplot</span></span>
+<span id="cb58-2"><a href="perform-eqtl-analysis.html#cb58-2" tabindex="-1"></a><span class="fu">with</span>(manh_data ,<span class="fu">plot</span>(pos, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">xlab =</span> <span class="st">&quot;genomic position (bp)&quot;</span>,</span>
+<span id="cb58-3"><a href="perform-eqtl-analysis.html#cb58-3" tabindex="-1"></a><span class="at">main=</span><span class="fu">paste</span>(gene_id, <span class="st">&quot;associated SNPs&quot;</span>)))</span>
+<span id="cb58-4"><a href="perform-eqtl-analysis.html#cb58-4" tabindex="-1"></a><span class="co"># Highlight the lead SNP</span></span>
+<span id="cb58-5"><a href="perform-eqtl-analysis.html#cb58-5" tabindex="-1"></a><span class="fu">with</span>(manh_data[<span class="fu">which.min</span>(manh_data<span class="sc">$</span>pvalue),,<span class="at">drop=</span><span class="cn">FALSE</span>] ,</span>
+<span id="cb58-6"><a href="perform-eqtl-analysis.html#cb58-6" tabindex="-1"></a><span class="fu">points</span>(pos, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">pch=</span><span class="dv">20</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>))</span>
+<span id="cb58-7"><a href="perform-eqtl-analysis.html#cb58-7" tabindex="-1"></a><span class="co"># Add a label to the lead SNP</span></span>
+<span id="cb58-8"><a href="perform-eqtl-analysis.html#cb58-8" tabindex="-1"></a><span class="fu">with</span>(manh_data[<span class="fu">which.min</span>(manh_data<span class="sc">$</span>pvalue),,<span class="at">drop=</span><span class="cn">FALSE</span>],</span>
+<span id="cb58-9"><a href="perform-eqtl-analysis.html#cb58-9" tabindex="-1"></a><span class="fu">text</span>(pos <span class="sc">+</span> <span class="fu">diff</span>(<span class="fu">range</span>(manh_data<span class="sc">$</span>pos))<span class="sc">*</span><span class="fl">0.2</span>, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">labels =</span> snps))</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ldsc-and-gene-set-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/08-eqtl.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["cshl_2024.pdf", "cshl_2024.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -18,6 +18,7 @@ library(QCGWAS)
 
 # GWAS with Continuous Trait
 
+
 After all files are prepared in the PLINK format, we are ready to perform association test. The following code conducts the Genome-Wide Association Test by PLINK. **This code will take 1 minute to finish.**
 
 ```{bash eval=F}

@@ -19,6 +19,21 @@ This section introduces a hands-on practice of a genome-wide association study w
 
 Reference paper: Hennig EE, Piatkowska M, Goryca K, Pospiech E, Paziewska A, Karczmarski J, Kluska A, Brewczynska E, Ostrowski J "[Non-CYP2D6 variants selected by GWAS improved the prediction of impaired tamoxifen metabolism in breast cancer patients](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6722498/)." J Clin Med. 2019 Aug; 8(8): 1087. doi: 10.3390/jcm8081087
 
+```{bash eval=F}
+# change the path below to where you saved "bigcare-main" folder
+## run in R Terminal
+#mydir="/path/to/bigcare-main/Data/case_data"
+mydir="./Data/case_data_binary"
+cd $mydir
+```
+
+```{r eval=F}
+# R codes- run in R Console
+#setwd("/path/to/bigcare-main/Data/case_data")
+setwd("./Data/case_data_binary")
+mydir<-getwd()
+```
+
 ## Data Preparation
 1. Phenotype data (using R):
   + We convert the continuous trait of `Z-endoxifen ratio` from the previous notebook to binary traits based on the cut-off value 0.0146:

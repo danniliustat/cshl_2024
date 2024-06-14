@@ -23,7 +23,7 @@
 <meta name="author" content="Danni Liu - Purdue University" />
 
 
-<meta name="date" content="2024-06-13" />
+<meta name="date" content="2024-06-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"/>
-<link rel="next" href="references.html"/>
+<link rel="next" href="ldsc-and-gene-set-analysis-1.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -271,6 +271,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.2.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#use-magma-for-gene-set-analysis"><i class="fa fa-check"></i><b>8.2.2</b> Use MAGMA for Gene-Set Analysis</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="9" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html"><i class="fa fa-check"></i><b>9</b> LDSC and Gene-Set Analysis</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#ldsc-linkage-disequilibrium-score-regression-1"><i class="fa fa-check"></i><b>9.1</b> LDSC (Linkage Disequilibrium Score Regression)</a></li>
+<li class="chapter" data-level="9.2" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#magma-for-gene-level-analysis-1"><i class="fa fa-check"></i><b>9.2</b> MAGMA (for Gene-Level Analysis)</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#prepare-annotation-file-1"><i class="fa fa-check"></i><b>9.2.1</b> Prepare Annotation File</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#use-magma-for-gene-set-analysis-1"><i class="fa fa-check"></i><b>9.2.2</b> Use MAGMA for Gene-Set Analysis</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -323,16 +332,25 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 <p>It can be downloaded from <a href="https://cncr.nl/research/magma/">MAGMA website</a> and can be installed under multiple systems. You can check their manual <a href="https://ctg.cncr.nl/software/MAGMA/doc/manual_v1.09.pdf">HERE</a>.</p>
 <p>Additionally, their website also provides a list of public GWAS summary statistics data for you to download and practice. Please check them <a href="https://ctg.cncr.nl/software/summary_statistics">HERE</a>.</p>
 <p>The MAGMA installation packages are already downloaded inside <code>Tools/MAGMA</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="ldsc-and-gene-set-analysis.html#cb1-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;bigcare-main&quot; folder</span></span>
+<span id="cb1-2"><a href="ldsc-and-gene-set-analysis.html#cb1-2" tabindex="-1"></a><span class="co">## run in R Terminal</span></span>
+<span id="cb1-3"><a href="ldsc-and-gene-set-analysis.html#cb1-3" tabindex="-1"></a><span class="co">#mydir=&quot;/path/to/bigcare-main/Data/case_data&quot;</span></span>
+<span id="cb1-4"><a href="ldsc-and-gene-set-analysis.html#cb1-4" tabindex="-1"></a><span class="va">mydir</span><span class="op">=</span><span class="st">&quot;./Data/magma&quot;</span></span>
+<span id="cb1-5"><a href="ldsc-and-gene-set-analysis.html#cb1-5" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$mydir</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="ldsc-and-gene-set-analysis.html#cb2-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb2-2"><a href="ldsc-and-gene-set-analysis.html#cb2-2" tabindex="-1"></a><span class="co">#setwd(&quot;/path/to/bigcare-main/Data/case_data&quot;)</span></span>
+<span id="cb2-3"><a href="ldsc-and-gene-set-analysis.html#cb2-3" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;./Data/magma&quot;</span>)</span>
+<span id="cb2-4"><a href="ldsc-and-gene-set-analysis.html#cb2-4" tabindex="-1"></a>mydir<span class="ot">&lt;-</span><span class="fu">getwd</span>()</span></code></pre></div>
 <div id="prepare-annotation-file" class="section level3 hasAnchor" number="8.2.1">
 <h3><span class="header-section-number">8.2.1</span> Prepare Annotation File<a href="ldsc-and-gene-set-analysis.html#prepare-annotation-file" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>MAGMA directly runs on PLINK binary format files. We had <code>.ped</code> and <code>.map</code> files before. Let’s convert them to binary format <code>.bed</code>, <code>.bim</code> and <code>.fam</code> using PLINK.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="ldsc-and-gene-set-analysis.html#cb1-1" tabindex="-1"></a><span class="co">## # both Mac and Windows can run in Terminal</span></span>
-<span id="cb1-2"><a href="ldsc-and-gene-set-analysis.html#cb1-2" tabindex="-1"></a><span class="co"># windows users</span></span>
-<span id="cb1-3"><a href="ldsc-and-gene-set-analysis.html#cb1-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
-<span id="cb1-4"><a href="ldsc-and-gene-set-analysis.html#cb1-4" tabindex="-1"></a>--noweb <span class="at">--file</span> ../case_data/genotype_1k <span class="at">--out</span> genotype_1k</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="ldsc-and-gene-set-analysis.html#cb2-1" tabindex="-1"></a><span class="co"># macOS users</span></span>
-<span id="cb2-2"><a href="ldsc-and-gene-set-analysis.html#cb2-2" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
-<span id="cb2-3"><a href="ldsc-and-gene-set-analysis.html#cb2-3" tabindex="-1"></a>--noweb <span class="at">--file</span> ../case_data/genotype_1k <span class="at">--out</span> genotype_1k</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="ldsc-and-gene-set-analysis.html#cb3-1" tabindex="-1"></a><span class="co">## # both Mac and Windows can run in Terminal</span></span>
+<span id="cb3-2"><a href="ldsc-and-gene-set-analysis.html#cb3-2" tabindex="-1"></a><span class="co"># windows users</span></span>
+<span id="cb3-3"><a href="ldsc-and-gene-set-analysis.html#cb3-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb3-4"><a href="ldsc-and-gene-set-analysis.html#cb3-4" tabindex="-1"></a>--noweb <span class="at">--file</span> ../case_data/genotype_1k <span class="at">--out</span> genotype_1k</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="ldsc-and-gene-set-analysis.html#cb4-1" tabindex="-1"></a><span class="co"># macOS users</span></span>
+<span id="cb4-2"><a href="ldsc-and-gene-set-analysis.html#cb4-2" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb4-3"><a href="ldsc-and-gene-set-analysis.html#cb4-3" tabindex="-1"></a>--noweb <span class="at">--file</span> ../case_data/genotype_1k <span class="at">--out</span> genotype_1k</span></code></pre></div>
 <pre><code>## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
 ## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
 ## Logging to genotype_1k.log.
@@ -347,12 +365,12 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 ## Performing single-pass .bed write (1000 variants, 192 people).
 ## 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%--file: genotype_1k.bed + genotype_1k.bim + genotype_1k.fam written.</code></pre>
 <p>Before we run the MAGMA for gene level analysis, we have to create a annotation file that map the SNPs to gene.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="ldsc-and-gene-set-analysis.html#cb4-1" tabindex="-1"></a><span class="co">## both Mac and Windows can run in Terminal</span></span>
-<span id="cb4-2"><a href="ldsc-and-gene-set-analysis.html#cb4-2" tabindex="-1"></a><span class="co"># windows users</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="ldsc-and-gene-set-analysis.html#cb5-1" tabindex="-1"></a><span class="co"># mac users</span></span>
-<span id="cb5-2"><a href="ldsc-and-gene-set-analysis.html#cb5-2" tabindex="-1"></a><span class="ex">../../Tools/MAGMA/magma_v1.10_mac/magma</span> <span class="at">--annotate</span> <span class="at">--snp-loc</span> genotype_1k.bim <span class="dt">\</span></span>
-<span id="cb5-3"><a href="ldsc-and-gene-set-analysis.html#cb5-3" tabindex="-1"></a>        <span class="at">--gene-loc</span> NCBI37.3.gene.loc <span class="dt">\</span></span>
-<span id="cb5-4"><a href="ldsc-and-gene-set-analysis.html#cb5-4" tabindex="-1"></a>        <span class="at">--out</span> genotype_1k</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="ldsc-and-gene-set-analysis.html#cb6-1" tabindex="-1"></a><span class="co">## both Mac and Windows can run in Terminal</span></span>
+<span id="cb6-2"><a href="ldsc-and-gene-set-analysis.html#cb6-2" tabindex="-1"></a><span class="co"># windows users</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="ldsc-and-gene-set-analysis.html#cb7-1" tabindex="-1"></a><span class="co"># mac users</span></span>
+<span id="cb7-2"><a href="ldsc-and-gene-set-analysis.html#cb7-2" tabindex="-1"></a><span class="ex">../../Tools/MAGMA/magma_v1.10_mac/magma</span> <span class="at">--annotate</span> <span class="at">--snp-loc</span> genotype_1k.bim <span class="dt">\</span></span>
+<span id="cb7-3"><a href="ldsc-and-gene-set-analysis.html#cb7-3" tabindex="-1"></a>        <span class="at">--gene-loc</span> NCBI37.3.gene.loc <span class="dt">\</span></span>
+<span id="cb7-4"><a href="ldsc-and-gene-set-analysis.html#cb7-4" tabindex="-1"></a>        <span class="at">--out</span> genotype_1k</span></code></pre></div>
 <pre><code>## Welcome to MAGMA v1.10 (custom)
 ## Using flags:
 ##  --annotate
@@ -360,7 +378,7 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 ##  --gene-loc NCBI37.3.gene.loc
 ##  --out genotype_1k
 ## 
-## Start time is 15:20:42, Thursday 13 Jun 2024
+## Start time is 01:54:49, Friday 14 Jun 2024
 ## 
 ## Starting annotation...
 ## Reading gene locations from file NCBI37.3.gene.loc... 
@@ -420,26 +438,26 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 ##  at least one SNP mapped to each of a total of 555 genes (out of 19427)
 ## 
 ## 
-## End time is 15:20:42, Thursday 13 Jun 2024 (elapsed: 00:00:00)</code></pre>
+## End time is 01:54:49, Friday 14 Jun 2024 (elapsed: 00:00:00)</code></pre>
 </div>
 <div id="use-magma-for-gene-set-analysis" class="section level3 hasAnchor" number="8.2.2">
 <h3><span class="header-section-number">8.2.2</span> Use MAGMA for Gene-Set Analysis<a href="ldsc-and-gene-set-analysis.html#use-magma-for-gene-set-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="ldsc-and-gene-set-analysis.html#cb7-1" tabindex="-1"></a><span class="co">## both Mac and Windows can run in Terminal</span></span>
-<span id="cb7-2"><a href="ldsc-and-gene-set-analysis.html#cb7-2" tabindex="-1"></a><span class="co"># windows users</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="ldsc-and-gene-set-analysis.html#cb8-1" tabindex="-1"></a><span class="co"># mac users</span></span>
-<span id="cb8-2"><a href="ldsc-and-gene-set-analysis.html#cb8-2" tabindex="-1"></a><span class="ex">../../Tools/MAGMA/magma_v1.10_mac/magma</span> <span class="at">--bfile</span> genotype_1k <span class="dt">\</span></span>
-<span id="cb8-3"><a href="ldsc-and-gene-set-analysis.html#cb8-3" tabindex="-1"></a>        <span class="at">--pheno</span> file=phenotype_plink.txt <span class="dt">\</span></span>
-<span id="cb8-4"><a href="ldsc-and-gene-set-analysis.html#cb8-4" tabindex="-1"></a>        <span class="at">--gene-annot</span> genotype_1k.genes.annot <span class="dt">\</span></span>
-<span id="cb8-5"><a href="ldsc-and-gene-set-analysis.html#cb8-5" tabindex="-1"></a>        <span class="at">--out</span> younameit</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="ldsc-and-gene-set-analysis.html#cb9-1" tabindex="-1"></a><span class="co">## both Mac and Windows can run in Terminal</span></span>
+<span id="cb9-2"><a href="ldsc-and-gene-set-analysis.html#cb9-2" tabindex="-1"></a><span class="co"># windows users</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="ldsc-and-gene-set-analysis.html#cb10-1" tabindex="-1"></a><span class="co"># mac users</span></span>
+<span id="cb10-2"><a href="ldsc-and-gene-set-analysis.html#cb10-2" tabindex="-1"></a><span class="ex">../../Tools/MAGMA/magma_v1.10_mac/magma</span> <span class="at">--bfile</span> genotype_1k <span class="dt">\</span></span>
+<span id="cb10-3"><a href="ldsc-and-gene-set-analysis.html#cb10-3" tabindex="-1"></a>        <span class="at">--pheno</span> file=phenotype_plink.txt <span class="dt">\</span></span>
+<span id="cb10-4"><a href="ldsc-and-gene-set-analysis.html#cb10-4" tabindex="-1"></a>        <span class="at">--gene-annot</span> genotype_1k.genes.annot <span class="dt">\</span></span>
+<span id="cb10-5"><a href="ldsc-and-gene-set-analysis.html#cb10-5" tabindex="-1"></a>        <span class="at">--out</span> younameit</span></code></pre></div>
 <p>Interpret the result</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="ldsc-and-gene-set-analysis.html#cb9-1" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb9-2"><a href="ldsc-and-gene-set-analysis.html#cb9-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb9-3"><a href="ldsc-and-gene-set-analysis.html#cb9-3" tabindex="-1"></a>magma_result <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;younameit.genes.out&quot;</span>)</span>
-<span id="cb9-4"><a href="ldsc-and-gene-set-analysis.html#cb9-4" tabindex="-1"></a>annotate <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;NCBI37.3.gene.loc&quot;</span>)</span>
-<span id="cb9-5"><a href="ldsc-and-gene-set-analysis.html#cb9-5" tabindex="-1"></a><span class="co"># replace gene index with gene name </span></span>
-<span id="cb9-6"><a href="ldsc-and-gene-set-analysis.html#cb9-6" tabindex="-1"></a>magma_result[, <span class="dv">1</span>] <span class="ot">&lt;-</span> annotate[<span class="fu">match</span>(<span class="fu">as.matrix</span>(magma_result[, <span class="dv">1</span>]), <span class="fu">as.matrix</span>(annotate[, <span class="dv">1</span>])), <span class="dv">6</span>]</span>
-<span id="cb9-7"><a href="ldsc-and-gene-set-analysis.html#cb9-7" tabindex="-1"></a><span class="co"># show some of the result</span></span>
-<span id="cb9-8"><a href="ldsc-and-gene-set-analysis.html#cb9-8" tabindex="-1"></a><span class="fu">head</span>(magma_result)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="ldsc-and-gene-set-analysis.html#cb11-1" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb11-2"><a href="ldsc-and-gene-set-analysis.html#cb11-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb11-3"><a href="ldsc-and-gene-set-analysis.html#cb11-3" tabindex="-1"></a>magma_result <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;younameit.genes.out&quot;</span>)</span>
+<span id="cb11-4"><a href="ldsc-and-gene-set-analysis.html#cb11-4" tabindex="-1"></a>annotate <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;NCBI37.3.gene.loc&quot;</span>)</span>
+<span id="cb11-5"><a href="ldsc-and-gene-set-analysis.html#cb11-5" tabindex="-1"></a><span class="co"># replace gene index with gene name </span></span>
+<span id="cb11-6"><a href="ldsc-and-gene-set-analysis.html#cb11-6" tabindex="-1"></a>magma_result[, <span class="dv">1</span>] <span class="ot">&lt;-</span> annotate[<span class="fu">match</span>(<span class="fu">as.matrix</span>(magma_result[, <span class="dv">1</span>]), <span class="fu">as.matrix</span>(annotate[, <span class="dv">1</span>])), <span class="dv">6</span>]</span>
+<span id="cb11-7"><a href="ldsc-and-gene-set-analysis.html#cb11-7" tabindex="-1"></a><span class="co"># show some of the result</span></span>
+<span id="cb11-8"><a href="ldsc-and-gene-set-analysis.html#cb11-8" tabindex="-1"></a><span class="fu">head</span>(magma_result)</span></code></pre></div>
 <pre><code>##       GENE   CHR    START     STOP NSNPS NPARAM     N    ZSTAT        P
 ##     &lt;char&gt; &lt;int&gt;    &lt;int&gt;    &lt;int&gt; &lt;int&gt;  &lt;int&gt; &lt;int&gt;    &lt;num&gt;    &lt;num&gt;
 ## 1:  VPS13D     1 12290101 12572099     1      1   192  1.88960 0.029407
@@ -456,15 +474,15 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 ## 4: 7.8625e-05 0.000000
 ## 5: 2.2137e-03 0.000000
 ## 6: 5.0257e-04 0.000000</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="ldsc-and-gene-set-analysis.html#cb11-1" tabindex="-1"></a><span class="co"># resummarize for manhattan plot </span></span>
-<span id="cb11-2"><a href="ldsc-and-gene-set-analysis.html#cb11-2" tabindex="-1"></a>qassoc <span class="ot">=</span> <span class="fu">cbind</span>(magma_result<span class="sc">$</span>CHR, magma_result<span class="sc">$</span>GENE, (magma_result<span class="sc">$</span>START<span class="sc">+</span>magma_result<span class="sc">$</span>STOP)<span class="sc">/</span><span class="dv">2</span>, magma_result<span class="sc">$</span>P)</span>
-<span id="cb11-3"><a href="ldsc-and-gene-set-analysis.html#cb11-3" tabindex="-1"></a><span class="fu">colnames</span>(qassoc) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CHR&quot;</span>,<span class="st">&quot;SNP&quot;</span>, <span class="st">&quot;BP&quot;</span>, <span class="st">&quot;P&quot;</span>)</span>
-<span id="cb11-4"><a href="ldsc-and-gene-set-analysis.html#cb11-4" tabindex="-1"></a>qassoc <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(qassoc)</span>
-<span id="cb11-5"><a href="ldsc-and-gene-set-analysis.html#cb11-5" tabindex="-1"></a>qassoc<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(qassoc<span class="sc">$</span>CHR)</span>
-<span id="cb11-6"><a href="ldsc-and-gene-set-analysis.html#cb11-6" tabindex="-1"></a>qassoc<span class="sc">$</span>BP <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(qassoc<span class="sc">$</span>BP)</span>
-<span id="cb11-7"><a href="ldsc-and-gene-set-analysis.html#cb11-7" tabindex="-1"></a>qassoc<span class="sc">$</span>P <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(qassoc<span class="sc">$</span>P)</span>
-<span id="cb11-8"><a href="ldsc-and-gene-set-analysis.html#cb11-8" tabindex="-1"></a>qassoc <span class="ot">&lt;-</span> qassoc <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(P)</span>
-<span id="cb11-9"><a href="ldsc-and-gene-set-analysis.html#cb11-9" tabindex="-1"></a><span class="fu">head</span>(qassoc)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="ldsc-and-gene-set-analysis.html#cb13-1" tabindex="-1"></a><span class="co"># resummarize for manhattan plot </span></span>
+<span id="cb13-2"><a href="ldsc-and-gene-set-analysis.html#cb13-2" tabindex="-1"></a>qassoc <span class="ot">=</span> <span class="fu">cbind</span>(magma_result<span class="sc">$</span>CHR, magma_result<span class="sc">$</span>GENE, (magma_result<span class="sc">$</span>START<span class="sc">+</span>magma_result<span class="sc">$</span>STOP)<span class="sc">/</span><span class="dv">2</span>, magma_result<span class="sc">$</span>P)</span>
+<span id="cb13-3"><a href="ldsc-and-gene-set-analysis.html#cb13-3" tabindex="-1"></a><span class="fu">colnames</span>(qassoc) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CHR&quot;</span>,<span class="st">&quot;SNP&quot;</span>, <span class="st">&quot;BP&quot;</span>, <span class="st">&quot;P&quot;</span>)</span>
+<span id="cb13-4"><a href="ldsc-and-gene-set-analysis.html#cb13-4" tabindex="-1"></a>qassoc <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(qassoc)</span>
+<span id="cb13-5"><a href="ldsc-and-gene-set-analysis.html#cb13-5" tabindex="-1"></a>qassoc<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(qassoc<span class="sc">$</span>CHR)</span>
+<span id="cb13-6"><a href="ldsc-and-gene-set-analysis.html#cb13-6" tabindex="-1"></a>qassoc<span class="sc">$</span>BP <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(qassoc<span class="sc">$</span>BP)</span>
+<span id="cb13-7"><a href="ldsc-and-gene-set-analysis.html#cb13-7" tabindex="-1"></a>qassoc<span class="sc">$</span>P <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(qassoc<span class="sc">$</span>P)</span>
+<span id="cb13-8"><a href="ldsc-and-gene-set-analysis.html#cb13-8" tabindex="-1"></a>qassoc <span class="ot">&lt;-</span> qassoc <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(P)</span>
+<span id="cb13-9"><a href="ldsc-and-gene-set-analysis.html#cb13-9" tabindex="-1"></a><span class="fu">head</span>(qassoc)</span></code></pre></div>
 <pre><code>##   CHR     SNP        BP          P
 ## 1  22   TCF20  42610394 0.00016134
 ## 2   3 ATP13A5 193044672 0.00020216
@@ -472,20 +490,20 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 ## 4  22    RAC2  37630820 0.00067431
 ## 5  22  WBP2NL  42410271 0.00069317
 ## 6  22   SEPT3  42383540 0.00077054</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="ldsc-and-gene-set-analysis.html#cb13-1" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename=</span><span class="fu">paste0</span>(<span class="st">&quot;Manhattan_Plot_for_magma.png&quot;</span>))</span>
-<span id="cb13-2"><a href="ldsc-and-gene-set-analysis.html#cb13-2" tabindex="-1"></a><span class="fu">manhattan</span>(qassoc, <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;dimgray&quot;</span>, <span class="st">&quot;darkgoldenrod1&quot;</span>), <span class="at">suggestiveline=</span>T, <span class="at">genomewideline=</span>F, <span class="at">annotatePval=</span><span class="fl">0.001</span>)</span>
-<span id="cb13-3"><a href="ldsc-and-gene-set-analysis.html#cb13-3" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="ldsc-and-gene-set-analysis.html#cb15-1" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename=</span><span class="fu">paste0</span>(<span class="st">&quot;Manhattan_Plot_for_magma.png&quot;</span>))</span>
+<span id="cb15-2"><a href="ldsc-and-gene-set-analysis.html#cb15-2" tabindex="-1"></a><span class="fu">manhattan</span>(qassoc, <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;dimgray&quot;</span>, <span class="st">&quot;darkgoldenrod1&quot;</span>), <span class="at">suggestiveline=</span>T, <span class="at">genomewideline=</span>F, <span class="at">annotatePval=</span><span class="fl">0.001</span>)</span>
+<span id="cb15-3"><a href="ldsc-and-gene-set-analysis.html#cb15-3" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2</code></pre>
 <p>compare the plot
 We can load the plot from MAGMA</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="ldsc-and-gene-set-analysis.html#cb15-1" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">&quot;Manhattan_Plot_for_magma.png&quot;</span>)</span>
-<span id="cb15-2"><a href="ldsc-and-gene-set-analysis.html#cb15-2" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(img)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="ldsc-and-gene-set-analysis.html#cb17-1" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">&quot;Manhattan_Plot_for_magma.png&quot;</span>)</span>
+<span id="cb17-2"><a href="ldsc-and-gene-set-analysis.html#cb17-2" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(img)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>This is the previous plot for SNPs.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="ldsc-and-gene-set-analysis.html#cb16-1" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">&quot;../case_data/Manhattan_Plot_for_z-4-oh-Tam.png&quot;</span>)</span>
-<span id="cb16-2"><a href="ldsc-and-gene-set-analysis.html#cb16-2" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(img)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="ldsc-and-gene-set-analysis.html#cb18-1" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">&quot;../case_data/Manhattan_Plot_for_z-4-oh-Tam.png&quot;</span>)</span>
+<span id="cb18-2"><a href="ldsc-and-gene-set-analysis.html#cb18-2" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(img)</span></code></pre></div>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 
 </div>
 </div>
@@ -496,7 +514,7 @@ We can load the plot from MAGMA</p>
         </div>
       </div>
 <a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="ldsc-and-gene-set-analysis-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

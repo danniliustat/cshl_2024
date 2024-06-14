@@ -121,3 +121,14 @@ ldsc-linkage-disequilibrium-score-regression
 magma-for-gene-level-analysis
 prepare-annotation-file
 use-magma-for-gene-set-analysis
+ldsc-and-gene-set-analysis-1
+ldsc-linkage-disequilibrium-score-regression-1
+magma-for-gene-level-analysis-1
+prepare-annotation-file-1
+use-magma-for-gene-set-analysis-1
+perform-eqtl-analysis
+gene-expression-profiling
+covariates
+using-principle-components-as-covariates
+cis-eqtl-and-trans-eqtl-analysis
+gene-regional-manhanttan-plots

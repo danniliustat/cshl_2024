@@ -5,7 +5,7 @@ Using flags:
 	--gene-annot genotype_1k.genes.annot
 	--out younameit
 
-Start time is 15:20:42, Thursday 13 Jun 2024
+Start time is 01:54:49, Friday 14 Jun 2024
 
 Loading PLINK-format data...
 Reading file genotype_1k.fam... 192 individuals read
@@ -124,4 +124,4 @@ Starting gene analysis...
 	writing intermediate output to file younameit.genes.raw
 
 
-End time is 15:20:42, Thursday 13 Jun 2024 (elapsed: 00:00:00)
+End time is 01:54:49, Friday 14 Jun 2024 (elapsed: 00:00:00)

@@ -56,6 +56,21 @@ Additionally, their website also provides a list of public GWAS summary statisti
 
 The MAGMA installation packages are already downloaded inside `Tools/MAGMA`. 
 
+```{bash eval=F}
+# change the path below to where you saved "bigcare-main" folder
+## run in R Terminal
+#mydir="/path/to/bigcare-main/Data/case_data"
+mydir="./Data/magma"
+cd $mydir
+```
+
+```{r eval=F}
+# R codes- run in R Console
+#setwd("/path/to/bigcare-main/Data/case_data")
+setwd("./Data/magma")
+mydir<-getwd()
+```
+
 ### Prepare Annotation File
 
 MAGMA directly runs on PLINK binary format files. We had `.ped` and `.map` files before. Let's convert them to binary format `.bed`, `.bim` and `.fam` using PLINK.
