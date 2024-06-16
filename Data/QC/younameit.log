@@ -1,17 +1,17 @@
 PLINK v1.90p 64-bit (11 Dec 2023)
 Options in effect:
   --file ./Data/QC/5SNPs
-  --genome
+  --hardy
   --noweb
   --out ./Data/QC/younameit
 
-Hostname: Dannis-Mac-mini.local
-Working directory: /Users/oooliviaaa/Documents/cshl_2024
-Start time: Wed Jun 12 15:48:05 2024
+Hostname: BIGCARE
+Working directory: C:\Users\Zhang\Documents\GitHub\cshl_2024
+Start time: Sun Jun 16 11:59:24 2024
 
 Note: --noweb has no effect since no web check is implemented yet.
-Random number seed: 1718232485
-16384 MB RAM detected; reserving 8192 MB for main workspace.
+Random number seed: 1718553564
+32452 MB RAM detected; reserving 16226 MB for main workspace.
 Scanning .ped file... done.
 Performing single-pass .bed write (5 variants, 344 people).
 --file: ./Data/QC/younameit-temporary.bed + ./Data/QC/younameit-temporary.bim +
@@ -19,13 +19,11 @@ Performing single-pass .bed write (5 variants, 344 people).
 5 variants loaded from .bim file.
 344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
 Ambiguous sex IDs written to ./Data/QC/younameit.nosex .
-Using up to 8 threads (change this with --threads).
+Using 1 thread (no multithreaded calculations invoked).
 Before main variant filters, 344 founders and 0 nonfounders present.
 Calculating allele frequencies... done.
 Total genotyping rate is 0.976744.
-5 variants and 344 people pass filters and QC.
-Note: No phenotypes present.
-IBD calculations complete.
-Finished writing ./Data/QC/younameit.genome .
+--hardy: Writing Hardy-Weinberg report (founders only) to
+./Data/QC/younameit.hwe ... done.
 
-End time: Wed Jun 12 15:48:05 2024
+End time: Sun Jun 16 11:59:24 2024
