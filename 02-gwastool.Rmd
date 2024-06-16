@@ -30,9 +30,9 @@ setwd("/path/to/cshl_2024")
 
 
 ## GWAS Tools
-We will use two main program tools in this notebook, **PLINK** and **IMPUTE2**.
+We will use two main program tools in this notebook, **PLINK** (version 1.9) and **IMPUTE2**.
 
-**PLINK** is used for quality control and perform association test for large scale genotype data. You can download PLINK program using this link. Download the .zip file or find the .zip files suitable for your laptop system in "cshl_2024/Tools/PLINK" and unzip it to call the plink program in the folder.
+**PLINK** (version 1.9) is used for quality control and perform association test for large scale genotype data. You can find the .zip files suitable for your laptop system in "cshl_2024/Tools/PLINK" and unzip it to call the `plink` program in the folder.
 
 **IMPUTE2** is used for genotype imputation and haplotype phasing. You can download its program using this link. IMPUTE2 program is only available to run in Linux or macOS system. You can find the zipped installation file in "cshl_2024/Tools/IMPUTE2". If you want to perform imputation for your own data, you also need to download the required reference genome from the above link. But in this notebook will only use the example genome.
 
@@ -44,7 +44,7 @@ Important: If you want to run these programs on your laptop, please make sure yo
 
 Instructions on installing these two tools can be found on in Chapter 1.
 
-After you cloned the repository "cshl_2024" folder, you can find the `Tools` folder contatining installation packages for different systems. Then, you can unzip the zip files and call the programs by specifying its absolute path. For example, for macOS users, you can unzip the installer by double clicking, and call PLINK using `/path/to/cshl_2024/Tools/PLINK/plink_mac/plink`; for Windows users, you need to unzip the package "plink_win64.zip" with right click->"Extract All...". Then you can call PLINK with `/path/to/cshl_2024/Tools/PLINK/plink_win64/plink.exe`.
+After you cloned the repository "cshl_2024" folder, you can find the `Tools` folder contatining installation packages for different systems. Then, you can unzip the zip files and call the programs by specifying its absolute path. For example, for macOS users, you can unzip the installer by double clicking, and call PLINK using `/path/to/cshl_2024/Tools/PLINK/plink_mac_20231211/plink`; for Windows users, you need to unzip the package "plink_win64.zip" with right click->"Extract All...". Then you can call PLINK with `/path/to/cshl_2024/Tools/PLINK/plink_win64_20231211/plink.exe`.
 
 You should modify the above `/path/to/cshl_2024` to where your "cshl_2024" folder is.
 
@@ -56,7 +56,7 @@ When you try to call PLINK, IMPUTE2 and MAGMA with the above commands, you might
 
 
 ## Quality Control
-PLINK will generate a number of standard summary statistics that are useful for quality control (e.g. missing genotype rate, minor allele frequency, Hardy-Weinberg equilibrium test and non-Mendelian transmission rate). These can also be used as thresholds for subsequent analyses. For more detailed information about plink, please refer its website http://zzz.bwh.harvard.edu/plink/.
+PLINK will generate a number of standard summary statistics that are useful for quality control (e.g. missing genotype rate, minor allele frequency, Hardy-Weinberg equilibrium test and non-Mendelian transmission rate). These can also be used as thresholds for subsequent analyses. For more detailed information about plink, please refer its website https://www.cog-genomics.org/plink/1.9/.
 
 The following is a list of some common options that can be used to filter out individuals or SNPs on the basis of the summary statistic measures:
 
@@ -72,14 +72,14 @@ tabl <- "
 cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
 ```
 
-## An Example of Summary Statistics
-### Input files
+### An Example of Summary Statistics
+#### Input files
 Input files: in folder `./Data/QC`-- We will use a random selected 5 SNPs as an example data:
 
 - 5SNPs.ped
 - 5SNPs.map
 
-The PED file is a white-space delimited file: the first six columns are mandatory:
+The PED file is a white-space delimited file.It contains no header line, and one line per sample with 6+2V fields where V is the number of variants. The first six columns are mandatory:
 
      Family ID
      Individual ID
@@ -88,6 +88,7 @@ The PED file is a white-space delimited file: the first six columns are mandator
      Sex (1=male; 2=female; other=unknown)
      Phenotype
 
+The seventh and eighth fields are allele calls for the first variant in the .map file ('0' = no call); the 9th and 10th are allele calls for the second variant; and so on.
 ```{bash}
 # bash codes- run in Terminal
 # Windows user need to run in Powershell App 
@@ -99,6 +100,7 @@ By default, each line of the MAP file describes a single marker and must contain
      rs# or snp identifier
      Genetic distance (morgans)
      Base-pair position (bp units)
+     
 ```{bash}
 head ./Data/QC/5SNPs.map
 ```
@@ -110,7 +112,7 @@ Three types of summary statistics that we are going to calculate using `PLINK`:
 
 All results generated from the following commands are saved in folder `./Data/QC`. You can open the files in this folder to view the data structure.
 
-### Calculating missing rate
+#### Calculating missing rate
 
 The following commands compute the **missingness** for each SNP and each subject. (The output will print all calculation progress generated by `PLINK`.)
 
@@ -119,19 +121,19 @@ The following commands compute the **missingness** for each SNP and each subject
 3. **--missing**,  calculate the number of missing and missing rate.
 4. **--out**, specify the output file name.
 
-```{bash eval=T}
+```{bash eval=F}
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
 # for windows users
-./Tools/PLINK/plink_win64/plink.exe \
+./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/QC/5SNPs --missing --out ./Data/QC/younameit
 
 ```
 
 ```{bash eval=F}
 # for macoS users
-./Tools/PLINK/plink_mac/plink \
+./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs --missing --out ./Data/QC/younameit
 
 ```
@@ -170,22 +172,22 @@ For SNP "lmiss" file, the format is:
 head ./Data/QC/younameit.lmiss
 ```
 
-### Calculating allel frequencies
+#### Calculating allel frequencies
 
 The following command computes the **allele frequencies**. (The output will print all calculation progress generated by `PLINK`.)
 1. **--freq**, calculate the allele frequencies.
 
-```{bash eval=T}
+```{bash eval=F}
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
 # Windows user
-./Tools/PLINK/plink_win64/plink.exe \
+./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
 ```
 ```{bash eval=F}
 # macOS user
-./Tools/PLINK/plink_mac/plink \
+./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
 ```
 
@@ -210,26 +212,28 @@ head ./Data/QC/younameit.frq
 
 ```
 
-### Hardy-Weinberg Equilibrium
-The following command computes the **Hardy-Weiberg test**. (The output will print all calculation progress generated by `PLINK`.)
+#### Hardy-Weinberg Equilibrium
+The following command computes the **Hardy-Weiberg exact test statistic**. (The output will print all calculation progress generated by `PLINK`.)
 1. **--hardy**, perform hardy-weinberg test.
 
-```{bash eval=T}
+```{bash eval=F}
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
 # Windows user
-./Tools/PLINK/plink_win64/plink.exe \
+./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
 ```
 ```{bash eval=F}
 # macOS user
-./Tools/PLINK/plink_mac/plink \
+./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
 ```
 
 This command will create an output file **"younameit.hwe"** with the following columns:
 
+     CHR             Chromosome
+     
      SNP             SNP identifier
      
      TEST            Code indicating whether the sample is a case or control
@@ -252,7 +256,7 @@ This command will create an output file **"younameit.hwe"** with the following c
 head ./Data/QC/younameit.hwe
 ```
 
-## An Example of Inclusion Thresholds for QC
+### An Example of Inclusion Thresholds for QC
 
 Input files: in folder `./QC`
 
@@ -272,13 +276,13 @@ The following command performs **multiple quality controls**. (The output will p
 # modify the path to "plink" program
 
 # Windows user
-./Tools/PLINK/plink_win64/plink.exe \
+./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/QC/5SNPs \
 --mind 0.1 --geno 0.1 --maf 0.05 --hwe 0.001 --recode --out ./Data/QC/younameit
 ```
-```{bash}
+```{bash eval=F}
 # macOS user
-./Tools/PLINK/plink_mac/plink \
+./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs \
 --mind 0.1 --geno 0.1 --maf 0.05 --hwe 0.001 --recode --out ./Data/QC/younameit
 
@@ -301,12 +305,12 @@ The following command will calculate **indentical by descent (IBS) distances** b
 # modify the path to "plink" program
 
 # Windows user
-./Tools/PLINK/plink_win64/plink.exe \
+./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/QC/5SNPs --genome --out ./Data/QC/younameit
 ```
-```{bash}
+```{bash eval=F}
 # macOS user
-./Tools/PLINK/plink_mac/plink \
+./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs --genome --out ./Data/QC/younameit
 ```
 
@@ -357,7 +361,7 @@ Here is the example provided by **IMPUTE2 package**. The link is https://mathgen
 
 Files used for example are saved in folder `./Data/impute2_example`.
 
-```{bash}
+```{bash eval=F}
 # bash codes- run in terminal
 # IMPUTE2 only works for macOS or Linux users, Windows users can't run it
 
@@ -374,7 +378,11 @@ Files used for example are saved in folder `./Data/impute2_example`.
 
 ```
 
-# Population Stratification Correction Using EIGENSTRAT
+# Population Stratification Correction Using PLINK
+
+`PLINK`(only version 1.9 and after) can perform population stratefication using Principal Component Analysis. PCA explicitly model ancestry differences between cases and controls along continuous axes of variation; the resulting correction is specific to a candidate marker’s variation in frequency across ancestral populations, minimizing spurious associations while maximizing power to detect true associations.
+
+
 
 The EIGENSTRAT method uses principal component analysis to explicitly model ancestry differences between cases and controls along continuous axes of variation; the resulting correction is specific to a candidate marker’s variation in frequency across ancestral populations, minimizing spurious associations while maximizing power to detect true associations. The EIGENSTRAT package has a built-in plotting script and supports multiple file formats and quantitative phenotypes. The package is based on the method described in [Price et al. 2006](https://www.ncbi.nlm.nih.gov/pubmed/16862161).
 
