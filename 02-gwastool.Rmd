@@ -380,124 +380,75 @@ Files used for example are saved in folder `./Data/impute2_example`.
 
 # Population Stratification Correction Using PLINK
 
-`PLINK`(only version 1.9 and after) can perform population stratefication using Principal Component Analysis. PCA explicitly model ancestry differences between cases and controls along continuous axes of variation; the resulting correction is specific to a candidate marker’s variation in frequency across ancestral populations, minimizing spurious associations while maximizing power to detect true associations.
+`PLINK`(only version 1.9 and after) can perform population stratefication using Principal Component Analysis. PCA explicitly model variations along continuous axes of PCs. Top principal components are generally used as covariates in the resulting correction to help correct for population stratification, minimizing spurious associations while maximizing power to detect true associations.
 
-
-
-The EIGENSTRAT method uses principal component analysis to explicitly model ancestry differences between cases and controls along continuous axes of variation; the resulting correction is specific to a candidate marker’s variation in frequency across ancestral populations, minimizing spurious associations while maximizing power to detect true associations. The EIGENSTRAT package has a built-in plotting script and supports multiple file formats and quantitative phenotypes. The package is based on the method described in [Price et al. 2006](https://www.ncbi.nlm.nih.gov/pubmed/16862161).
-
-See https://github.com/DReichLab/EIG.
-
-## EIGENSTRAT input files
-
-**EIGENSTRAT** accepts multiple types of files as input, including "ANCESTRYMAP" files, "EIGENSTRAT" files, "PED" files, "PACKEDPED" files and "PACKEDANCESTRYMAP" files. Detailed introduction of these different file formats can be found in their [README](https://github.com/chrchang/eigensoft/blob/master/CONVERTF/README) file. We will use PED file format in this example.
-
-We will prepare three files-- "genotype.ped", "genotype.pedsnp" and "genotype.pedind".
-
-- The **PED files** format is described above. We will use genotype file: **genotype.ped** (saved in ./PC` folder and has size of 1.1G.)
-- The **indiv file**(`./PC/genotype.pedind`) contains the first 6 or 7 columns of the genotype file.The genotype file is 1 line per individual.\
-  The first 6 or 7 columns of the genotype file are:
-    - 1st column is family ID.  
-    - 2nd column is sample ID.
-    - 3rd and 4th column are sample IDs of parents.  
-    - 5th column is gender (male is 1, female is 2)
-    - 6th column is case/control status (1 is control, 2 is case) OR
-      quantitative trait value OR population group label.
-    - 7th column (this column is optional) is always set to 1.  
-  In the two genotype columns for each SNP, missing data is represented by 0.
-- The **snp file**(`./PC/genotype.pedsnp`) contains 1 line per SNP.  There are 6 columns (last 2 optional):
-  - 1st column is chromosome.  Use X for X chromosome.(Note: SNPs with illegal chromosome values, such as 0, will be removed)
-  - 2nd column is SNP name
-  - 3rd column is genetic position (in Morgans)
-  - 4th column is physical position (in bases)
-  - Optional 5th and 6th columns are reference and variant alleles.(For monomorphic SNPs, the variant allele can be encoded as X.)
-  
-The following command use the previous map file as `genotype.pedsnp` file (in Linux):
-
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-cp ./Data/PC/genotype_1k.map ./Data/PC/genotype_1k.pedsnp
-```
-
-The following command prepare the `genotype.pedind` file. Because the original data doesn't have case/control information, we will randomly assign them to case or control group to use as an example. 
-
-```{r}
-# R codes- run in R Console
-set.seed(1)
-group<-rep(1,344)
-idx<-sample(344,170)
-group[idx]<-2
-write.table(group, "./Data/PC/group.txt", row.names=F, col.names=F, quote=F, sep=" ")
-head(group)
-```
-
-Then we select the first five columns from `.ped` file (in Linux), add the group file we just generated to get the `genotype.pedind`. 
-
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-awk '{print $1,$2,$3,$4,$5}' ./Data/PC/genotype_1k.ped > ./Data/PC/genotype_ind.txt
-paste -d' ' ./Data/PC/genotype_ind.txt ./Data/PC/group.txt> ./Data/PC/genotype_1k.pedind
-```
-
-## Run EIGENSTRAT Using Input Genotype Data
-
-We call **smartpca.perl** in EIGENSTRAT on input genotype data. (All data and results in this section are saved in `.PC` folder.)
-
-The options are:
-
-**-i** example.ped : genotype file 
-
-**-a** example.pedsnp : snp file 
-
-**-b** example.pedind : indiv file 
-
-**-k** : (Default is 10) number of principal components to output 
-
-**-o** example.pca : output file of principal components
-
-**-p** example.plot : prefix of output plot files of top 2 principal components. (labeling individuals according to labels in indiv file) 
-
-**-e** example.eval : output file of all eigenvalues 
-
-**-l** example.log : output logfile 
-
-**The following code takes several minutes to run.** It will generate a warning message that `/usr/bin/gs: /apps/spack/bell/apps/libtiff/4.0.10-gcc-9.3.0-bjzustl/lib/libtiff.so.5: no version information available (required by /lib64/libgs.so.9)`. This is because the libtiff module called by this command is incompatible with the system gs command. You can safely ignore it.
+## PCA on whole genome data using PLINK
+PCA can be performed with `--pca`. By default, `--pca` extracts the top 20 principal components. But we can change the number of PCs by specifying in the commands. The following codes perform PCA and obtain the first 50 PCs.
 
 ```{bash eval=F}
-# bash codes-can't run on either macOS or Windows
-# this can only be run under Linux system or on computing server
-./Tools/eigensoft-master/bin/smartpca.perl \
--i ./Data/PC/genotype_1k.ped -a ./Data/PC/genotype_1k.pedsnp -b ./Data/PC/genotype_1k.pedind \
--k 10 -o ./Data/PC/genotype_1k.pca -p ./Data/PC/genotype_1k.plot \
--e ./Data/PC/genotype_1k.eval -l ./Data/PC/genotype_1k.log
+# both Mac and Windows can run in Terminal
+# modify the path to "plink" program
+
+# Windows user
+./Tools/PLINK/plink_win64_20231211/plink.exe \
+--noweb --file ./Data/PC/1ksnp --pca 50 --out ./Data/PC/younameit
+```
+```{bash eval=F}
+# macOS user
+./Tools/PLINK/plink_mac_20231211/plink \
+--noweb --file ./Data/PC/1ksnp --pca 50 --out ./Data/PC/younameit
 ```
 
-The main outputs are **"genotype.pca"**. A PCA plot is generated in **"genotype.plot.ps"**.
+The main outputs are **younameit.eigenval** and **younameit.eigenvec**, which store the eigenvalues and eigenvectors of the top 50 PCs. With these results, we can visualize population structure by generating scree plot and PC plots in R.
 
 A **scree plot** displays the variance explained by each component. We look for the "elbow" of the plot, i.e., point where line bends. Could do formal test on derivative of scree line, but common sense approach often works fine.
 
-We first extract eigenvalues from the PCA results file **"genotype.pca"** to save it in **"pc_eig.txt"**.
+We read in eigenvalues from the PCA results file **younameit.eigenval**, calculate the proportion of variance explained by each PC and generate elbow plot using `ggplot`.
+```{r warning=F, message=F}
+# R codes- run in R Console
+eigenval <- scan("./Data/PC/younameit.eigenval")
 
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-awk 'NR >= 2 && NR <= 11 {print}' ./Data/PC/genotype_1k.pca > ./Data/PC/pc_eig.txt
+# first convert to percentage variance explained
+pve <- data.frame(PC = 1:length(eigenval), pve = eigenval/sum(eigenval)*100)
+# make plot
+library(ggplot2)
+a <- ggplot(pve, aes(PC, pve)) + geom_point()+geom_line()
+a + ylab("Percentage variance explained") + theme_light()
+
+# calculate the cumulative sum of the percentage variance explained
+cumsum(pve$pve)
 ```
+
+To generate PC plot, we will read in the eigenvectors from **younameit.eigenvec** and check the first 2 PCs.
 
 ```{r}
 # R codes- run in R Console
-# generate plot in R
-pc_eig <- read.table("./Data/PC/pc_eig.txt",header=F) # read in eigenvalue
-names(pc_eig) <- "eig"
+# read in eigenvectors
+pca <- read.table("./Data/PC/younameit.eigenvec", header=F)
+# sort out the pca data
+# remove nuisance column
+pca <- pca[,-1]
+# set names
+names(pca)[1] <- "ind"
+names(pca)[2:ncol(pca)] <- paste0("PC", 1:(ncol(pca)-1))
+# sort out the individual species and pops
 
-# generate scree plot-- eigenvalue vs # of PC
-plot(1:10, pc_eig$eig, type="b", xlab="# PCs", ylab="Eigenvalues",
-main="Scree plot")
+# plot pca
+pc12 <- ggplot(pca, aes(PC1, PC2)) + geom_point(size = 3) +
+            scale_colour_manual(values = c("red", "blue")) +
+            coord_equal() + theme_light() +
+            xlab(paste0("PC1 (", signif(pve$pve[1], 3), "%)")) +    
+            ylab(paste0("PC2 (", signif(pve$pve[2], 3), "%)"))
+pc34 <- ggplot(pca, aes(PC3, PC4)) + geom_point(size = 3) +
+            scale_colour_manual(values = c("red", "blue")) +
+            coord_equal() + theme_light() +
+            xlab(paste0("PC3 (", signif(pve$pve[3], 3), "%)")) +    
+            ylab(paste0("PC4 (", signif(pve$pve[4], 3), "%)"))
+library(patchwork)
+pc12 + pc34 +plot_layout(ncol=2)
 ```
 
-Usually, we use a cut-off of eigenvalue > 1. In this plot, this criteria results in an unreasonable high number of factors, because the eigenvalue for PC 10 is still > 1.
+Usually, we use a cut-off of eigenvalue > 1. In this plot, this criteria results in an unreasonable high number of factors, because the eigenvalue for PC 50 is still > 1.
 
 ## Test the Significance of Principle Components (PCs)
 

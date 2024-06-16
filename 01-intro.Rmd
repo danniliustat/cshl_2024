@@ -31,6 +31,7 @@ In this notebook, we will use R packages "data.table", "GEOquery", "plyr" and "R
 #install.packages("data.table")
 #install.packages("plyr")
 #install.packages("ROCR")
+#install.packages("ggplot2")
 
 #if (!require("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")

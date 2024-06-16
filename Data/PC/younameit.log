@@ -1,0 +1,32 @@
+PLINK v1.90b7.2 64-bit (11 Dec 2023)
+Options in effect:
+  --file ./Data/PC/1ksnp
+  --noweb
+  --out ./Data/PC/younameit
+  --pca 50
+
+Hostname: BIGCARE
+Working directory: C:\Users\Zhang\Documents\GitHub\cshl_2024
+Start time: Sun Jun 16 18:23:46 2024
+
+Note: --noweb has no effect since no web check is implemented yet.
+Random number seed: 1718576626
+32452 MB RAM detected; reserving 16226 MB for main workspace.
+Scanning .ped file... done.
+Performing single-pass .bed write (1000 variants, 344 people).
+--file: ./Data/PC/younameit-temporary.bed + ./Data/PC/younameit-temporary.bim +
+./Data/PC/younameit-temporary.fam written.
+1000 variants loaded from .bim file.
+344 people (281 males, 0 females, 63 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to ./Data/PC/younameit.nosex .
+Using up to 11 threads (change this with --threads).
+Before main variant filters, 344 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.998599.
+1000 variants and 344 people pass filters and QC.
+Note: No phenotypes present.
+Relationship matrix calculation complete.
+--pca: Results saved to ./Data/PC/younameit.eigenval and
+./Data/PC/younameit.eigenvec .
+
+End time: Sun Jun 16 18:23:46 2024
