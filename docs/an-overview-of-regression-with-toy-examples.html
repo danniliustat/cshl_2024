@@ -140,7 +140,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">A Minimal Book Example</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to the GWAS and eQTL Workshop</a>
+<ul>
+<li class="chapter" data-level="1.0.1" data-path="index.html"><a href="index.html#overview"><i class="fa fa-check"></i><b>1.0.1</b> Overview</a></li>
+<li class="chapter" data-level="1.0.2" data-path="index.html"><a href="index.html#folder-structure"><i class="fa fa-check"></i><b>1.0.2</b> Folder structure:</a></li>
+<li class="chapter" data-level="1.0.3" data-path="index.html"><a href="index.html#programming-languages"><i class="fa fa-check"></i><b>1.0.3</b> Programming Languages:</a></li>
+<li class="chapter" data-level="1.0.4" data-path="index.html"><a href="index.html#required-gwas-tools"><i class="fa fa-check"></i><b>1.0.4</b> Required GWAS Tools</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html"><i class="fa fa-check"></i><b>2</b> An Overview of Regression with Toy Examples</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#environment-setting-and-packages"><i class="fa fa-check"></i><b>2.1</b> Environment Setting and Packages</a></li>
@@ -309,7 +315,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 2</span> An Overview of Regression with Toy Examples<a href="an-overview-of-regression-with-toy-examples.html#an-overview-of-regression-with-toy-examples" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <blockquote>
 <p><span style="color: #0064a4;"><br />
-<strong>Note:</strong> In order to run codes in this notebook, please make sure you have downloaded the “bigcare-main” folder from GitHub and have RStudio installed on your laptop.
+<strong>Note:</strong> In order to run codes in this notebook, please make sure you have coloned the “cshl_2024” repository from GitHub and have RStudio installed on your laptop.
 </span></p>
 </blockquote>
 <p>This notebook demonstrates two basic statistical regression models using toy examples.</p>
@@ -320,10 +326,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We use only R codes in this notebook.</p>
 <div id="environment-setting-and-packages" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Environment Setting and Packages<a href="an-overview-of-regression-with-toy-examples.html#environment-setting-and-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Before we can run any analysis, we need to set the working directory path in RStudio Console to the downloaded “bigcare-main” folder and load the necessary R packages. To setup the working directory, make sure you run the following codes in R Terminal.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="an-overview-of-regression-with-toy-examples.html#cb1-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;bigcare-main&quot; folder</span></span>
-<span id="cb1-2"><a href="an-overview-of-regression-with-toy-examples.html#cb1-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/gwas&quot;</span>)</span></code></pre></div>
-<p>In this notebook, we will use R packages “data.table”, “GEOquery”, “plyr” and “ROCR”. You can install the R base packages using install.packages(). “GEOquery” is a BioConductor package that needs to be installed with BioManager. The codes below show you how to install these packages in R. They are commented out with # here, so if you want to run them on your own laptop, please remove # before the codes.</p>
+<p>Before we can run any analysis, we need to set the working directory path in RStudio Console to the downloaded “cshl_2024” folder and load the necessary R packages. To setup the working directory, make sure you run the following codes in R Terminal.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="an-overview-of-regression-with-toy-examples.html#cb1-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;cshl_2024&quot; folder</span></span>
+<span id="cb1-2"><a href="an-overview-of-regression-with-toy-examples.html#cb1-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/cshl_2024&quot;</span>)</span></code></pre></div>
+<p>In this notebook, we will use R packages “data.table”, “GEOquery”, “plyr” and “ROCR”. You can install the R base packages using <code>install.packages()</code>. “GEOquery” is a BioConductor package that needs to be installed with BioManager. The codes below show you how to install these packages in R. They are commented out with # here, so if you want to run them on your own laptop, please remove # before the codes.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="an-overview-of-regression-with-toy-examples.html#cb2-1" tabindex="-1"></a><span class="co">#install.packages(&quot;data.table&quot;)</span></span>
 <span id="cb2-2"><a href="an-overview-of-regression-with-toy-examples.html#cb2-2" tabindex="-1"></a><span class="co">#install.packages(&quot;plyr&quot;)</span></span>
 <span id="cb2-3"><a href="an-overview-of-regression-with-toy-examples.html#cb2-3" tabindex="-1"></a><span class="co">#install.packages(&quot;ROCR&quot;)</span></span>
@@ -331,7 +337,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-5"><a href="an-overview-of-regression-with-toy-examples.html#cb2-5" tabindex="-1"></a><span class="co">#if (!require(&quot;BiocManager&quot;, quietly = TRUE))</span></span>
 <span id="cb2-6"><a href="an-overview-of-regression-with-toy-examples.html#cb2-6" tabindex="-1"></a><span class="co">#    install.packages(&quot;BiocManager&quot;)</span></span>
 <span id="cb2-7"><a href="an-overview-of-regression-with-toy-examples.html#cb2-7" tabindex="-1"></a><span class="co">#BiocManager::install(&quot;GEOquery&quot;)</span></span></code></pre></div>
-<p>After installation, The list of packages are loaded with library() function.</p>
+<p>After installation, The list of packages are loaded with <code>library()</code> function.</p>
 <p>The following code might generate multiple messages when loading the packages, such as “The following objects are masked from XXX”, which is normal. You can ignore them.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="an-overview-of-regression-with-toy-examples.html#cb3-1" tabindex="-1"></a><span class="co">#load R packages</span></span>
 <span id="cb3-2"><a href="an-overview-of-regression-with-toy-examples.html#cb3-2" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
@@ -343,8 +349,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="toy-example-data" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Toy Example Data<a href="an-overview-of-regression-with-toy-examples.html#toy-example-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To illustrate the statistical methods, we will use a small dataset of 60 samples with both continuous and binary variables. This dataset is a microarray expression data downloaded from GSE1378. It contains 60 patients with ER-positive primary breast cancer treated with tamoxifen monotherapy for 5 years. We only extracted the recurrent status and gene expression of 3 genes to this toy example data. You can load this extracted data as below with fread function:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="an-overview-of-regression-with-toy-examples.html#cb4-1" tabindex="-1"></a>toy_data <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;./data/toy_example_data.txt&quot;</span>)</span></code></pre></div>
-<p>We could take a view at the data. head function prints the first 6 rows of the dataset. summary function provides summary statistics of the numeric variables. Column status is a binary variable indicating whether the sample is recurrence or non-recurrence. The last three columns are expression of three genes HOXB13, IL17BR and NHLH1, so they are continuous.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="an-overview-of-regression-with-toy-examples.html#cb4-1" tabindex="-1"></a>toy_data <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;./Data/toy_example_data.txt&quot;</span>)</span></code></pre></div>
+<p>We could take a view at the data. <code>head</code> function prints the first 6 rows of the dataset. `summary1 function provides summary statistics of the numeric variables. Column status is a binary variable indicating whether the sample is recurrence or non-recurrence. The last three columns are expression of three genes HOXB13, IL17BR and NHLH1, so they are continuous.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="an-overview-of-regression-with-toy-examples.html#cb5-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(toy_data))</span></code></pre></div>
 <table>
 <colgroup>
@@ -511,7 +517,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>We can also get a summary of the continuous expression variables by status groups. Below, we used ddply function to group the data by status and calculate count,mean and sd of the 3 genes in each group. As shown in the output data.frame, the count column indicates that there are 32 samples in non-recur and 28 in recur group respectively.</p>
+<p>We can also get a summary of the continuous expression variables by status groups. Below, we used <code>ddply</code> function to group the data by status and calculate count, mean and sd of the 3 genes in each group. As shown in the output data.frame, the count column indicates that there are 32 samples in non-recur and 28 in recur group respectively.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="an-overview-of-regression-with-toy-examples.html#cb7-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">ddply</span>(toy_data, <span class="sc">~</span>status, summarise, <span class="at">count=</span><span class="fu">length</span>(gene_HOXB13), <span class="at">mean=</span><span class="fu">mean</span>(gene_HOXB13), <span class="at">sd=</span><span class="fu">sd</span>(gene_HOXB13)))</span></code></pre></div>
 <table>
 <thead>
@@ -587,8 +593,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>To prepare for logistic regression, we will create a censor variable as an indicator of the status group, with 1=recur and 0=non-recur. Later, we will use this binary censor variable and the last three columns of continuous expression variables of different genes to perform the analysis.</p>
-<p>The codes below show you how to recode status into a binary variable censor. First, we get the index number of the recurrent status, and save them in index object. Then we create a new variable called censor and assign a sequence of 0 to this vector. Next, we extract from censor the elements with index number in index, and assign/recode them as 1. After this recoding finishes, we again take a look at the first 6 rows with head function.</p>
+<p>To prepare for logistic regression, we will create a <code>censor</code> variable as an indicator of the status group, with <code>1=recur</code> and <code>0=non-recur</code>. Later, we will use this binary censor variable and the last three columns of continuous expression variables of different genes to perform the analysis.</p>
+<p>The codes below show you how to recode status into a binary variable censor. First, we get the index number of the recurrent status, and save them in index object. Then we create a new variable called <code>censor</code> and assign a sequence of 0 to this vector. Next, we extract from <code>censor</code> the elements with index number in index, and assign/recode them as 1. After this recoding finishes, we again take a look at the first 6 rows with head function.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="an-overview-of-regression-with-toy-examples.html#cb10-1" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">which</span>(toy_data<span class="sc">$</span>status<span class="sc">==</span><span class="st">&quot;Status=recur&quot;</span>)</span>
 <span id="cb10-2"><a href="an-overview-of-regression-with-toy-examples.html#cb10-2" tabindex="-1"></a>toy_data<span class="sc">$</span>censor <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">60</span>)</span>
 <span id="cb10-3"><a href="an-overview-of-regression-with-toy-examples.html#cb10-3" tabindex="-1"></a>toy_data<span class="sc">$</span>censor[index] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
@@ -730,7 +736,7 @@ Mathematically, the logistic regression equation can be defined as:</li>
 <span id="cb13-4"><a href="an-overview-of-regression-with-toy-examples.html#cb13-4" tabindex="-1"></a>prf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="at">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)</span>
 <span id="cb13-5"><a href="an-overview-of-regression-with-toy-examples.html#cb13-5" tabindex="-1"></a>prf1 <span class="ot">&lt;-</span> prf</span>
 <span id="cb13-6"><a href="an-overview-of-regression-with-toy-examples.html#cb13-6" tabindex="-1"></a><span class="fu">plot</span>(prf1,<span class="at">main=</span><span class="st">&quot;ROC for significant gene HOXB13&quot;</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="an-overview-of-regression-with-toy-examples.html#cb14-1" tabindex="-1"></a><span class="co"># calculate the auc</span></span>
 <span id="cb14-2"><a href="an-overview-of-regression-with-toy-examples.html#cb14-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;auc&quot;</span>)</span>
 <span id="cb14-3"><a href="an-overview-of-regression-with-toy-examples.html#cb14-3" tabindex="-1"></a>auc <span class="ot">&lt;-</span> auc<span class="sc">@</span>y.values[[<span class="dv">1</span>]]</span>
@@ -769,7 +775,7 @@ We draw the same ROC curve and calculate AUC for NHLH1, what can you conclude fr
 <span id="cb18-4"><a href="an-overview-of-regression-with-toy-examples.html#cb18-4" tabindex="-1"></a>prf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="at">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)</span>
 <span id="cb18-5"><a href="an-overview-of-regression-with-toy-examples.html#cb18-5" tabindex="-1"></a>prf2 <span class="ot">&lt;-</span> prf</span>
 <span id="cb18-6"><a href="an-overview-of-regression-with-toy-examples.html#cb18-6" tabindex="-1"></a><span class="fu">plot</span>(prf2,<span class="at">main=</span><span class="st">&quot;ROC for non-significant gene NHLH1 &quot;</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="an-overview-of-regression-with-toy-examples.html#cb19-1" tabindex="-1"></a><span class="co"># calculate the auc</span></span>
 <span id="cb19-2"><a href="an-overview-of-regression-with-toy-examples.html#cb19-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;auc&quot;</span>)</span>
 <span id="cb19-3"><a href="an-overview-of-regression-with-toy-examples.html#cb19-3" tabindex="-1"></a>auc <span class="ot">&lt;-</span> auc<span class="sc">@</span>y.values[[<span class="dv">1</span>]]</span>
@@ -786,7 +792,7 @@ We draw the same ROC curve and calculate AUC for NHLH1, what can you conclude fr
 <span id="cb21-4"><a href="an-overview-of-regression-with-toy-examples.html#cb21-4" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;bottomright&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,</span>
 <span id="cb21-5"><a href="an-overview-of-regression-with-toy-examples.html#cb21-5" tabindex="-1"></a>       <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;ROC for significant gene HOXB13 (auc=0.796)&quot;</span>,<span class="st">&quot;ROC for non-significant gene NHLH1 (auc =0.47)&quot;</span>),</span>
 <span id="cb21-6"><a href="an-overview-of-regression-with-toy-examples.html#cb21-6" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">&#39;blue&#39;</span>,<span class="st">&#39;red&#39;</span>))</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="linear-regression" class="section level2 hasAnchor" number="2.7">
 <h2><span class="header-section-number">2.7</span> Linear Regression<a href="an-overview-of-regression-with-toy-examples.html#linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>

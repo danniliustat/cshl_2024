@@ -1,4 +1,4 @@
-# GWAS Tools and Data Preprocessing Workflow with Toy Example -- PLINK and IMPUTE2
+# GWAS Tools and Data Preprocessing Workflow with Toy Example 
 
 This notebook demonstrates a standard approach to conduct the genome wide association study (GWAS) using toy example datasets. The procedures consist of four steps:
 
@@ -11,15 +11,15 @@ The data used for this example is a toy genotype data containing 5 random SNPs a
 We use both bash and R codes in this notebook. The type of programming language is labeled at the top of each code cell.
 
 > <span style="color: #0064a4;">  
-Special notes for Windows users: Windows has two command-line shells, Command shell and Windows Powershell. Command shell is specific to Windows system and can be run from RStudio Terminal or in "Command Prompt" App, but the language it uses is NOT the same as Bash! Powershell App is the only place to run Bash commands in Windows. Therefore if you are Windows users and use RStudio for this course, you can't run bash codes such as "head" or "awk" from RStudio Terminal, you can **ONLY** run PLINK program codes. If you would like to try Bash codes, please open "Windows Powershell" app and follow the same steps to set the paths. Still, Powershell App won't run PLINK codes, so you'll have to switch between Powershell and RStudio Terminal.
+Special notes for Windows users: Windows has two command-line shells, Command shell and Windows Powershell. Command shell is specific to Windows system and can be run from "Command Prompt" App, but the language it uses is NOT the same as Bash! Powershell App is the app to run Bash commands in Windows. Therefore if you are Windows users and use RStudio for this course, you can't run bash codes such as "head" or "awk" from RStudio Terminal, you can **ONLY** run PLINK program codes. If you would like to try Bash codes, please open "Windows Powershell" app and follow the same steps to set the paths. Still, Powershell App won't run PLINK codes, so you'll have to switch between Powershell and RStudio Terminal.
 </span>
 
 ## Environment Setting
 
-Before we can run any analysis, we need to set the working directory path to the downloaded "bigcare-main" folder for both Terminal and Console in RStudio. Below are the codes to setup paths at both places. These paths have to be setup correctly at first, otherwise we can't locate the correct input files.
+Before we can run any analysis, we need to set the working directory path to the downloaded "cshl_2024" folder for both Terminal and Console in RStudio. Below are the codes to setup paths at both places. These paths have to be setup correctly at first, otherwise we can't locate the correct input files.
 
 ```{r eval=F}
-# change the paths to where you saved "bigcare-main"
+# change the paths to where you saved "cshl_2024"
 ## run in Terminal
 mydir="/path/to/cshl_2024"
 cd $mydir
@@ -30,29 +30,29 @@ setwd("/path/to/cshl_2024")
 
 
 ## GWAS Tools
-We will use two main program tools in this notebook, PLINK and IMPUTE2.
+We will use two main program tools in this notebook, **PLINK** and **IMPUTE2**.
 
-PLINK is used for quality control and perform association test for large scale genotype data. You can download PLINK program using this link. Download the .zip file or find the .zip files suitable for your laptop system in "bigcare-main/Tools/PLINK" and unzip it to call the plink program in the folder.
+**PLINK** is used for quality control and perform association test for large scale genotype data. You can download PLINK program using this link. Download the .zip file or find the .zip files suitable for your laptop system in "cshl_2024/Tools/PLINK" and unzip it to call the plink program in the folder.
 
-IMPUTE2 is used for genotype imputation and haplotype phasing. You can download its program using this link. IMPUTE2 program is only available to run in Linux or macOS system. You can find the zipped installation file in "bigcare-main/Tools/IMPUTE2". If you want to perform imputation for your own data, you also need to download the required reference genome from the above link. But in this notebook will only use the example genome.
+**IMPUTE2** is used for genotype imputation and haplotype phasing. You can download its program using this link. IMPUTE2 program is only available to run in Linux or macOS system. You can find the zipped installation file in "cshl_2024/Tools/IMPUTE2". If you want to perform imputation for your own data, you also need to download the required reference genome from the above link. But in this notebook will only use the example genome.
 
-> <span style="color: #0064a4;">
-Important: If you want to run these two programs on your laptop, please make sure you have unzipped the installation packages in "./bigcare-main/Tools" that is suitable for your laptop systerm. We will directly call PLINK and IMPUTE2 programs using relative path.
-</span>
-
-Instructions on installing these two tools can be found on course GitHub here.
-
-For example, my computer is macOS system so I can run both PLINK and IMPUTE2. After I downloaded "bigcare-main" folder, I open ./Tools/PLINK and unzip the plink package for macOS: "plink_mac_20230116.zip". A folder "plink_mac_20230116" will be created which contains a program file called "plink". Then, I can call PLINK program by specifying the absolute path of this "plink" program: /path/to/bigcare-main/Tools/PLINK/plink_mac_20230116/plink. Similar for Windows system, you need to unzip the package "plink_win64_20230116.zip" with right click->"Extract All...". Then you can call PLINK with /path/to/bigcare-main/Tools/PLINK/plink_win64_20230116/plink.exe.
-
-Similar for IMPUTE2, I unzip "impute_v2.3.2_MacOSX_Intel.tgz" for macOS under "./bigcare-main/Tools/IMPUTE2/". And I can call IMPUTE2 program with /path/to/bigcare-main/Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2. Note that Windows system won't be able to run IMPUTE2.
-
-You should modify the above /path/to/bigcare to where your "bigcare-main" folder is.
+We will also introduce a tool called **MAGMA** for gene-set analysis in later chapters.
 
 > <span style="color: #0064a4;">
-However, macOS users need to go through additional steps to authorize PLINK and IMPUTE2 programs before you can call them! See below.
+Important: If you want to run these programs on your laptop, please make sure you have unzipped the installation packages in "./cshl_2024/Tools" that is suitable for your laptop systerm. We will directly call PLINK and IMPUTE2 programs using abusolute or relative paths.
 </span>
 
-When you try to call PLINK or IMPUTE2 with the above commands, you might get a pop-up window with the following message “plink” cannot be opened because the developer cannot be verified.. Select "Cancel" and we will authorize PLINK first. Please go to macOS "System Settings"->"Privacy & Security", and scroll down until you see a message "plink" was blocked from use because it is not from an identified developer.. Click "Allow Anyway" and you will be prompt to enter your Mac username and password. Click "Unlock" and then "Allow Anyway" again, and the previous message will disappear. Then try to run the same codes again in RStudio Terminal. You will get another pop-up window saying macOS cannot verify the developer of “plink”. Are you sure you want to open it?, select "Open" then you can see PLINK or IMPUTE2 commands options show up in Terminal.
+Instructions on installing these two tools can be found on in Chapter 1.
+
+After you cloned the repository "cshl_2024" folder, you can find the `Tools` folder contatining installation packages for different systems. Then, you can unzip the zip files and call the programs by specifying its absolute path. For example, for macOS users, you can unzip the installer by double clicking, and call PLINK using `/path/to/cshl_2024/Tools/PLINK/plink_mac/plink`; for Windows users, you need to unzip the package "plink_win64.zip" with right click->"Extract All...". Then you can call PLINK with `/path/to/cshl_2024/Tools/PLINK/plink_win64/plink.exe`.
+
+You should modify the above `/path/to/cshl_2024` to where your "cshl_2024" folder is.
+
+> <span style="color: #0064a4;">
+However, macOS users need to go through additional steps to authorize PLINK, IMPUTE2 and MAGMA programs before you can call them! But you can perform these authorization steps only when you need to call the programs. See below.
+</span>
+
+When you try to call PLINK, IMPUTE2 and MAGMA with the above commands, you might get a pop-up window with the following message “plink” cannot be opened because the developer cannot be verified. Select "Cancel" and we will authorize PLINK first. Please go to macOS "System Settings"->"Privacy & Security", and scroll down until you see a message "plink" was blocked from use because it is not from an identified developer. Click "Allow Anyway" and you will be prompt to enter your Mac username and password. Click "Unlock" and then "Allow Anyway" again, and the previous message will disappear. Then try to run the same codes again in RStudio Terminal. You will get another pop-up window saying macOS cannot verify the developer of “plink”. Are you sure you want to open it?, select "Open" then you can see PLINK or IMPUTE2 commands options show up in Terminal.
 
 
 ## Quality Control
@@ -74,7 +74,7 @@ cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
 
 ## An Example of Summary Statistics
 ### Input files
-Input files: in folder `./QC`-- We will use a random selected 5 SNPs as an example data:
+Input files: in folder `./Data/QC`-- We will use a random selected 5 SNPs as an example data:
 
 - 5SNPs.ped
 - 5SNPs.map
@@ -119,7 +119,7 @@ The following commands compute the **missingness** for each SNP and each subject
 3. **--missing**,  calculate the number of missing and missing rate.
 4. **--out**, specify the output file name.
 
-```{bash eval=F}
+```{bash eval=T}
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
@@ -129,7 +129,7 @@ The following commands compute the **missingness** for each SNP and each subject
 
 ```
 
-```{bash}
+```{bash eval=F}
 # for macoS users
 ./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/QC/5SNPs --missing --out ./Data/QC/younameit
@@ -149,6 +149,7 @@ For individuals ".imiss" file, the format is:
      N_MISS             Number of missing SNPs
      N_GENO             Number of non-obligatory missing genotypes
      F_MISS             Proportion of missing SNPs
+
 ```{bash}
 # bash codes- run in Terminal
 # Windows user need to run in Powershell App 
@@ -174,7 +175,7 @@ head ./Data/QC/younameit.lmiss
 The following command computes the **allele frequencies**. (The output will print all calculation progress generated by `PLINK`.)
 1. **--freq**, calculate the allele frequencies.
 
-```{bash eval=F}
+```{bash eval=T}
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
@@ -182,7 +183,7 @@ The following command computes the **allele frequencies**. (The output will prin
 ./Tools/PLINK/plink_win64/plink.exe \
 --noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
 ```
-```{bash}
+```{bash eval=F}
 # macOS user
 ./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
@@ -208,11 +209,12 @@ This command will create a output file **"younameit.frq"** with six columns:
 head ./Data/QC/younameit.frq
 
 ```
+
 ### Hardy-Weinberg Equilibrium
 The following command computes the **Hardy-Weiberg test**. (The output will print all calculation progress generated by `PLINK`.)
 1. **--hardy**, perform hardy-weinberg test.
 
-```{bash eval=F}
+```{bash eval=T}
 # both Mac and Windows can run in Terminal
 # modify the path to "plink" program
 
@@ -220,7 +222,7 @@ The following command computes the **Hardy-Weiberg test**. (The output will prin
 ./Tools/PLINK/plink_win64/plink.exe \
 --noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
 ```
-```{bash}
+```{bash eval=F}
 # macOS user
 ./Tools/PLINK/plink_mac/plink \
 --noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit

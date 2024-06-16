@@ -91,7 +91,7 @@ You can find installation packages for PLINK, IMPUTE2 and MAGMA in your download
   Please go to macOS "System Settings"->"Privacy & Security", and scroll down until you see a message `"plink" was blocked from use because it is not from an identified developer`.(Fig3) Click "Allow Anyway" and you will be prompt to enter your Mac username and password. Click "Unlock" and then "Allow Anyway" again, and the previous message will disappear. \
   Then try to run the same codes again in RStudio Terminal. You will get another pop-up window saying `macOS cannot verify the developer of “plink”. Are you sure you want to open it?`,(Fig4) select "Open" then you can see PLINK, IMPUTE2 or MAGMA commands options shown up in Terminal.</span>
 
-Fig2. Pop-up window when you try to run program for the first time|  Fig3. Authorize program in System Settings| Fig4. Second pop-up window when you run it again after authorization
+Fig2. Pop-up windows when you try to run program for the first time|  Fig3. Authorize program in System Settings| Fig4. Second pop-up window when you run it again after authorization
 :-------------------------:|:-------------------------:|:-------------------------:
 ![pop-up1](./image/popup1.png)  |![auth](./image/auth.png)|  ![popup2](./image/popup2.png)
 
