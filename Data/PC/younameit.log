@@ -7,10 +7,10 @@ Options in effect:
 
 Hostname: Danni.local
 Working directory: /Users/zhanglab/Documents/cshl_2024
-Start time: Mon Jun 17 14:01:15 2024
+Start time: Mon Jun 17 14:09:52 2024
 
 Note: --noweb has no effect since no web check is implemented yet.
-Random number seed: 1718647275
+Random number seed: 1718647792
 16384 MB RAM detected; reserving 8192 MB for main workspace.
 Scanning .ped file... done.
 Performing single-pass .bed write (1000 variants, 344 people).
@@ -29,4 +29,4 @@ Relationship matrix calculation complete.
 --pca: Results saved to ./Data/PC/younameit.eigenval and
 ./Data/PC/younameit.eigenvec .
 
-End time: Mon Jun 17 14:01:15 2024
+End time: Mon Jun 17 14:09:53 2024
