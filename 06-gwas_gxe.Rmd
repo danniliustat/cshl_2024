@@ -353,7 +353,7 @@ For both additive and dominant models, a sample size of about 200 individuals is
 #### Case study with continuous outcome
 
 Similar as above, we calculate the sample size needed to detect an effect size of 30 with 70% or 80% power. The continuous phenotype used is still tamoxifen with SD=76.
-```{r message=FALSE, warnings=FALSE}
+```{r ss3 message=FALSE, warnings=FALSE}
 # R codes- run in R Console
 ss <- genpwr.calc(calc = "ss", model = "linear",
                   sd_y=67, k=NULL, Power=c(0.7,0.8),
@@ -364,7 +364,7 @@ ss <- genpwr.calc(calc = "ss", model = "linear",
 ss.plot(ss)
 ```
 #### Binary study with binary GxE interactions
-```{r message=FALSE, warnings=FALSE}
+```{r ss4 message=FALSE, warnings=FALSE}
 # R codes- run in R Console
 sse <- genpwr.calc(calc = "ss", model = "logistic",
                   Case.Rate=0.5, ge.interaction = "binary", Power=0.8,

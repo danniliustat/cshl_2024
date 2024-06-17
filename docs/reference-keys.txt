@@ -151,3 +151,4 @@ fig:unnamed-chunk-24
 power-calculation-with-binary-outcome
 part-1-gene-analysis
 part-2-gene-set-analysis
+fig:pval

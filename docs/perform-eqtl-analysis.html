@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">2024 CSHL Course- GWAS and EQTL Hands-on Analysis</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to the GWAS and eQTL Workshop</a>
@@ -332,9 +332,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="perform-eqtl-analysis.html#cb3-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
 <span id="cb3-2"><a href="perform-eqtl-analysis.html#cb3-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/cshl_2024/Data/eqtl&quot;</span>)</span>
 <span id="cb3-3"><a href="perform-eqtl-analysis.html#cb3-3" tabindex="-1"></a>mydir<span class="ot">&lt;-</span><span class="fu">getwd</span>()</span></code></pre></div>
-<p>Files:
-- <code>SNP.txt</code>: rows are SNPs with row names as SNP IDs, and columns are sample IDs.
-- <code>gexp.txt</code>: rows are genes are and columns are sample IDs.</p>
+<p>Input files:
+- <code>geno.txt</code>: rows are SNPs with row names as SNP IDs, and columns are sample IDs.
+- <code>gexp.txt</code>: rows are genes are and columns are sample IDs.
+- <code>covariate.txt</code>: covariates that can be included in the model if there is any
+- <code>snppos.txt</code>: a file containing the annotation of SNPs, containing SNP ID, chromosome, SNP location
+- <code>genepos.txt</code>: a file containing the annoation of genes, containing gene ID, chromosome, start and end location.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="perform-eqtl-analysis.html#cb4-1" tabindex="-1"></a>snps <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;geno.txt&quot;</span>,<span class="at">header=</span>T,<span class="at">row.names =</span> <span class="dv">1</span>)</span>
 <span id="cb4-2"><a href="perform-eqtl-analysis.html#cb4-2" tabindex="-1"></a>expr <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;gexp.txt&quot;</span>,<span class="at">header=</span>T,<span class="at">row.names =</span> <span class="dv">1</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="perform-eqtl-analysis.html#cb5-1" tabindex="-1"></a><span class="fu">dim</span>(expr)</span></code></pre></div>
@@ -389,7 +392,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-2"><a href="perform-eqtl-analysis.html#cb13-2" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="perform-eqtl-analysis.html#cb13-3" tabindex="-1"></a><span class="fu">truehist</span>(maf, <span class="at">main =</span> <span class="st">&quot;Histogram of MAF values.&quot;</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>)</span>
 <span id="cb13-4"><a href="perform-eqtl-analysis.html#cb13-4" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(maf), <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;darkorange&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/maf-1.png" width="672" /></p>
 <div id="filtering-snps-by-maf" class="section level2 hasAnchor" number="9.1">
 <h2><span class="header-section-number">9.1</span> Filtering SNPs by MAF<a href="perform-eqtl-analysis.html#filtering-snps-by-maf" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In an eQTL study often a minimum MAF is required. Since MAF essentially reflects how often an allele has been observed in a population, it also defines how often the gene expression levels have been observed for heterozygous and homozygous alleles.</p>
@@ -413,7 +416,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="perform-eqtl-analysis.html#cb18-1" tabindex="-1"></a>gname <span class="ot">=</span> <span class="fu">rownames</span>(expr)[<span class="dv">1</span>]</span>
 <span id="cb18-2"><a href="perform-eqtl-analysis.html#cb18-2" tabindex="-1"></a><span class="fu">truehist</span>(<span class="fu">as.numeric</span>(<span class="fu">filter</span>(expr, <span class="fu">rownames</span>(expr) <span class="sc">==</span> gname)[<span class="sc">-</span><span class="dv">1</span>]), <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">&quot;Gene expression profile for gene:&quot;</span>,gname), <span class="at">xlab =</span> <span class="st">&quot;Expression level&quot;</span>, <span class="at">col =</span> <span class="st">&quot;darkorange&quot;</span>)</span>
 <span id="cb18-3"><a href="perform-eqtl-analysis.html#cb18-3" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(<span class="fu">as.numeric</span>(<span class="fu">filter</span>(expr, <span class="fu">rownames</span>(expr) <span class="sc">==</span> gname)[<span class="sc">-</span><span class="dv">1</span>])), <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/histgexp-1.png" width="672" /></p>
 <p>Now we’ll plot the expression levels of the first gene against the first SNP, 10th gene against the 10th SNP, 10th gene against the 1th SNP, as well as the 10th gene against the 6th SNP, depending on the genotypes of the samples by using simple dot plots. We’ll add a bit of random noise (jitter) to the genotype data to make it all look more comprehensible.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="perform-eqtl-analysis.html#cb19-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>))</span>
 <span id="cb19-2"><a href="perform-eqtl-analysis.html#cb19-2" tabindex="-1"></a></span>
@@ -433,7 +436,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb19-16"><a href="perform-eqtl-analysis.html#cb19-16" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">rownames</span>(snps)[<span class="dv">6</span>], <span class="at">ylab =</span> <span class="fu">rownames</span>(expr)[<span class="dv">10</span>], <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
 <span id="cb19-17"><a href="perform-eqtl-analysis.html#cb19-17" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste</span>(<span class="fu">rownames</span>(expr)[<span class="dv">10</span>], <span class="st">&quot;vs&quot;</span>, <span class="fu">rownames</span>(snps)[<span class="dv">6</span>]), <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">2.5</span>), <span class="at">xaxt=</span><span class="st">&quot;n&quot;</span>)</span>
 <span id="cb19-18"><a href="perform-eqtl-analysis.html#cb19-18" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span><span class="fu">c</span> (<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>))</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/xyplot-1.png" width="672" /></p>
 </div>
 <div id="covariates" class="section level2 hasAnchor" number="9.3">
 <h2><span class="header-section-number">9.3</span> Covariates<a href="perform-eqtl-analysis.html#covariates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -464,7 +467,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb25-2"><a href="perform-eqtl-analysis.html#cb25-2" tabindex="-1"></a><span class="fu">sum</span>(pca<span class="sc">$</span>sdev[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">sum</span>(pca<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span>) <span class="co"># percentage of variance explained by first 5 PCs</span></span></code></pre></div>
 <pre><code>## [1] 0.0278079</code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="perform-eqtl-analysis.html#cb27-1" tabindex="-1"></a><span class="fu">screeplot</span>(pca,<span class="at">type=</span><span class="st">&quot;lines&quot;</span>) </span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/scree-1.png" width="672" /></p>
 </div>
 <div id="eqtl-analysis" class="section level2 hasAnchor" number="9.5">
 <h2><span class="header-section-number">9.5</span> eQTL analysis<a href="perform-eqtl-analysis.html#eqtl-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -592,7 +595,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb43-2"><a href="perform-eqtl-analysis.html#cb43-2" tabindex="-1"></a><span class="fu">unlink</span>(output_file_name_cis);</span>
 <span id="cb43-3"><a href="perform-eqtl-analysis.html#cb43-3" tabindex="-1"></a>  </span>
 <span id="cb43-4"><a href="perform-eqtl-analysis.html#cb43-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&#39;Analysis done in: &#39;</span>, me<span class="sc">$</span>time.in.sec, <span class="st">&#39; seconds&#39;</span>, <span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>);</span></code></pre></div>
-<pre><code>## Analysis done in:  0.604  seconds</code></pre>
+<pre><code>## Analysis done in:  0.696  seconds</code></pre>
 <p>Check the results from both cis- and tran-eQTL analysis.</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="perform-eqtl-analysis.html#cb45-1" tabindex="-1"></a><span class="fu">head</span>(me<span class="sc">$</span>cis<span class="sc">$</span>eqtls)</span></code></pre></div>
 <pre><code>##          snps   gene statistic       pvalue          FDR       beta
@@ -610,15 +613,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4  1_15945755    TCEA3  12.87702  1.963422e-32 5.639342e-28 0.6521932
 ## 5  1_23079372     ERI3  12.37956  2.036575e-30 4.679561e-26 1.1308205
 ## 6 1_113973708 RABGAP1L  12.00316  6.445364e-29 1.234158e-24 0.8240020</code></pre>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-18"></span>
-<img src="cshl_2024_files/figure-html/unnamed-chunk-18-1.png" alt="Histogram of p-values for cis- and trans-eQTL" width="100%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pval"></span>
+<img src="cshl_2024_files/figure-html/pval-1.png" alt="Histogram of p-values for cis- and trans-eQTL" width="100%" />
 <p class="caption">
 Figure 9.1: Histogram of p-values for cis- and trans-eQTL
 </p>
 </div>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="perform-eqtl-analysis.html#cb49-1" tabindex="-1"></a><span class="do">## Make the qq-plot of local and distant p-values</span></span>
 <span id="cb49-2"><a href="perform-eqtl-analysis.html#cb49-2" tabindex="-1"></a><span class="fu">plot</span>(me_qq)  </span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/qq-1.png" width="672" /></p>
 </div>
 </div>
 <div id="multiple-testing-correction" class="section level2 hasAnchor" number="9.6">
@@ -683,7 +686,7 @@ of the SNP in the y axis. Manhattan plots usually depict all tested SNPs, not on
 <span id="cb58-7"><a href="perform-eqtl-analysis.html#cb58-7" tabindex="-1"></a><span class="co"># Add a label to the lead SNP</span></span>
 <span id="cb58-8"><a href="perform-eqtl-analysis.html#cb58-8" tabindex="-1"></a><span class="fu">with</span>(manh_data[<span class="fu">which.min</span>(manh_data<span class="sc">$</span>pvalue),,<span class="at">drop=</span><span class="cn">FALSE</span>],</span>
 <span id="cb58-9"><a href="perform-eqtl-analysis.html#cb58-9" tabindex="-1"></a><span class="fu">text</span>(pos <span class="sc">+</span> <span class="fu">diff</span>(<span class="fu">range</span>(manh_data<span class="sc">$</span>pos))<span class="sc">*</span><span class="fl">0.2</span>, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">labels =</span> snps))</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/manh-1.png" width="672" /></p>
 
 </div>
 </div>

@@ -57,7 +57,7 @@ head(snps)[1:12]
 ```
 
 
-```{r}
+```{r maf}
 maf<-read.table("geno_maf.txt")$V1
 
 truehist(maf, main = "Histogram of MAF values.", col = "steelblue")
@@ -87,7 +87,7 @@ Now that we have an idea of what is stored in the genotype data frame let’s ta
 
 Let’s check the distribution of gene expression levels across samples for the first gene in our expr data frame.
 
-```{r}
+```{r histgexp}
 gname = rownames(expr)[1]
 truehist(as.numeric(filter(expr, rownames(expr) == gname)[-1]), main = paste("Gene expression profile for gene:",gname), xlab = "Expression level", col = "darkorange")
 lines(density(as.numeric(filter(expr, rownames(expr) == gname)[-1])), lty = 2, col = "steelblue", lwd = 3)
@@ -95,7 +95,7 @@ lines(density(as.numeric(filter(expr, rownames(expr) == gname)[-1])), lty = 2, c
 
 Now we’ll plot the expression levels of the first gene against the first SNP, 10th gene against the 10th SNP, 10th gene against the 1th SNP, as well as the 10th gene against the 6th SNP, depending on the genotypes of the samples by using simple dot plots. We’ll add a bit of random noise (jitter) to the genotype data to make it all look more comprehensible.
 
-```{r}
+```{r xyplot}
 par(mfrow=c(1,4))
 
 plot(jitter(as.numeric(snps[1,]), factor = 0.5), as.numeric(expr[1,]),
@@ -139,7 +139,7 @@ write.table(t(covar_recode),"covar_recode.txt",quote=F, sep=" ",row.names=T,col.
 ## Using principle components as covariates
 Further we will explore the use of principle components of genotype as covariates in linear models of gene expression to account for unknown sources of variation from genotype. 
 
-```{r}
+```{r scree}
 pca <- prcomp(t(snps), center=TRUE, scale = TRUE)
 sum(pca$sdev[1:5]^2)/sum(pca$sdev^2) # percentage of variance explained by first 5 PCs
 screeplot(pca,type="lines") 
@@ -284,7 +284,7 @@ head(me$cis$eqtls)
 head(me$trans$eqtls)
 ```
 
-```{r eval=T,echo=F, fig.cap='Histogram of p-values for cis- and trans-eQTL', out.width='100%', fig.asp=1.2, fig.align='center'}
+```{r pval,eval=T,echo=F, fig.cap='Histogram of p-values for cis- and trans-eQTL', out.width='100%', fig.asp=1.2, fig.align='center'}
 ## Make the histogram of local and distant p-values
 # y-axis is density, which is rescaled frequency to make the sum of area of bars equal to 1
 plot(me)
@@ -294,7 +294,7 @@ plot(me)
 # hist(me$trans$eqtls$pvalue)
 ```
 
-```{r}
+```{r qq}
 ## Make the qq-plot of local and distant p-values
 plot(me_qq)  
 ```
@@ -340,7 +340,7 @@ manh_data = manh_data [,c("pos", "chr", "pvalue", "snps")]
 head(manh_data)
 ```
 
-```{r}
+```{r manh}
 # Plot the Manhattanplot
 with(manh_data ,plot(pos, -log10(pvalue), xlab = "genomic position (bp)",
 main=paste(gene_id, "associated SNPs")))

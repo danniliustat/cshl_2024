@@ -5,7 +5,7 @@ Using flags:
 	--gene-loc NCBI37.3.gene.loc
 	--out genotype_1k
 
-Start time is 03:13:07, Monday 17 Jun 2024
+Start time is 12:19:38, Monday 17 Jun 2024
 
 Starting annotation...
 Reading gene locations from file NCBI37.3.gene.loc... 
@@ -65,4 +65,4 @@ Writing annotation to file genotype_1k.genes.annot
 	at least one SNP mapped to each of a total of 555 genes (out of 19427)
 
 
-End time is 03:13:07, Monday 17 Jun 2024 (elapsed: 00:00:00)
+End time is 12:19:39, Monday 17 Jun 2024 (elapsed: 00:00:01)

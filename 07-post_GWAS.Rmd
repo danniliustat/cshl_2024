@@ -167,13 +167,13 @@ dev.off()
 ```
 
 We can load the plot from MAGMA for gene-based results:
-```{r}
+```{r magma1}
 img <- readPNG("Manhattan_Plot_for_magma.png")
 grid::grid.raster(img)
 ```
 
 This is the previous plot for SNP-based results:
-```{r}
+```{r oldmah}
 img <- readPNG("../case_data/Manhattan_Plot_for_z-4-oh-Tam.png")
 grid::grid.raster(img)
 ```
