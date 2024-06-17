@@ -9,7 +9,7 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/cshl_2024
-description: "This is the course material for the 2024 CSHL hands-on session in GWAS."
+description: "This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL."
 ---
 
 
