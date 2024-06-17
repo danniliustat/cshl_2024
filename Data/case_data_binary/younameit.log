@@ -1,4 +1,4 @@
-PLINK v1.90p 64-bit (11 Dec 2023)
+PLINK v1.90b7.2 64-bit (11 Dec 2023)
 Options in effect:
   --adjust
   --all-pheno
@@ -8,12 +8,12 @@ Options in effect:
   --out younameit
   --pheno binary_phenotype.txt
 
-Hostname: Dannis-Mac-mini.local
-Working directory: /Users/oooliviaaa/Documents/cshl_2024/Data/case_data_binary
-Start time: Fri Jun 14 01:53:34 2024
+Hostname: Danni.local
+Working directory: /Users/zhanglab/Documents/cshl_2024/Data/case_data_binary
+Start time: Mon Jun 17 00:20:04 2024
 
 Note: --noweb has no effect since no web check is implemented yet.
-Random number seed: 1718355214
+Random number seed: 1718598004
 16384 MB RAM detected; reserving 8192 MB for main workspace.
 Scanning .ped file... done.
 Performing single-pass .bed write (1000 variants, 192 people).
@@ -36,4 +36,4 @@ Writing C/C --assoc report to younameit.P1.assoc ... done.
 --adjust: Genomic inflation est. lambda (based on median chisq) = 1.37231.
 --adjust values (805 variants) written to younameit.P1.assoc.adjusted .
 
-End time: Fri Jun 14 01:53:34 2024
+End time: Mon Jun 17 00:20:04 2024

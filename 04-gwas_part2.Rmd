@@ -18,19 +18,18 @@ library(QCGWAS)
 
 # GWAS with Continuous Trait
 
-
 After all files are prepared in the PLINK format, we are ready to perform association test. The following code conducts the Genome-Wide Association Test by PLINK. **This code will take 1 minute to finish.**
 
 ```{bash eval=F}
 # both Mac and Windows can run in Terminal
 # windows users
-../../Tools/PLINK/plink_win64/plink.exe \
+../../Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file genotype_1k --assoc --adjust --pheno phenotype_plink.txt \
 --all-pheno --out younameit
 ```
 ```{bash}
 # macOS users
-../../Tools/PLINK/plink_mac/plink \
+../../Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file genotype_1k --assoc --adjust --pheno phenotype_plink.txt \
 --all-pheno --out younameit
 ```
@@ -90,7 +89,6 @@ So we need to extract these columns from our results files so they can be used w
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 ### Prepare qqman R input files (CHR, SNP, BP, P) (in Linux)
 awk '{print $1,$2,$3,$9}' younameit.P1.qassoc > P1.qassoc
 awk '{print $1,$2,$3,$9}' younameit.P2.qassoc > P2.qassoc
@@ -231,7 +229,6 @@ PLINK already performed this correction using Bonferroni correction method, when
 The results are stored in the files: **P(1,2,3).qassoc.adjusted**.
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 awk '{print $1,$2,$3,$9}' younameit.P1.qassoc.adjusted > P1.qassoc.adjusted
 awk '{print $1,$2,$3,$9}' younameit.P2.qassoc.adjusted > P2.qassoc.adjusted
 awk '{print $1,$2,$3,$9}' younameit.P3.qassoc.adjusted > P3.qassoc.adjusted
@@ -437,7 +434,6 @@ genoidx
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 # extract genotype for rs8138080
 awk '{print $1901 $1902}' < genotype_1k.ped > rs8138080.txt
 ```
