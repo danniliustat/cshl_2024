@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 GWAS with Binary Trait | 2024 CSHL course - GWAS Hands-on Analysis</title>
-  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 GWAS with Binary Trait | 2024 CSHL course - GWAS Hands-on Analysis" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="github-repo" content="rstudio/cshl_2024" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 6 GWAS with Binary Trait | 2024 CSHL course - GWAS Hands-on Analysis" />
   
-  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   
 
 <meta name="author" content="Danni Liu - Purdue University" />
@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">2024 CSHL Course- GWAS and EQTL Hands-on Analysis</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to the GWAS and eQTL Workshop</a>
@@ -516,7 +516,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="gwas-with-binary-trait.html#cb19-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
 <span id="cb19-2"><a href="gwas-with-binary-trait.html#cb19-2" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">&quot;Manhattan_Plot_for_binary_z-endoxifen_ratio.png&quot;</span>)</span>
 <span id="cb19-3"><a href="gwas-with-binary-trait.html#cb19-3" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(img)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/mahbiny-1.png" width="672" /></p>
 <p>This plot is very similar compared with the Manhattan plot we got for continuous trait. They both contain a very significant SNP in chromosome 22, however, this SNP for binary trait is not so significant as for continuous trait. The y-axis value for continuous trait is about 20.</p>
 </div>
 <div id="generate-q-q-plot-1" class="section level2 hasAnchor" number="6.5">
@@ -531,7 +531,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="gwas-with-binary-trait.html#cb22-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
 <span id="cb22-2"><a href="gwas-with-binary-trait.html#cb22-2" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">&quot;Q-Q_Plot_for_binary_z-endoxifen_ratio.png&quot;</span>)</span>
 <span id="cb22-3"><a href="gwas-with-binary-trait.html#cb22-3" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(img)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/mahbiny2-1.png" width="672" /></p>
 <p>Q-Q plot still has a long tail, meaning that there are causal polymorphisms.</p>
 </div>
 <div id="multiple-test-correction-1" class="section level2 hasAnchor" number="6.6">

@@ -186,7 +186,7 @@ manhattan(assoc, col=c("dimgray", "darkgoldenrod1"), suggestiveline=F, genomewid
 dev.off()
 ```
 
-```{r}
+```{r mahbiny}
 # R codes- run in R Console
 img <- readPNG("Manhattan_Plot_for_binary_z-endoxifen_ratio.png")
 grid::grid.raster(img)
@@ -203,7 +203,7 @@ png(filename=paste0("Q-Q_Plot_for_binary_z-endoxifen_ratio.png"), type="cairo")
 qq(assoc$P)
 dev.off()
 ```
-```{r}
+```{r mahbiny2}
 # R codes- run in R Console
 img <- readPNG("Q-Q_Plot_for_binary_z-endoxifen_ratio.png")
 grid::grid.raster(img)
