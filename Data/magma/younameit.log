@@ -1,11 +1,11 @@
-Welcome to MAGMA v1.10 (win/s)
+Welcome to MAGMA v1.10 (custom)
 Using flags:
 	--bfile genotype_1k
 	--pheno file=phenotype_plink.txt
 	--gene-annot genotype_1k.genes.annot
 	--out younameit
 
-Start time is 20:58:32, Sunday 16 Jun 2024
+Start time is 01:20:17, Monday 17 Jun 2024
 
 Loading PLINK-format data...
 Reading file genotype_1k.fam... 192 individuals read
@@ -120,8 +120,8 @@ Starting gene analysis...
 	WARNING: an error occurred when loading model for chromosome X:
 		all covariates have a variance of zero
 	WARNING: skipping all chromosome X genes
-	writing gene analysis results to file younameit.genes.out.txt
+	writing gene analysis results to file younameit.genes.out
 	writing intermediate output to file younameit.genes.raw
 
 
-End time is 20:58:32, Sunday 16 Jun 2024 (elapsed: 00:00:00)
+End time is 01:20:17, Monday 17 Jun 2024 (elapsed: 00:00:00)

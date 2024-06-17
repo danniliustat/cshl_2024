@@ -148,3 +148,4 @@ compare-the-manhattan-plots
 variable-selectionforward-backward-and-stepwise-selection
 fig:unnamed-chunk-23
 fig:unnamed-chunk-24
+power-calculation-with-binary-outcome

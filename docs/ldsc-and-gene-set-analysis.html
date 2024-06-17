@@ -23,7 +23,7 @@
 <meta name="author" content="Danni Liu - Purdue University" />
 
 
-<meta name="date" content="2024-06-14" />
+<meta name="date" content="2024-06-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"/>
-<link rel="next" href="ldsc-and-gene-set-analysis-1.html"/>
+<link rel="next" href="perform-eqtl-analysis.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -140,7 +140,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">A Minimal Book Example</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to the GWAS and eQTL Workshop</a>
+<ul>
+<li class="chapter" data-level="1.0.1" data-path="index.html"><a href="index.html#overview"><i class="fa fa-check"></i><b>1.0.1</b> Overview</a></li>
+<li class="chapter" data-level="1.0.2" data-path="index.html"><a href="index.html#folder-structure"><i class="fa fa-check"></i><b>1.0.2</b> Folder structure:</a></li>
+<li class="chapter" data-level="1.0.3" data-path="index.html"><a href="index.html#programming-languages"><i class="fa fa-check"></i><b>1.0.3</b> Programming Languages:</a></li>
+<li class="chapter" data-level="1.0.4" data-path="index.html"><a href="index.html#required-gwas-tools"><i class="fa fa-check"></i><b>1.0.4</b> Required GWAS Tools</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html"><i class="fa fa-check"></i><b>2</b> An Overview of Regression with Toy Examples</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#environment-setting-and-packages"><i class="fa fa-check"></i><b>2.1</b> Environment Setting and Packages</a></li>
@@ -153,31 +159,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.7.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression-of-hoxb13-vs.-il17br"><i class="fa fa-check"></i><b>2.7.1</b> Linear regression of HOXB13 vs. IL17BR</a></li>
 </ul></li>
+<li class="chapter" data-level="2.8" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#variable-selectionforward-backward-and-stepwise-selection"><i class="fa fa-check"></i><b>2.8</b> Variable selection–Forward, backward and stepwise selection</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><i class="fa fa-check"></i><b>3</b> GWAS Tools and Data Preprocessing Workflow with Toy Example – PLINK and IMPUTE2</a>
+<li class="chapter" data-level="3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><i class="fa fa-check"></i><b>3</b> GWAS Tools and Data Preprocessing Workflow with Toy Example</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#environment-setting"><i class="fa fa-check"></i><b>3.1</b> Environment Setting</a></li>
-<li class="chapter" data-level="3.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#gwas-tools"><i class="fa fa-check"></i><b>3.2</b> GWAS Tools</a></li>
-<li class="chapter" data-level="3.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quality-control"><i class="fa fa-check"></i><b>3.3</b> Quality Control</a></li>
-<li class="chapter" data-level="3.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-summary-statistics"><i class="fa fa-check"></i><b>3.4</b> An Example of Summary Statistics</a>
+<li class="chapter" data-level="3.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#environment-setting"><i class="fa fa-check"></i><b>3.1</b> Environment Setting</a></li>
+<li class="chapter" data-level="3.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#gwas-tools"><i class="fa fa-check"></i><b>3.2</b> GWAS Tools</a></li>
+<li class="chapter" data-level="3.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#quality-control"><i class="fa fa-check"></i><b>3.3</b> Quality Control</a>
 <ul>
-<li class="chapter" data-level="3.4.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#input-files"><i class="fa fa-check"></i><b>3.4.1</b> Input files</a></li>
-<li class="chapter" data-level="3.4.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-missing-rate"><i class="fa fa-check"></i><b>3.4.2</b> Calculating missing rate</a></li>
-<li class="chapter" data-level="3.4.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#calculating-allel-frequencies"><i class="fa fa-check"></i><b>3.4.3</b> Calculating allel frequencies</a></li>
-<li class="chapter" data-level="3.4.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#hardy-weinberg-equilibrium"><i class="fa fa-check"></i><b>3.4.4</b> Hardy-Weinberg Equilibrium</a></li>
+<li class="chapter" data-level="3.3.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#an-example-of-summary-statistics"><i class="fa fa-check"></i><b>3.3.1</b> An Example of Summary Statistics</a></li>
+<li class="chapter" data-level="3.3.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#an-example-of-inclusion-thresholds-for-qc"><i class="fa fa-check"></i><b>3.3.2</b> An Example of Inclusion Thresholds for QC</a></li>
+<li class="chapter" data-level="3.3.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#remove-closely-related-individuals"><i class="fa fa-check"></i><b>3.3.3</b> Remove Closely Related Individuals</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#an-example-of-inclusion-thresholds-for-qc"><i class="fa fa-check"></i><b>3.5</b> An Example of Inclusion Thresholds for QC</a></li>
-<li class="chapter" data-level="3.6" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#remove-closely-related-individuals"><i class="fa fa-check"></i><b>3.6</b> Remove Closely Related Individuals</a></li>
-<li class="chapter" data-level="3.7" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#eigenstrat-input-files"><i class="fa fa-check"></i><b>3.7</b> EIGENSTRAT input files</a></li>
-<li class="chapter" data-level="3.8" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#run-eigenstrat-using-input-genotype-data"><i class="fa fa-check"></i><b>3.8</b> Run EIGENSTRAT Using Input Genotype Data</a></li>
-<li class="chapter" data-level="3.9" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#test-the-significance-of-principle-components-pcs"><i class="fa fa-check"></i><b>3.9</b> Test the Significance of Principle Components (PCs)</a></li>
-<li class="chapter" data-level="3.10" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quantitative-trait-association-test-for-continuous-trait"><i class="fa fa-check"></i><b>3.10</b> Quantitative Trait Association Test for Continuous Trait</a></li>
-<li class="chapter" data-level="3.11" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#casecontrol-asssociation-test-for-binary-trait"><i class="fa fa-check"></i><b>3.11</b> Case/Control Asssociation Test for Binary Trait</a></li>
-<li class="chapter" data-level="3.12" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#quantitative-trait-association-test-for-continuous-trait-with-covariates"><i class="fa fa-check"></i><b>3.12</b> Quantitative Trait Association Test for Continuous Trait with Covariates</a>
+<li class="chapter" data-level="3.4" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#an-imputation-example"><i class="fa fa-check"></i><b>3.4</b> An Imputation Example</a></li>
+<li class="chapter" data-level="3.5" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#population-stratification-correction-using-plink"><i class="fa fa-check"></i><b>3.5</b> Population Stratification Correction Using PLINK</a>
 <ul>
-<li class="chapter" data-level="3.12.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#covariates-adjustments-using-r"><i class="fa fa-check"></i><b>3.12.1</b> Covariates adjustments (using R):</a></li>
-<li class="chapter" data-level="3.12.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#residual-phenotype-data-after-covariates-adjustments-in-unix"><i class="fa fa-check"></i><b>3.12.2</b> Residual phenotype data after covariates adjustments (in UNIX):</a></li>
-<li class="chapter" data-level="3.12.3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example-plink-and-impute2.html#association-test-using-plink"><i class="fa fa-check"></i><b>3.12.3</b> Association test using plink</a></li>
+<li class="chapter" data-level="3.5.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#pca-on-whole-genome-data-using-plink"><i class="fa fa-check"></i><b>3.5.1</b> PCA on whole genome data using PLINK</a></li>
+<li class="chapter" data-level="3.5.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#test-the-significance-of-principle-components-pcs"><i class="fa fa-check"></i><b>3.5.2</b> Test the Significance of Principle Components (PCs)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#simple-association-test"><i class="fa fa-check"></i><b>3.6</b> Simple Association Test</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#quantitative-trait-association-test-for-continuous-trait"><i class="fa fa-check"></i><b>3.6.1</b> Quantitative Trait Association Test for Continuous Trait</a></li>
+<li class="chapter" data-level="3.6.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#casecontrol-asssociation-test-for-binary-trait"><i class="fa fa-check"></i><b>3.6.2</b> Case/Control Asssociation Test for Binary Trait</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#quantitative-trait-association-test-for-continuous-trait-with-covariates"><i class="fa fa-check"></i><b>3.7</b> Quantitative Trait Association Test for Continuous Trait with Covariates</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#covariates-adjustments-using-r"><i class="fa fa-check"></i><b>3.7.1</b> Covariates adjustments (using R):</a></li>
+<li class="chapter" data-level="3.7.2" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#association-test-using-plink"><i class="fa fa-check"></i><b>3.7.2</b> Association test using plink</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html"><i class="fa fa-check"></i><b>4</b> GWAS Case Study-Data Preparation</a>
@@ -258,7 +266,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.3" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#gene-environment-interaction-gxe"><i class="fa fa-check"></i><b>7.3</b> Gene-Environment Interaction (GxE)</a></li>
 <li class="chapter" data-level="7.4" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-and-sample-size-calculation-for-gwas"><i class="fa fa-check"></i><b>7.4</b> Power and sample size calculation for GWAS</a>
 <ul>
-<li class="chapter" data-level="7.4.1" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-calculation"><i class="fa fa-check"></i><b>7.4.1</b> Power calculation</a></li>
+<li class="chapter" data-level="7.4.1" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-calculation-with-binary-outcome"><i class="fa fa-check"></i><b>7.4.1</b> Power calculation with binary outcome:</a></li>
 <li class="chapter" data-level="7.4.2" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#sample-size-calculation"><i class="fa fa-check"></i><b>7.4.2</b> Sample size calculation</a></li>
 </ul></li>
 </ul></li>
@@ -269,16 +277,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="8.2.1" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#prepare-annotation-file"><i class="fa fa-check"></i><b>8.2.1</b> Prepare Annotation File</a></li>
 <li class="chapter" data-level="8.2.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#use-magma-for-gene-set-analysis"><i class="fa fa-check"></i><b>8.2.2</b> Use MAGMA for Gene-Set Analysis</a></li>
+<li class="chapter" data-level="8.2.3" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#compare-the-manhattan-plots"><i class="fa fa-check"></i><b>8.2.3</b> Compare the Manhattan plots</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html"><i class="fa fa-check"></i><b>9</b> LDSC and Gene-Set Analysis</a>
+<li class="chapter" data-level="9" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html"><i class="fa fa-check"></i><b>9</b> Perform eQTL Analysis</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#ldsc-linkage-disequilibrium-score-regression-1"><i class="fa fa-check"></i><b>9.1</b> LDSC (Linkage Disequilibrium Score Regression)</a></li>
-<li class="chapter" data-level="9.2" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#magma-for-gene-level-analysis-1"><i class="fa fa-check"></i><b>9.2</b> MAGMA (for Gene-Level Analysis)</a>
+<li class="chapter" data-level="9.1" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#filtering-snps-by-maf"><i class="fa fa-check"></i><b>9.1</b> Filtering SNPs by MAF</a></li>
+<li class="chapter" data-level="9.2" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#gene-expression-profiling"><i class="fa fa-check"></i><b>9.2</b> Gene expression profiling</a></li>
+<li class="chapter" data-level="9.3" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#covariates"><i class="fa fa-check"></i><b>9.3</b> Covariates</a></li>
+<li class="chapter" data-level="9.4" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#using-principle-components-as-covariates"><i class="fa fa-check"></i><b>9.4</b> Using principle components as covariates</a></li>
+<li class="chapter" data-level="9.5" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#eqtl-analysis"><i class="fa fa-check"></i><b>9.5</b> eQTL analysis</a>
 <ul>
-<li class="chapter" data-level="9.2.1" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#prepare-annotation-file-1"><i class="fa fa-check"></i><b>9.2.1</b> Prepare Annotation File</a></li>
-<li class="chapter" data-level="9.2.2" data-path="ldsc-and-gene-set-analysis-1.html"><a href="ldsc-and-gene-set-analysis-1.html#use-magma-for-gene-set-analysis-1"><i class="fa fa-check"></i><b>9.2.2</b> Use MAGMA for Gene-Set Analysis</a></li>
+<li class="chapter" data-level="9.5.1" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#cis-eqtl-and-trans-eqtl-analysis"><i class="fa fa-check"></i><b>9.5.1</b> cis-eQTL and trans-eQTL analysis</a></li>
 </ul></li>
+<li class="chapter" data-level="9.6" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#multiple-testing-correction"><i class="fa fa-check"></i><b>9.6</b> Multiple testing correction</a></li>
+<li class="chapter" data-level="9.7" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html#gene-regional-manhanttan-plots"><i class="fa fa-check"></i><b>9.7</b> Gene regional Manhanttan plots</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -316,9 +329,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="magma-for-gene-level-analysis" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> MAGMA (for Gene-Level Analysis)<a href="ldsc-and-gene-set-analysis.html#magma-for-gene-level-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>MAGMA is a statistical methods for gene-set analysis of multiple genetic markers. This method can be used when the individual marker’s effects are too weak to be detected, such as in polygenic traits. It aims to analyze multiple markers simultaneously to estimate their joint effects. Please check the paper from <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004219">de Leewu et al.(2015)</a>.</p>
-For each gene <span class="math inline">\(g\)</span>, we first transform them to Z-value:
+<p>The analysis consists of two parts. One part is gene analysis, which examine the assiciation between each gene and phenotype using a multiple linear regression model.</p>
+To perform the gene-set analysis, for each gene <span class="math inline">\(g\)</span>, we have the gene p-value <span class="math inline">\(p_g\)</span> computed from gene analysis. We first transform the p-values <span class="math inline">\(p_g\)</span> to Z-value:
 <center>
-<span class="math inline">\(z_g=\Phi^{-1}(1-p_g)\)</span>
+<span class="math inline">\(z_g=\Phi^{-1}(1-p_g)\)</span>, where <span class="math inline">\(\Phi^{-1}\)</span> is the probit function
 </center>
 <p>For gene set analysis, we test whether genes exhibit a stronger association with the phenotype of interest compared to other genes within a specific gene-set <span class="math inline">\(s\)</span> :</p>
 <center>
@@ -329,29 +343,28 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 <span class="math inline">\(\beta_s\)</span>: effect of genes inside the gene sets compared to genes outside the region<br />
 <span class="math inline">\(\epsilon\)</span>: residual</p>
 <p>Then, MAGMA uses a t-test to test whether genes inside the test is more associated with the phenotype <span class="math inline">\(\beta_s&gt;0\)</span>, against null <span class="math inline">\(\beta_s=0\)</span>.</p>
-<p>It can be downloaded from <a href="https://cncr.nl/research/magma/">MAGMA website</a> and can be installed under multiple systems. You can check their manual <a href="https://ctg.cncr.nl/software/MAGMA/doc/manual_v1.09.pdf">HERE</a>.</p>
+<p>The MAGMA program can be downloaded from <a href="https://cncr.nl/research/magma/">MAGMA website</a> and can be installed under multiple systems. You can check their manual <a href="https://ctg.cncr.nl/software/MAGMA/doc/manual_v1.09.pdf">HERE</a>.</p>
 <p>Additionally, their website also provides a list of public GWAS summary statistics data for you to download and practice. Please check them <a href="https://ctg.cncr.nl/software/summary_statistics">HERE</a>.</p>
 <p>The MAGMA installation packages are already downloaded inside <code>Tools/MAGMA</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="ldsc-and-gene-set-analysis.html#cb1-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;bigcare-main&quot; folder</span></span>
-<span id="cb1-2"><a href="ldsc-and-gene-set-analysis.html#cb1-2" tabindex="-1"></a><span class="co">## run in R Terminal</span></span>
-<span id="cb1-3"><a href="ldsc-and-gene-set-analysis.html#cb1-3" tabindex="-1"></a><span class="co">#mydir=&quot;/path/to/bigcare-main/Data/case_data&quot;</span></span>
-<span id="cb1-4"><a href="ldsc-and-gene-set-analysis.html#cb1-4" tabindex="-1"></a><span class="va">mydir</span><span class="op">=</span><span class="st">&quot;./Data/magma&quot;</span></span>
-<span id="cb1-5"><a href="ldsc-and-gene-set-analysis.html#cb1-5" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$mydir</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="ldsc-and-gene-set-analysis.html#cb2-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
-<span id="cb2-2"><a href="ldsc-and-gene-set-analysis.html#cb2-2" tabindex="-1"></a><span class="co">#setwd(&quot;/path/to/bigcare-main/Data/case_data&quot;)</span></span>
-<span id="cb2-3"><a href="ldsc-and-gene-set-analysis.html#cb2-3" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;./Data/magma&quot;</span>)</span>
-<span id="cb2-4"><a href="ldsc-and-gene-set-analysis.html#cb2-4" tabindex="-1"></a>mydir<span class="ot">&lt;-</span><span class="fu">getwd</span>()</span></code></pre></div>
 <div id="prepare-annotation-file" class="section level3 hasAnchor" number="8.2.1">
 <h3><span class="header-section-number">8.2.1</span> Prepare Annotation File<a href="ldsc-and-gene-set-analysis.html#prepare-annotation-file" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First set the working directory:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="ldsc-and-gene-set-analysis.html#cb1-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;cshl_2024&quot; folder</span></span>
+<span id="cb1-2"><a href="ldsc-and-gene-set-analysis.html#cb1-2" tabindex="-1"></a><span class="co">## run in R Terminal</span></span>
+<span id="cb1-3"><a href="ldsc-and-gene-set-analysis.html#cb1-3" tabindex="-1"></a><span class="va">mydir</span><span class="op">=</span><span class="st">&quot;/path/to/cshl_2024/Data/magma&quot;</span></span>
+<span id="cb1-4"><a href="ldsc-and-gene-set-analysis.html#cb1-4" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$mydir</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="ldsc-and-gene-set-analysis.html#cb2-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
+<span id="cb2-2"><a href="ldsc-and-gene-set-analysis.html#cb2-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/cshl_2024/Data/magma&quot;</span>)</span>
+<span id="cb2-3"><a href="ldsc-and-gene-set-analysis.html#cb2-3" tabindex="-1"></a>mydir<span class="ot">&lt;-</span><span class="fu">getwd</span>()</span></code></pre></div>
 <p>MAGMA directly runs on PLINK binary format files. We had <code>.ped</code> and <code>.map</code> files before. Let’s convert them to binary format <code>.bed</code>, <code>.bim</code> and <code>.fam</code> using PLINK.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="ldsc-and-gene-set-analysis.html#cb3-1" tabindex="-1"></a><span class="co">## # both Mac and Windows can run in Terminal</span></span>
 <span id="cb3-2"><a href="ldsc-and-gene-set-analysis.html#cb3-2" tabindex="-1"></a><span class="co"># windows users</span></span>
-<span id="cb3-3"><a href="ldsc-and-gene-set-analysis.html#cb3-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64/plink.exe</span> <span class="dt">\</span></span>
+<span id="cb3-3"><a href="ldsc-and-gene-set-analysis.html#cb3-3" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_win64_20231211/plink.exe</span> <span class="dt">\</span></span>
 <span id="cb3-4"><a href="ldsc-and-gene-set-analysis.html#cb3-4" tabindex="-1"></a>--noweb <span class="at">--file</span> ../case_data/genotype_1k <span class="at">--out</span> genotype_1k</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="ldsc-and-gene-set-analysis.html#cb4-1" tabindex="-1"></a><span class="co"># macOS users</span></span>
-<span id="cb4-2"><a href="ldsc-and-gene-set-analysis.html#cb4-2" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac/plink</span> <span class="dt">\</span></span>
+<span id="cb4-2"><a href="ldsc-and-gene-set-analysis.html#cb4-2" tabindex="-1"></a><span class="ex">../../Tools/PLINK/plink_mac_20231211/plink</span> <span class="dt">\</span></span>
 <span id="cb4-3"><a href="ldsc-and-gene-set-analysis.html#cb4-3" tabindex="-1"></a>--noweb <span class="at">--file</span> ../case_data/genotype_1k <span class="at">--out</span> genotype_1k</span></code></pre></div>
-<pre><code>## PLINK v1.90p 64-bit (11 Dec 2023)              www.cog-genomics.org/plink/1.9/
+<pre><code>## PLINK v1.90b7.2 64-bit (11 Dec 2023)           www.cog-genomics.org/plink/1.9/
 ## (C) 2005-2023 Shaun Purcell, Christopher Chang   GNU General Public License v3
 ## Logging to genotype_1k.log.
 ## Options in effect:
@@ -366,7 +379,10 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 ## 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%--file: genotype_1k.bed + genotype_1k.bim + genotype_1k.fam written.</code></pre>
 <p>Before we run the MAGMA for gene level analysis, we have to create a annotation file that map the SNPs to gene.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="ldsc-and-gene-set-analysis.html#cb6-1" tabindex="-1"></a><span class="co">## both Mac and Windows can run in Terminal</span></span>
-<span id="cb6-2"><a href="ldsc-and-gene-set-analysis.html#cb6-2" tabindex="-1"></a><span class="co"># windows users</span></span></code></pre></div>
+<span id="cb6-2"><a href="ldsc-and-gene-set-analysis.html#cb6-2" tabindex="-1"></a><span class="co"># windows users</span></span>
+<span id="cb6-3"><a href="ldsc-and-gene-set-analysis.html#cb6-3" tabindex="-1"></a><span class="ex">../../Tools/MAGMA/magma_windows/magma</span> <span class="at">--annotate</span> <span class="at">--snp-loc</span> genotype_1k.bim <span class="dt">\</span></span>
+<span id="cb6-4"><a href="ldsc-and-gene-set-analysis.html#cb6-4" tabindex="-1"></a>        <span class="at">--gene-loc</span> NCBI37.3.gene.loc <span class="dt">\</span></span>
+<span id="cb6-5"><a href="ldsc-and-gene-set-analysis.html#cb6-5" tabindex="-1"></a>        <span class="at">--out</span> genotype_1k</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="ldsc-and-gene-set-analysis.html#cb7-1" tabindex="-1"></a><span class="co"># mac users</span></span>
 <span id="cb7-2"><a href="ldsc-and-gene-set-analysis.html#cb7-2" tabindex="-1"></a><span class="ex">../../Tools/MAGMA/magma_v1.10_mac/magma</span> <span class="at">--annotate</span> <span class="at">--snp-loc</span> genotype_1k.bim <span class="dt">\</span></span>
 <span id="cb7-3"><a href="ldsc-and-gene-set-analysis.html#cb7-3" tabindex="-1"></a>        <span class="at">--gene-loc</span> NCBI37.3.gene.loc <span class="dt">\</span></span>
@@ -378,7 +394,7 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 ##  --gene-loc NCBI37.3.gene.loc
 ##  --out genotype_1k
 ## 
-## Start time is 01:54:49, Friday 14 Jun 2024
+## Start time is 01:20:17, Monday 17 Jun 2024
 ## 
 ## Starting annotation...
 ## Reading gene locations from file NCBI37.3.gene.loc... 
@@ -438,12 +454,16 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 ##  at least one SNP mapped to each of a total of 555 genes (out of 19427)
 ## 
 ## 
-## End time is 01:54:49, Friday 14 Jun 2024 (elapsed: 00:00:00)</code></pre>
+## End time is 01:20:17, Monday 17 Jun 2024 (elapsed: 00:00:00)</code></pre>
 </div>
 <div id="use-magma-for-gene-set-analysis" class="section level3 hasAnchor" number="8.2.2">
 <h3><span class="header-section-number">8.2.2</span> Use MAGMA for Gene-Set Analysis<a href="ldsc-and-gene-set-analysis.html#use-magma-for-gene-set-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="ldsc-and-gene-set-analysis.html#cb9-1" tabindex="-1"></a><span class="co">## both Mac and Windows can run in Terminal</span></span>
-<span id="cb9-2"><a href="ldsc-and-gene-set-analysis.html#cb9-2" tabindex="-1"></a><span class="co"># windows users</span></span></code></pre></div>
+<span id="cb9-2"><a href="ldsc-and-gene-set-analysis.html#cb9-2" tabindex="-1"></a><span class="co"># windows users</span></span>
+<span id="cb9-3"><a href="ldsc-and-gene-set-analysis.html#cb9-3" tabindex="-1"></a><span class="ex">../../Tools/MAGMA/magma_windows/magma</span> <span class="at">--bfile</span> genotype_1k <span class="dt">\</span></span>
+<span id="cb9-4"><a href="ldsc-and-gene-set-analysis.html#cb9-4" tabindex="-1"></a>        <span class="at">--pheno</span> file=phenotype_plink.txt <span class="dt">\</span></span>
+<span id="cb9-5"><a href="ldsc-and-gene-set-analysis.html#cb9-5" tabindex="-1"></a>        <span class="at">--gene-annot</span> genotype_1k.genes.annot <span class="dt">\</span></span>
+<span id="cb9-6"><a href="ldsc-and-gene-set-analysis.html#cb9-6" tabindex="-1"></a>        <span class="at">--out</span> younameit</span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="ldsc-and-gene-set-analysis.html#cb10-1" tabindex="-1"></a><span class="co"># mac users</span></span>
 <span id="cb10-2"><a href="ldsc-and-gene-set-analysis.html#cb10-2" tabindex="-1"></a><span class="ex">../../Tools/MAGMA/magma_v1.10_mac/magma</span> <span class="at">--bfile</span> genotype_1k <span class="dt">\</span></span>
 <span id="cb10-3"><a href="ldsc-and-gene-set-analysis.html#cb10-3" tabindex="-1"></a>        <span class="at">--pheno</span> file=phenotype_plink.txt <span class="dt">\</span></span>
@@ -495,15 +515,17 @@ For each gene <span class="math inline">\(g\)</span>, we first transform them to
 <span id="cb15-3"><a href="ldsc-and-gene-set-analysis.html#cb15-3" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2</code></pre>
-<p>compare the plot
-We can load the plot from MAGMA</p>
+</div>
+<div id="compare-the-manhattan-plots" class="section level3 hasAnchor" number="8.2.3">
+<h3><span class="header-section-number">8.2.3</span> Compare the Manhattan plots<a href="ldsc-and-gene-set-analysis.html#compare-the-manhattan-plots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can load the plot from MAGMA</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="ldsc-and-gene-set-analysis.html#cb17-1" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">&quot;Manhattan_Plot_for_magma.png&quot;</span>)</span>
 <span id="cb17-2"><a href="ldsc-and-gene-set-analysis.html#cb17-2" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(img)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>This is the previous plot for SNPs.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="ldsc-and-gene-set-analysis.html#cb18-1" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">&quot;../case_data/Manhattan_Plot_for_z-4-oh-Tam.png&quot;</span>)</span>
 <span id="cb18-2"><a href="ldsc-and-gene-set-analysis.html#cb18-2" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(img)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 
 </div>
 </div>
@@ -514,7 +536,7 @@ We can load the plot from MAGMA</p>
         </div>
       </div>
 <a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="ldsc-and-gene-set-analysis-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="perform-eqtl-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

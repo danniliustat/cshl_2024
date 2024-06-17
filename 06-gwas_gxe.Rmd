@@ -251,9 +251,10 @@ We will determine the above parameters using our case study data.
 
 ### Power calculation with binary outcome:
 
-Based on Chapter 4, we have a case-control study with 192 individuals, including 95 cases and 97 controls (case rate of approximately 50%). The SNPs included in the GWAS analysis have MAF over a range of 0 to 0.5. (This can be calculated using plink --freq. Check Chapter 2.) But we will only focus on common alleles with MAF >0.1. We want to calculate the statistical power to detect an odds ratio of 3, for all possible combinations of true and test models, assuming an alpha of 0.05.
+Based on Chapter 4, we have a case-control study with 192 individuals, including 95 cases and 97 controls (case rate of approximately 50%). The SNPs included in the GWAS analysis have MAF over a range of 0 to 0.5. (This can be calculated using plink `--freq`. Check Chapter 2.) But we will only focus on common alleles with MAF >0.1. We want to calculate the statistical power to detect an odds ratio of 3, for all possible combinations of true and test models, assuming an alpha of 0.05.
 
-We need to specify the calculation is for power with calc="power" and use model="logistic" for binary outcome. The function genpwr.calc with calculate power for all alleles with MAF between 0.1 and 0.5 with an increment of 0.01 based on the study design. Then a plot is generated to visualize the power change vs MAF under different genetic models .
+We need to specify the calculation is for power with `calc="power"` and use `model="logistic"` for binary outcome. The function `genpwr.calc` calculates power for all alleles with MAF between 0.1 and 0.5 with an increment of 0.01 based on the study design. Then a plot is generated to visualize the power change vs MAF under different genetic models.
+
 ```{r message=FALSE, warnings=FALSE}
 # R codes- run in R Console
 pw <- genpwr.calc(calc = "power", model = "logistic", 
@@ -286,7 +287,7 @@ We still focus on common alleles with MAF >0.1. and the goal is to calculate the
 
 Similar as in binary study, we use `calc="power"` but specify continuous study model with `model="linear"`.
 
-```{r message=FALSE, warnings=FALSE}
+```{r message=FALSE, warnings=FALSE, error=F}
 # R codes- run in R Console
 pw <- genpwr.calc(calc = "power", model = "linear",
    N=192, sd_y=67, k=NULL,
@@ -299,7 +300,7 @@ power.plot(pw)
 
 #### Continuous study with continuous GxE interaction:
 
-In addition to power calculation for main effects model, genpwr is also capable to calculate power for studies with GxE interactions. We just show you a continuous study with continuous GxE interactions here. You can also practice for a binary study with continuous GxE interactions, or study with binary GxE interactions.
+In addition to power calculation for main effects model, `genpwr` is also capable to calculate power for studies with GxE interactions. We just show you a continuous study with continuous GxE interactions here. You can also practice for a binary study with continuous GxE interactions, or study with binary GxE interactions.
 
 Besides the parameters above, we need to specify the effect size for both main effect environmental variables and GxE interactions. Also note that the sum of all effect size parameters shouldn't exceed the total SD of phenotype. We also specify the type of GxE interactions with `ge.interaction="continuous"`.
 
