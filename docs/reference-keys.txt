@@ -141,3 +141,7 @@ overview
 folder-structure
 programming-languages
 required-gwas-tools
+gwas-tools-and-data-preprocessing-workflow-with-toy-example
+population-stratification-correction-using-plink
+pca-on-whole-genome-data-using-plink
+compare-the-manhattan-plots

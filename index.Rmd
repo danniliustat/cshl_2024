@@ -73,7 +73,7 @@ You can also run bash commands directly from Powershell. To open Powershell, sea
 ### Required GWAS Tools
 In GWAS analysis, we also use additional command-line tools to handle large scale datasets. The primary tools we use in this course are **PLINK**, **IMPUTE2** and **MAGMA**. Participants need to install these tools on your own laptops before calling them. 
 
-Before you install, you need to check whether these tools are compatible to run on your laptop system. Usually, bioinformatics analyses are run on computational servers with Linux system given the large data volumn and high computational power required. So most bioinformatic programs are developed for Linux and only some of them are available to run on personal laptops. For the tools used in our course, **PLINK** and **MAGMA** is compatible with Windows, macOS, and Linux, while **IMPUTE2** is only available for macOS and Linux users. We also use another tool, **Eigensoft**, in "ch2_Summary_of_Data_Preprocess...", but this tool can only be executed on a Linux operating system. We will directly show the codes for **Eigensoft** and provide the output file so you don't have to run it.
+Before you install, you need to check whether these tools are compatible to run on your laptop system. Usually, bioinformatics analyses are run on computational servers with Linux system given the large data volumn and high computational power required. So most bioinformatic programs are developed for Linux and only some of them are available to run on personal laptops. For the tools used in our course, **PLINK** and **MAGMA** is compatible with Windows, macOS, and Linux, while **IMPUTE2** is only available for macOS and Linux users.
 
 **Installation instructions**
 
@@ -102,5 +102,4 @@ Fig2. Pop-up windows when you try to run program for the first time|  Fig3. Auth
   cd /path/to/cshl_2024
   ./Tools/PLINK/plink_win64_20231211/plink.exe --help
   ```
-**Note: Windows users can run PLINK and MAGMA in RStudio Terminal, but not in Powershell. For other Bash codes, please still use "Windows Powershell" app.**
 
