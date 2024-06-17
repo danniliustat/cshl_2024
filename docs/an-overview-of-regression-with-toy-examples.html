@@ -23,7 +23,7 @@
 <meta name="author" content="Danni Liu - Purdue University" />
 
 
-<meta name="date" content="2024-06-16" />
+<meta name="date" content="2024-06-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -159,6 +159,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.7.1" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#linear-regression-of-hoxb13-vs.-il17br"><i class="fa fa-check"></i><b>2.7.1</b> Linear regression of HOXB13 vs. IL17BR</a></li>
 </ul></li>
+<li class="chapter" data-level="2.8" data-path="an-overview-of-regression-with-toy-examples.html"><a href="an-overview-of-regression-with-toy-examples.html#variable-selectionforward-backward-and-stepwise-selection"><i class="fa fa-check"></i><b>2.8</b> Variable selection–Forward, backward and stepwise selection</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html"><i class="fa fa-check"></i><b>3</b> GWAS Tools and Data Preprocessing Workflow with Toy Example</a>
 <ul>
@@ -265,7 +266,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.3" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#gene-environment-interaction-gxe"><i class="fa fa-check"></i><b>7.3</b> Gene-Environment Interaction (GxE)</a></li>
 <li class="chapter" data-level="7.4" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-and-sample-size-calculation-for-gwas"><i class="fa fa-check"></i><b>7.4</b> Power and sample size calculation for GWAS</a>
 <ul>
-<li class="chapter" data-level="7.4.1" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-calculation"><i class="fa fa-check"></i><b>7.4.1</b> Power calculation</a></li>
+<li class="chapter" data-level="7.4.1" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#power-calculation-with-binary-outcome"><i class="fa fa-check"></i><b>7.4.1</b> Power calculation with binary outcome:</a></li>
 <li class="chapter" data-level="7.4.2" data-path="gxg-and-gxe-interactions-power-and-sample-size-calculation.html"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#sample-size-calculation"><i class="fa fa-check"></i><b>7.4.2</b> Sample size calculation</a></li>
 </ul></li>
 </ul></li>
@@ -275,8 +276,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#magma-for-gene-level-analysis"><i class="fa fa-check"></i><b>8.2</b> MAGMA (for Gene-Level Analysis)</a>
 <ul>
 <li class="chapter" data-level="8.2.1" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#prepare-annotation-file"><i class="fa fa-check"></i><b>8.2.1</b> Prepare Annotation File</a></li>
-<li class="chapter" data-level="8.2.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#use-magma-for-gene-set-analysis"><i class="fa fa-check"></i><b>8.2.2</b> Use MAGMA for Gene-Set Analysis</a></li>
-<li class="chapter" data-level="8.2.3" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#compare-the-manhattan-plots"><i class="fa fa-check"></i><b>8.2.3</b> Compare the Manhattan plots</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#part-1-gene-analysis"><i class="fa fa-check"></i><b>8.2.2</b> Part 1: Gene Analysis</a></li>
+<li class="chapter" data-level="8.2.3" data-path="ldsc-and-gene-set-analysis.html"><a href="ldsc-and-gene-set-analysis.html#part-2-gene-set-analysis"><i class="fa fa-check"></i><b>8.2.3</b> Part 2: Gene-Set Analysis</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="perform-eqtl-analysis.html"><a href="perform-eqtl-analysis.html"><i class="fa fa-check"></i><b>9</b> Perform eQTL Analysis</a>
@@ -317,29 +318,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 2</span> An Overview of Regression with Toy Examples<a href="an-overview-of-regression-with-toy-examples.html#an-overview-of-regression-with-toy-examples" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <blockquote>
 <p><span style="color: #0064a4;"><br />
-<strong>Note:</strong> In order to run codes in this notebook, please make sure you have coloned the “cshl_2024” repository from GitHub and have RStudio installed on your laptop.
+<strong>Note:</strong> In order to run codes in this chapter, please make sure you have coloned the “cshl_2024” repository from GitHub and have RStudio installed on your laptop.
 </span></p>
 </blockquote>
-<p>This notebook demonstrates two basic statistical regression models using toy examples.</p>
+<p>This chapter demonstrates two basic statistical regression models using toy examples.</p>
 <ul>
 <li>case/control study by logistic regression</li>
 <li>quantitative trait study by linear regression</li>
 </ul>
-<p>We use only R codes in this notebook.</p>
+<p>We use only R codes in this chapter.</p>
 <div id="environment-setting-and-packages" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Environment Setting and Packages<a href="an-overview-of-regression-with-toy-examples.html#environment-setting-and-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Before we can run any analysis, we need to set the working directory path in RStudio Console to the downloaded “cshl_2024” folder and load the necessary R packages. To setup the working directory, make sure you run the following codes in R Terminal.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="an-overview-of-regression-with-toy-examples.html#cb1-1" tabindex="-1"></a><span class="co"># change the path below to where you saved &quot;cshl_2024&quot; folder</span></span>
 <span id="cb1-2"><a href="an-overview-of-regression-with-toy-examples.html#cb1-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/cshl_2024&quot;</span>)</span></code></pre></div>
-<p>In this notebook, we will use R packages “data.table”, “GEOquery”, “plyr” and “ROCR”. You can install the R base packages using <code>install.packages()</code>. “GEOquery” is a BioConductor package that needs to be installed with BioManager. The codes below show you how to install these packages in R. They are commented out with # here, so if you want to run them on your own laptop, please remove # before the codes.</p>
+<p>In this chapter, we will use R packages “data.table”, “GEOquery”, “plyr” and “ROCR”. You can install the R base packages using <code>install.packages()</code>. “GEOquery” is a BioConductor package that needs to be installed with BioManager. The codes below show you how to install these packages in R. They are commented out with # here, so if you want to run them on your own laptop, please remove # before the codes.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="an-overview-of-regression-with-toy-examples.html#cb2-1" tabindex="-1"></a><span class="co">#install.packages(&quot;data.table&quot;)</span></span>
 <span id="cb2-2"><a href="an-overview-of-regression-with-toy-examples.html#cb2-2" tabindex="-1"></a><span class="co">#install.packages(&quot;plyr&quot;)</span></span>
 <span id="cb2-3"><a href="an-overview-of-regression-with-toy-examples.html#cb2-3" tabindex="-1"></a><span class="co">#install.packages(&quot;ROCR&quot;)</span></span>
 <span id="cb2-4"><a href="an-overview-of-regression-with-toy-examples.html#cb2-4" tabindex="-1"></a><span class="co">#install.packages(&quot;ggplot2&quot;)</span></span>
-<span id="cb2-5"><a href="an-overview-of-regression-with-toy-examples.html#cb2-5" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="an-overview-of-regression-with-toy-examples.html#cb2-6" tabindex="-1"></a><span class="co">#if (!require(&quot;BiocManager&quot;, quietly = TRUE))</span></span>
-<span id="cb2-7"><a href="an-overview-of-regression-with-toy-examples.html#cb2-7" tabindex="-1"></a><span class="co">#    install.packages(&quot;BiocManager&quot;)</span></span>
-<span id="cb2-8"><a href="an-overview-of-regression-with-toy-examples.html#cb2-8" tabindex="-1"></a><span class="co">#BiocManager::install(&quot;GEOquery&quot;)</span></span></code></pre></div>
+<span id="cb2-5"><a href="an-overview-of-regression-with-toy-examples.html#cb2-5" tabindex="-1"></a><span class="co"># install.packages(&quot;glmnet&quot;)</span></span>
+<span id="cb2-6"><a href="an-overview-of-regression-with-toy-examples.html#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="an-overview-of-regression-with-toy-examples.html#cb2-7" tabindex="-1"></a><span class="co">#if (!require(&quot;BiocManager&quot;, quietly = TRUE))</span></span>
+<span id="cb2-8"><a href="an-overview-of-regression-with-toy-examples.html#cb2-8" tabindex="-1"></a><span class="co">#    install.packages(&quot;BiocManager&quot;)</span></span>
+<span id="cb2-9"><a href="an-overview-of-regression-with-toy-examples.html#cb2-9" tabindex="-1"></a><span class="co">#BiocManager::install(&quot;GEOquery&quot;)</span></span></code></pre></div>
 <p>After installation, The list of packages are loaded with <code>library()</code> function.</p>
 <p>The following code might generate multiple messages when loading the packages, such as “The following objects are masked from XXX”, which is normal. You can ignore them.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="an-overview-of-regression-with-toy-examples.html#cb3-1" tabindex="-1"></a><span class="co">#load R packages</span></span>
@@ -347,14 +349,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-3"><a href="an-overview-of-regression-with-toy-examples.html#cb3-3" tabindex="-1"></a><span class="fu">library</span>(GEOquery)</span>
 <span id="cb3-4"><a href="an-overview-of-regression-with-toy-examples.html#cb3-4" tabindex="-1"></a><span class="fu">library</span>(plyr)</span>
 <span id="cb3-5"><a href="an-overview-of-regression-with-toy-examples.html#cb3-5" tabindex="-1"></a><span class="fu">library</span>(ROCR)</span>
-<span id="cb3-6"><a href="an-overview-of-regression-with-toy-examples.html#cb3-6" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code></pre></div>
+<span id="cb3-6"><a href="an-overview-of-regression-with-toy-examples.html#cb3-6" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb3-7"><a href="an-overview-of-regression-with-toy-examples.html#cb3-7" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span></code></pre></div>
 </div>
 <div id="toy-example-data" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Toy Example Data<a href="an-overview-of-regression-with-toy-examples.html#toy-example-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>To illustrate the statistical methods, we will use a small dataset of 60 samples with both continuous and binary variables. This dataset is a microarray expression data downloaded from GSE1378. It contains 60 patients with ER-positive primary breast cancer treated with tamoxifen monotherapy for 5 years. We only extracted the recurrent status and gene expression of 3 genes to this toy example data. You can load this extracted data as below with fread function:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="an-overview-of-regression-with-toy-examples.html#cb4-1" tabindex="-1"></a>toy_data <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;./Data/toy_example_data.txt&quot;</span>)</span></code></pre></div>
-<p>We could take a view at the data. <code>head</code> function prints the first 6 rows of the dataset. `summary1 function provides summary statistics of the numeric variables. Column status is a binary variable indicating whether the sample is recurrence or non-recurrence. The last three columns are expression of three genes HOXB13, IL17BR and NHLH1, so they are continuous.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="an-overview-of-regression-with-toy-examples.html#cb5-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(toy_data))</span></code></pre></div>
+<p>To illustrate the statistical methods, we will use a small dataset of 60 samples with both continuous and binary variables. This dataset is a microarray expression data downloaded from GSE1378. It contains 60 patients with ER-positive primary breast cancer treated with tamoxifen monotherapy for 5 years. We only extracted the recurrent status and gene expression of 20 genes to this toy example data. You can load this extracted data as below with fread function:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="an-overview-of-regression-with-toy-examples.html#cb4-1" tabindex="-1"></a>toy_data <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;./Data/toy_example_data_20gene.txt&quot;</span>)</span>
+<span id="cb4-2"><a href="an-overview-of-regression-with-toy-examples.html#cb4-2" tabindex="-1"></a><span class="fu">dim</span>(toy_data)</span></code></pre></div>
+<pre><code>## [1] 60 24</code></pre>
+<p>We could take a view at the data. <code>head</code> function prints the first 6 rows of the dataset. <code>summary</code> function provides summary statistics of the numeric variables. Column status is a binary variable indicating whether the sample is recurrence or non-recurrence. The later columns are expression of 20 genes, so they are continuous. We can get a summary of the first 7 columns.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="an-overview-of-regression-with-toy-examples.html#cb6-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(toy_data[,<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>]))</span></code></pre></div>
 <table>
 <colgroup>
 <col width="9%" />
@@ -433,7 +438,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="an-overview-of-regression-with-toy-examples.html#cb6-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">summary</span>(toy_data))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="an-overview-of-regression-with-toy-examples.html#cb7-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">summary</span>(toy_data[,<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>]))</span></code></pre></div>
 <table>
 <colgroup>
 <col width="2%" />
@@ -521,7 +526,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>We can also get a summary of the continuous expression variables by status groups. Below, we used <code>ddply</code> function to group the data by status and calculate count, mean and sd of the 3 genes in each group. As shown in the output data.frame, the count column indicates that there are 32 samples in non-recur and 28 in recur group respectively.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="an-overview-of-regression-with-toy-examples.html#cb7-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">ddply</span>(toy_data, <span class="sc">~</span>status, summarise, <span class="at">count=</span><span class="fu">length</span>(gene_HOXB13), <span class="at">mean=</span><span class="fu">mean</span>(gene_HOXB13), <span class="at">sd=</span><span class="fu">sd</span>(gene_HOXB13)))</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="an-overview-of-regression-with-toy-examples.html#cb8-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">ddply</span>(toy_data, <span class="sc">~</span>status, summarise, <span class="at">count=</span><span class="fu">length</span>(gene_HOXB13), <span class="at">mean=</span><span class="fu">mean</span>(gene_HOXB13), <span class="at">sd=</span><span class="fu">sd</span>(gene_HOXB13)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -546,7 +551,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="an-overview-of-regression-with-toy-examples.html#cb8-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">ddply</span>(toy_data, <span class="sc">~</span>status, summarise, <span class="at">count=</span><span class="fu">length</span>(gene_IL17BR), <span class="at">mean=</span><span class="fu">mean</span>(gene_IL17BR), <span class="at">sd=</span><span class="fu">sd</span>(gene_IL17BR)))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="an-overview-of-regression-with-toy-examples.html#cb9-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">ddply</span>(toy_data, <span class="sc">~</span>status, summarise, <span class="at">count=</span><span class="fu">length</span>(gene_IL17BR), <span class="at">mean=</span><span class="fu">mean</span>(gene_IL17BR), <span class="at">sd=</span><span class="fu">sd</span>(gene_IL17BR)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -571,7 +576,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="an-overview-of-regression-with-toy-examples.html#cb9-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">ddply</span>(toy_data, <span class="sc">~</span>status, summarise, <span class="at">count=</span><span class="fu">length</span>(gene_NHLH1), <span class="at">mean=</span><span class="fu">mean</span>(gene_NHLH1), <span class="at">sd=</span><span class="fu">sd</span>(gene_NHLH1)))</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="an-overview-of-regression-with-toy-examples.html#cb10-1" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">ddply</span>(toy_data, <span class="sc">~</span>status, summarise, <span class="at">count=</span><span class="fu">length</span>(gene_NHLH1), <span class="at">mean=</span><span class="fu">mean</span>(gene_NHLH1), <span class="at">sd=</span><span class="fu">sd</span>(gene_NHLH1)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -598,20 +603,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </table>
 <p>To prepare for logistic regression, we will create a <code>censor</code> variable as an indicator of the status group, with <code>1=recur</code> and <code>0=non-recur</code>. Later, we will use this binary censor variable and the last three columns of continuous expression variables of different genes to perform the analysis.</p>
 <p>The codes below show you how to recode status into a binary variable censor. First, we get the index number of the recurrent status, and save them in index object. Then we create a new variable called <code>censor</code> and assign a sequence of 0 to this vector. Next, we extract from <code>censor</code> the elements with index number in index, and assign/recode them as 1. After this recoding finishes, we again take a look at the first 6 rows with head function.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="an-overview-of-regression-with-toy-examples.html#cb10-1" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">which</span>(toy_data<span class="sc">$</span>status<span class="sc">==</span><span class="st">&quot;Status=recur&quot;</span>)</span>
-<span id="cb10-2"><a href="an-overview-of-regression-with-toy-examples.html#cb10-2" tabindex="-1"></a>toy_data<span class="sc">$</span>censor <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">60</span>)</span>
-<span id="cb10-3"><a href="an-overview-of-regression-with-toy-examples.html#cb10-3" tabindex="-1"></a>toy_data<span class="sc">$</span>censor[index] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb10-4"><a href="an-overview-of-regression-with-toy-examples.html#cb10-4" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(toy_data))</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="an-overview-of-regression-with-toy-examples.html#cb11-1" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">which</span>(toy_data<span class="sc">$</span>status<span class="sc">==</span><span class="st">&quot;Status=recur&quot;</span>)</span>
+<span id="cb11-2"><a href="an-overview-of-regression-with-toy-examples.html#cb11-2" tabindex="-1"></a>toy_data<span class="sc">$</span>censor <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">60</span>)</span>
+<span id="cb11-3"><a href="an-overview-of-regression-with-toy-examples.html#cb11-3" tabindex="-1"></a>toy_data<span class="sc">$</span>censor[index] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb11-4"><a href="an-overview-of-regression-with-toy-examples.html#cb11-4" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(toy_data[,<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>]))</span></code></pre></div>
 <table>
 <colgroup>
 <col width="9%" />
-<col width="17%" />
+<col width="18%" />
 <col width="5%" />
-<col width="25%" />
+<col width="27%" />
+<col width="13%" />
+<col width="13%" />
 <col width="12%" />
-<col width="12%" />
-<col width="11%" />
-<col width="7%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -622,7 +626,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <th align="right">gene_HOXB13</th>
 <th align="right">gene_IL17BR</th>
 <th align="right">gene_NHLH1</th>
-<th align="right">censor</th>
 </tr>
 </thead>
 <tbody>
@@ -634,7 +637,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="right">-2.8968509</td>
 <td align="right">-2.4744445</td>
 <td align="right">-0.1214872</td>
-<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">GSM22366</td>
@@ -644,7 +646,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="right">-2.9811459</td>
 <td align="right">-2.1587305</td>
 <td align="right">-0.6215178</td>
-<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">GSM22367</td>
@@ -654,7 +655,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="right">-1.3201379</td>
 <td align="right">1.0535341</td>
 <td align="right">0.0583918</td>
-<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">GSM22368</td>
@@ -664,7 +664,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="right">0.5141317</td>
 <td align="right">-1.7643865</td>
 <td align="right">0.0073468</td>
-<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">GSM22369</td>
@@ -674,7 +673,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="right">-3.0522629</td>
 <td align="right">0.8341051</td>
 <td align="right">-0.5538062</td>
-<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">GSM22370</td>
@@ -684,7 +682,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="right">-3.2735509</td>
 <td align="right">-0.9047099</td>
 <td align="right">0.8428828</td>
-<td align="right">1</td>
 </tr>
 </tbody>
 </table>
@@ -703,10 +700,10 @@ Mathematically, the logistic regression equation can be defined as:</li>
 <p><span class="math inline">\(l = log(\frac{p}{1-p}) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ...\)</span>, where <span class="math inline">\(p\)</span> is the probability that the response <span class="math inline">\(Y = 1\)</span>.</p>
 <p>More detailed explanation about logistic regression can be found at: <a href="https://en.wikipedia.org/wiki/Logistic_regression" class="uri">https://en.wikipedia.org/wiki/Logistic_regression</a></p>
 <p>In the code below, we performed a logistic regression with a binary response <code>censor</code> and continuous expression of <code>gene_HOXB13</code>. The model is fitted with function <code>glm</code>. <code>cencor~gene_HOXB13</code> specifies the model structure, where <code>censor</code> is the response and <code>gene_HOCB13</code> is the explanatory variable. <code>family</code> argument specifies the distribution of <code>censor</code> as “binomial”, and link specifies that link function for binomial response is “logit”, which is why this model is called “logistic model”.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="an-overview-of-regression-with-toy-examples.html#cb11-1" tabindex="-1"></a><span class="co"># logistic regresion, use gene HOXB13 to predict the recur/non-recur status</span></span>
-<span id="cb11-2"><a href="an-overview-of-regression-with-toy-examples.html#cb11-2" tabindex="-1"></a><span class="co"># for significant gene: HOXB13</span></span>
-<span id="cb11-3"><a href="an-overview-of-regression-with-toy-examples.html#cb11-3" tabindex="-1"></a>fit.logistic<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">glm</span>(censor<span class="sc">~</span> gene_HOXB13,<span class="at">data =</span> toy_data,<span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>))</span>
-<span id="cb11-4"><a href="an-overview-of-regression-with-toy-examples.html#cb11-4" tabindex="-1"></a><span class="fu">summary</span>(fit.logistic<span class="fl">.1</span>) <span class="co"># output summary of the logistic regression</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="an-overview-of-regression-with-toy-examples.html#cb12-1" tabindex="-1"></a><span class="co"># logistic regresion, use gene HOXB13 to predict the recur/non-recur status</span></span>
+<span id="cb12-2"><a href="an-overview-of-regression-with-toy-examples.html#cb12-2" tabindex="-1"></a><span class="co"># for significant gene: HOXB13</span></span>
+<span id="cb12-3"><a href="an-overview-of-regression-with-toy-examples.html#cb12-3" tabindex="-1"></a>fit.logistic<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">glm</span>(censor<span class="sc">~</span> gene_HOXB13,<span class="at">data =</span> toy_data,<span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>))</span>
+<span id="cb12-4"><a href="an-overview-of-regression-with-toy-examples.html#cb12-4" tabindex="-1"></a><span class="fu">summary</span>(fit.logistic<span class="fl">.1</span>) <span class="co"># output summary of the logistic regression</span></span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = censor ~ gene_HOXB13, family = binomial(link = &quot;logit&quot;), 
@@ -733,26 +730,26 @@ Mathematically, the logistic regression equation can be defined as:</li>
 <p>The ROC (receiver operating characteristic) curve and AUC (area under the curve) are popular tools to check the predictive ability of the logistic regression.</p>
 <p>Roughly speaking, the AUC equals to the probability that a classifier will rank a randomly chosen positive instance higher than a randomly chosen negative one. AUC is always between 0 and 1. The closer to 1 the AUC is, the better the model fits. As shown in the following results, the AUC is 0.796 and pretty close to 1. So this model fits the data well. In other words, we can say the expression of gene HOXB13 has a great explanation power on the recur status.</p>
 <p>For more information about these two concepts, Please visit: <a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve" class="uri">https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve</a></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="an-overview-of-regression-with-toy-examples.html#cb13-1" tabindex="-1"></a><span class="co">#plot ROC curve</span></span>
-<span id="cb13-2"><a href="an-overview-of-regression-with-toy-examples.html#cb13-2" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit.logistic<span class="fl">.1</span>, <span class="at">type=</span><span class="st">&quot;response&quot;</span>)</span>
-<span id="cb13-3"><a href="an-overview-of-regression-with-toy-examples.html#cb13-3" tabindex="-1"></a>pr <span class="ot">&lt;-</span> <span class="fu">prediction</span>(p, toy_data<span class="sc">$</span>censor)</span>
-<span id="cb13-4"><a href="an-overview-of-regression-with-toy-examples.html#cb13-4" tabindex="-1"></a>prf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="at">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)</span>
-<span id="cb13-5"><a href="an-overview-of-regression-with-toy-examples.html#cb13-5" tabindex="-1"></a>prf1 <span class="ot">&lt;-</span> prf</span>
-<span id="cb13-6"><a href="an-overview-of-regression-with-toy-examples.html#cb13-6" tabindex="-1"></a><span class="fu">plot</span>(prf1,<span class="at">main=</span><span class="st">&quot;ROC for significant gene HOXB13&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="an-overview-of-regression-with-toy-examples.html#cb14-1" tabindex="-1"></a><span class="co">#plot ROC curve</span></span>
+<span id="cb14-2"><a href="an-overview-of-regression-with-toy-examples.html#cb14-2" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit.logistic<span class="fl">.1</span>, <span class="at">type=</span><span class="st">&quot;response&quot;</span>)</span>
+<span id="cb14-3"><a href="an-overview-of-regression-with-toy-examples.html#cb14-3" tabindex="-1"></a>pr <span class="ot">&lt;-</span> <span class="fu">prediction</span>(p, toy_data<span class="sc">$</span>censor)</span>
+<span id="cb14-4"><a href="an-overview-of-regression-with-toy-examples.html#cb14-4" tabindex="-1"></a>prf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="at">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)</span>
+<span id="cb14-5"><a href="an-overview-of-regression-with-toy-examples.html#cb14-5" tabindex="-1"></a>prf1 <span class="ot">&lt;-</span> prf</span>
+<span id="cb14-6"><a href="an-overview-of-regression-with-toy-examples.html#cb14-6" tabindex="-1"></a><span class="fu">plot</span>(prf1,<span class="at">main=</span><span class="st">&quot;ROC for significant gene HOXB13&quot;</span>)</span></code></pre></div>
 <p><img src="cshl_2024_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="an-overview-of-regression-with-toy-examples.html#cb14-1" tabindex="-1"></a><span class="co"># calculate the auc</span></span>
-<span id="cb14-2"><a href="an-overview-of-regression-with-toy-examples.html#cb14-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;auc&quot;</span>)</span>
-<span id="cb14-3"><a href="an-overview-of-regression-with-toy-examples.html#cb14-3" tabindex="-1"></a>auc <span class="ot">&lt;-</span> auc<span class="sc">@</span>y.values[[<span class="dv">1</span>]]</span>
-<span id="cb14-4"><a href="an-overview-of-regression-with-toy-examples.html#cb14-4" tabindex="-1"></a>auc <span class="co"># 0.796</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="an-overview-of-regression-with-toy-examples.html#cb15-1" tabindex="-1"></a><span class="co"># calculate the auc</span></span>
+<span id="cb15-2"><a href="an-overview-of-regression-with-toy-examples.html#cb15-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;auc&quot;</span>)</span>
+<span id="cb15-3"><a href="an-overview-of-regression-with-toy-examples.html#cb15-3" tabindex="-1"></a>auc <span class="ot">&lt;-</span> auc<span class="sc">@</span>y.values[[<span class="dv">1</span>]]</span>
+<span id="cb15-4"><a href="an-overview-of-regression-with-toy-examples.html#cb15-4" tabindex="-1"></a>auc <span class="co"># 0.796</span></span></code></pre></div>
 <pre><code>## [1] 0.7957589</code></pre>
 </div>
 <div id="practice" class="section level2 hasAnchor" number="2.5">
 <h2><span class="header-section-number">2.5</span> Practice<a href="an-overview-of-regression-with-toy-examples.html#practice" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>Practice 1: Logistic regression</strong>
 We can repeat the same analysis using another gene, namely NHLH1. What can you conclude from the test results?</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="an-overview-of-regression-with-toy-examples.html#cb16-1" tabindex="-1"></a><span class="co"># for non-significant gene NHLH1</span></span>
-<span id="cb16-2"><a href="an-overview-of-regression-with-toy-examples.html#cb16-2" tabindex="-1"></a>fit.logistic<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">glm</span>(censor<span class="sc">~</span> gene_NHLH1,<span class="at">data =</span> toy_data,<span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>))</span>
-<span id="cb16-3"><a href="an-overview-of-regression-with-toy-examples.html#cb16-3" tabindex="-1"></a><span class="fu">summary</span>(fit.logistic<span class="fl">.2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="an-overview-of-regression-with-toy-examples.html#cb17-1" tabindex="-1"></a><span class="co"># for non-significant gene NHLH1</span></span>
+<span id="cb17-2"><a href="an-overview-of-regression-with-toy-examples.html#cb17-2" tabindex="-1"></a>fit.logistic<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">glm</span>(censor<span class="sc">~</span> gene_NHLH1,<span class="at">data =</span> toy_data,<span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>))</span>
+<span id="cb17-3"><a href="an-overview-of-regression-with-toy-examples.html#cb17-3" tabindex="-1"></a><span class="fu">summary</span>(fit.logistic<span class="fl">.2</span>)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = censor ~ gene_NHLH1, family = binomial(link = &quot;logit&quot;), 
@@ -772,29 +769,29 @@ We can repeat the same analysis using another gene, namely NHLH1. What can you c
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p><strong>Practice 2: ROC curve and AUC for NHLH1</strong>
 We draw the same ROC curve and calculate AUC for NHLH1, what can you conclude from results for NHLH1?</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="an-overview-of-regression-with-toy-examples.html#cb18-1" tabindex="-1"></a><span class="co">#plot ROC curve</span></span>
-<span id="cb18-2"><a href="an-overview-of-regression-with-toy-examples.html#cb18-2" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit.logistic<span class="fl">.2</span>, <span class="at">type=</span><span class="st">&quot;response&quot;</span>)</span>
-<span id="cb18-3"><a href="an-overview-of-regression-with-toy-examples.html#cb18-3" tabindex="-1"></a>pr <span class="ot">&lt;-</span> <span class="fu">prediction</span>(p, toy_data<span class="sc">$</span>censor)</span>
-<span id="cb18-4"><a href="an-overview-of-regression-with-toy-examples.html#cb18-4" tabindex="-1"></a>prf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="at">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)</span>
-<span id="cb18-5"><a href="an-overview-of-regression-with-toy-examples.html#cb18-5" tabindex="-1"></a>prf2 <span class="ot">&lt;-</span> prf</span>
-<span id="cb18-6"><a href="an-overview-of-regression-with-toy-examples.html#cb18-6" tabindex="-1"></a><span class="fu">plot</span>(prf2,<span class="at">main=</span><span class="st">&quot;ROC for non-significant gene NHLH1 &quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="an-overview-of-regression-with-toy-examples.html#cb19-1" tabindex="-1"></a><span class="co">#plot ROC curve</span></span>
+<span id="cb19-2"><a href="an-overview-of-regression-with-toy-examples.html#cb19-2" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit.logistic<span class="fl">.2</span>, <span class="at">type=</span><span class="st">&quot;response&quot;</span>)</span>
+<span id="cb19-3"><a href="an-overview-of-regression-with-toy-examples.html#cb19-3" tabindex="-1"></a>pr <span class="ot">&lt;-</span> <span class="fu">prediction</span>(p, toy_data<span class="sc">$</span>censor)</span>
+<span id="cb19-4"><a href="an-overview-of-regression-with-toy-examples.html#cb19-4" tabindex="-1"></a>prf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="at">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)</span>
+<span id="cb19-5"><a href="an-overview-of-regression-with-toy-examples.html#cb19-5" tabindex="-1"></a>prf2 <span class="ot">&lt;-</span> prf</span>
+<span id="cb19-6"><a href="an-overview-of-regression-with-toy-examples.html#cb19-6" tabindex="-1"></a><span class="fu">plot</span>(prf2,<span class="at">main=</span><span class="st">&quot;ROC for non-significant gene NHLH1 &quot;</span>)</span></code></pre></div>
 <p><img src="cshl_2024_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="an-overview-of-regression-with-toy-examples.html#cb19-1" tabindex="-1"></a><span class="co"># calculate the auc</span></span>
-<span id="cb19-2"><a href="an-overview-of-regression-with-toy-examples.html#cb19-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;auc&quot;</span>)</span>
-<span id="cb19-3"><a href="an-overview-of-regression-with-toy-examples.html#cb19-3" tabindex="-1"></a>auc <span class="ot">&lt;-</span> auc<span class="sc">@</span>y.values[[<span class="dv">1</span>]]</span>
-<span id="cb19-4"><a href="an-overview-of-regression-with-toy-examples.html#cb19-4" tabindex="-1"></a>auc <span class="co"># 0.47</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="an-overview-of-regression-with-toy-examples.html#cb20-1" tabindex="-1"></a><span class="co"># calculate the auc</span></span>
+<span id="cb20-2"><a href="an-overview-of-regression-with-toy-examples.html#cb20-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;auc&quot;</span>)</span>
+<span id="cb20-3"><a href="an-overview-of-regression-with-toy-examples.html#cb20-3" tabindex="-1"></a>auc <span class="ot">&lt;-</span> auc<span class="sc">@</span>y.values[[<span class="dv">1</span>]]</span>
+<span id="cb20-4"><a href="an-overview-of-regression-with-toy-examples.html#cb20-4" tabindex="-1"></a>auc <span class="co"># 0.47</span></span></code></pre></div>
 <pre><code>## [1] 0.4709821</code></pre>
 </div>
 <div id="comparison-of-hoxb13-roc-curve-and-nhlh1-roc-curve" class="section level2 hasAnchor" number="2.6">
 <h2><span class="header-section-number">2.6</span> Comparison of HOXB13 ROC curve and NHLH1 ROC curve<a href="an-overview-of-regression-with-toy-examples.html#comparison-of-hoxb13-roc-curve-and-nhlh1-roc-curve" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To have a direct compare the ROC curve for these 2 genes, we can plot the two ROC curves on a single plot. The code below generate the combined plot. We first plot ROC curve for HOXB13 as normal with color blue, then add the ROC curve of NHLH1 on this plot using lines and color red. legend function specifies the plot legend which is shown at the bottom of the plot.</p>
 <p>With this combined plot, we can conclude that HOXB13 has much higher predictive probability than NHLH1, while retaining a low false positive rate.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="an-overview-of-regression-with-toy-examples.html#cb21-1" tabindex="-1"></a><span class="do">### two ROC curve comparison</span></span>
-<span id="cb21-2"><a href="an-overview-of-regression-with-toy-examples.html#cb21-2" tabindex="-1"></a><span class="fu">plot</span>(prf1,<span class="at">main=</span><span class="st">&quot;ROC for HOXB13 and NHLH1&quot;</span>,<span class="at">col=</span><span class="st">&#39;blue&#39;</span>)</span>
-<span id="cb21-3"><a href="an-overview-of-regression-with-toy-examples.html#cb21-3" tabindex="-1"></a><span class="fu">lines</span>(prf2<span class="sc">@</span>x.values[[<span class="dv">1</span>]],prf2<span class="sc">@</span>y.values[[<span class="dv">1</span>]],<span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
-<span id="cb21-4"><a href="an-overview-of-regression-with-toy-examples.html#cb21-4" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;bottomright&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,</span>
-<span id="cb21-5"><a href="an-overview-of-regression-with-toy-examples.html#cb21-5" tabindex="-1"></a>       <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;ROC for significant gene HOXB13 (auc=0.796)&quot;</span>,<span class="st">&quot;ROC for non-significant gene NHLH1 (auc =0.47)&quot;</span>),</span>
-<span id="cb21-6"><a href="an-overview-of-regression-with-toy-examples.html#cb21-6" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">&#39;blue&#39;</span>,<span class="st">&#39;red&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="an-overview-of-regression-with-toy-examples.html#cb22-1" tabindex="-1"></a><span class="do">### two ROC curve comparison</span></span>
+<span id="cb22-2"><a href="an-overview-of-regression-with-toy-examples.html#cb22-2" tabindex="-1"></a><span class="fu">plot</span>(prf1,<span class="at">main=</span><span class="st">&quot;ROC for HOXB13 and NHLH1&quot;</span>,<span class="at">col=</span><span class="st">&#39;blue&#39;</span>)</span>
+<span id="cb22-3"><a href="an-overview-of-regression-with-toy-examples.html#cb22-3" tabindex="-1"></a><span class="fu">lines</span>(prf2<span class="sc">@</span>x.values[[<span class="dv">1</span>]],prf2<span class="sc">@</span>y.values[[<span class="dv">1</span>]],<span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
+<span id="cb22-4"><a href="an-overview-of-regression-with-toy-examples.html#cb22-4" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;bottomright&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb22-5"><a href="an-overview-of-regression-with-toy-examples.html#cb22-5" tabindex="-1"></a>       <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;ROC for significant gene HOXB13 (auc=0.796)&quot;</span>,<span class="st">&quot;ROC for non-significant gene NHLH1 (auc =0.47)&quot;</span>),</span>
+<span id="cb22-6"><a href="an-overview-of-regression-with-toy-examples.html#cb22-6" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">&#39;blue&#39;</span>,<span class="st">&#39;red&#39;</span>))</span></code></pre></div>
 <p><img src="cshl_2024_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="linear-regression" class="section level2 hasAnchor" number="2.7">
@@ -805,9 +802,9 @@ We draw the same ROC curve and calculate AUC for NHLH1, what can you conclude fr
 <div id="linear-regression-of-hoxb13-vs.-il17br" class="section level3 hasAnchor" number="2.7.1">
 <h3><span class="header-section-number">2.7.1</span> Linear regression of HOXB13 vs. IL17BR<a href="an-overview-of-regression-with-toy-examples.html#linear-regression-of-hoxb13-vs.-il17br" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Linear regression is fitted with lm function. The arguments in lm is very similar to those in glm, but much simpler as we don’t need to specify the distribution and link function here.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="an-overview-of-regression-with-toy-examples.html#cb22-1" tabindex="-1"></a><span class="co"># linear model, use gene IL17BR to predict another gene HOXB13</span></span>
-<span id="cb22-2"><a href="an-overview-of-regression-with-toy-examples.html#cb22-2" tabindex="-1"></a>fit.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(gene_HOXB13<span class="sc">~</span>gene_IL17BR,<span class="at">data =</span> toy_data)</span>
-<span id="cb22-3"><a href="an-overview-of-regression-with-toy-examples.html#cb22-3" tabindex="-1"></a><span class="fu">summary</span>(fit.lm) <span class="co"># print the summary of the fitted regression</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="an-overview-of-regression-with-toy-examples.html#cb23-1" tabindex="-1"></a><span class="co"># linear model, use gene IL17BR to predict another gene HOXB13</span></span>
+<span id="cb23-2"><a href="an-overview-of-regression-with-toy-examples.html#cb23-2" tabindex="-1"></a>fit.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(gene_HOXB13<span class="sc">~</span>gene_IL17BR,<span class="at">data =</span> toy_data)</span>
+<span id="cb23-3"><a href="an-overview-of-regression-with-toy-examples.html#cb23-3" tabindex="-1"></a><span class="fu">summary</span>(fit.lm) <span class="co"># print the summary of the fitted regression</span></span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = gene_HOXB13 ~ gene_IL17BR, data = toy_data)
@@ -827,8 +824,147 @@ We draw the same ROC curve and calculate AUC for NHLH1, what can you conclude fr
 ## Multiple R-squared:  0.1007, Adjusted R-squared:  0.08519 
 ## F-statistic: 6.494 on 1 and 58 DF,  p-value: 0.01349</code></pre>
 <p>The p-value for IL17BR is 0.0135&lt;0.05, so there is a significant association between expression of HOXB13 and IL17BR.</p>
-
 </div>
+</div>
+<div id="variable-selectionforward-backward-and-stepwise-selection" class="section level2 hasAnchor" number="2.8">
+<h2><span class="header-section-number">2.8</span> Variable selection–Forward, backward and stepwise selection<a href="an-overview-of-regression-with-toy-examples.html#variable-selectionforward-backward-and-stepwise-selection" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Variable selection, or feature selection, is an important process in model building to identify the most important variables that contribute to the predictive power of the model. There are several methods for variable selection, including stepwise regression (forward and backward), and regularization methods like Lasso and Ridge regression.</p>
+<p>The function <code>step</code> performs either the forward, backward or stepwise selection by specifying the type in <code>direction=</code> option. We start by fitting the full model using <code>lm</code>, and apply <code>step</code> function to perform the selection. Because we specified <code>tace=F</code>, the function only returns the final model after variable selection. Check the final model from each type of selection below.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="an-overview-of-regression-with-toy-examples.html#cb25-1" tabindex="-1"></a>toy_data_sub<span class="ot">&lt;-</span>toy_data[,<span class="dv">5</span><span class="sc">:</span><span class="dv">24</span>] <span class="co"># only subset the 20 genes</span></span>
+<span id="cb25-2"><a href="an-overview-of-regression-with-toy-examples.html#cb25-2" tabindex="-1"></a>fit.full<span class="ot">&lt;-</span><span class="fu">lm</span>(gene_HOXB13<span class="sc">~</span>.,<span class="at">data=</span>toy_data_sub)</span>
+<span id="cb25-3"><a href="an-overview-of-regression-with-toy-examples.html#cb25-3" tabindex="-1"></a><span class="fu">summary</span>(fit.full)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = gene_HOXB13 ~ ., data = toy_data_sub)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.8662 -1.2911 -0.5340  0.8355  5.4547 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -2.23911    0.38872  -5.760 1.03e-06 ***
+## gene_IL17BR   -0.56179    0.27241  -2.062   0.0457 *  
+## gene_NHLH1    -0.18503    0.63500  -0.291   0.7723    
+## gene_WDR78    -1.00145    0.73443  -1.364   0.1803    
+## gene_VANGL2    0.05927    0.92301   0.064   0.9491    
+## gene_C1orf168  0.11572    0.78405   0.148   0.8834    
+## gene_AKR7A3    0.58337    0.70573   0.827   0.4134    
+## gene_ZBTB17    0.50957    0.54906   0.928   0.3589    
+## gene_HIPK1    -0.39577    0.77686  -0.509   0.6132    
+## gene_P3H1     -0.36576    0.78284  -0.467   0.6429    
+## gene_DRAXIN    0.08151    0.92510   0.088   0.9302    
+## gene_POLR3C   -0.09188    0.36400  -0.252   0.8020    
+## gene_THAP3     0.67519    0.47123   1.433   0.1597    
+## gene_PYHIN1    0.37788    0.72511   0.521   0.6051    
+## gene_DAP3      0.37702    0.51445   0.733   0.4679    
+## gene_C1orf94   1.25108    0.99901   1.252   0.2177    
+## gene_LAMC2    -0.32712    1.31035  -0.250   0.8041    
+## gene_NEK2      0.10334    0.87575   0.118   0.9067    
+## gene_ZMYM4     0.39816    0.97373   0.409   0.6848    
+## gene_MIA3      0.33408    0.90300   0.370   0.7134    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.171 on 40 degrees of freedom
+## Multiple R-squared:  0.2805, Adjusted R-squared:  -0.06119 
+## F-statistic: 0.8209 on 19 and 40 DF,  p-value: 0.6712</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="an-overview-of-regression-with-toy-examples.html#cb27-1" tabindex="-1"></a><span class="co">#forward selection</span></span>
+<span id="cb27-2"><a href="an-overview-of-regression-with-toy-examples.html#cb27-2" tabindex="-1"></a>forw<span class="ot">&lt;-</span><span class="fu">step</span>(fit.full, <span class="at">direction =</span> <span class="st">&quot;forward&quot;</span>, <span class="at">test =</span> <span class="st">&quot;F&quot;</span>,<span class="at">trace=</span>F)</span>
+<span id="cb27-3"><a href="an-overview-of-regression-with-toy-examples.html#cb27-3" tabindex="-1"></a><span class="fu">summary</span>(forw)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = gene_HOXB13 ~ gene_IL17BR + gene_NHLH1 + gene_WDR78 + 
+##     gene_VANGL2 + gene_C1orf168 + gene_AKR7A3 + gene_ZBTB17 + 
+##     gene_HIPK1 + gene_P3H1 + gene_DRAXIN + gene_POLR3C + gene_THAP3 + 
+##     gene_PYHIN1 + gene_DAP3 + gene_C1orf94 + gene_LAMC2 + gene_NEK2 + 
+##     gene_ZMYM4 + gene_MIA3, data = toy_data_sub)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.8662 -1.2911 -0.5340  0.8355  5.4547 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -2.23911    0.38872  -5.760 1.03e-06 ***
+## gene_IL17BR   -0.56179    0.27241  -2.062   0.0457 *  
+## gene_NHLH1    -0.18503    0.63500  -0.291   0.7723    
+## gene_WDR78    -1.00145    0.73443  -1.364   0.1803    
+## gene_VANGL2    0.05927    0.92301   0.064   0.9491    
+## gene_C1orf168  0.11572    0.78405   0.148   0.8834    
+## gene_AKR7A3    0.58337    0.70573   0.827   0.4134    
+## gene_ZBTB17    0.50957    0.54906   0.928   0.3589    
+## gene_HIPK1    -0.39577    0.77686  -0.509   0.6132    
+## gene_P3H1     -0.36576    0.78284  -0.467   0.6429    
+## gene_DRAXIN    0.08151    0.92510   0.088   0.9302    
+## gene_POLR3C   -0.09188    0.36400  -0.252   0.8020    
+## gene_THAP3     0.67519    0.47123   1.433   0.1597    
+## gene_PYHIN1    0.37788    0.72511   0.521   0.6051    
+## gene_DAP3      0.37702    0.51445   0.733   0.4679    
+## gene_C1orf94   1.25108    0.99901   1.252   0.2177    
+## gene_LAMC2    -0.32712    1.31035  -0.250   0.8041    
+## gene_NEK2      0.10334    0.87575   0.118   0.9067    
+## gene_ZMYM4     0.39816    0.97373   0.409   0.6848    
+## gene_MIA3      0.33408    0.90300   0.370   0.7134    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.171 on 40 degrees of freedom
+## Multiple R-squared:  0.2805, Adjusted R-squared:  -0.06119 
+## F-statistic: 0.8209 on 19 and 40 DF,  p-value: 0.6712</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="an-overview-of-regression-with-toy-examples.html#cb29-1" tabindex="-1"></a><span class="co">#backward selection</span></span>
+<span id="cb29-2"><a href="an-overview-of-regression-with-toy-examples.html#cb29-2" tabindex="-1"></a>back<span class="ot">&lt;-</span><span class="fu">step</span>(fit.full, <span class="at">direction =</span> <span class="st">&quot;backward&quot;</span>, <span class="at">test =</span> <span class="st">&quot;F&quot;</span>,<span class="at">trace=</span>F)</span>
+<span id="cb29-3"><a href="an-overview-of-regression-with-toy-examples.html#cb29-3" tabindex="-1"></a><span class="fu">summary</span>(back)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = gene_HOXB13 ~ gene_IL17BR + gene_WDR78 + gene_AKR7A3 + 
+##     gene_THAP3 + gene_C1orf94, data = toy_data_sub)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.0709 -1.3432 -0.4102  0.6950  5.5368 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -2.3548     0.2952  -7.978 1.07e-10 ***
+## gene_IL17BR   -0.6101     0.1907  -3.199  0.00231 ** 
+## gene_WDR78    -1.2034     0.4904  -2.454  0.01737 *  
+## gene_AKR7A3    0.8255     0.4141   1.993  0.05128 .  
+## gene_THAP3     0.5168     0.3332   1.551  0.12673    
+## gene_C1orf94   1.0333     0.4333   2.385  0.02063 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.946 on 54 degrees of freedom
+## Multiple R-squared:  0.2199, Adjusted R-squared:  0.1476 
+## F-statistic: 3.044 on 5 and 54 DF,  p-value: 0.01715</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="an-overview-of-regression-with-toy-examples.html#cb31-1" tabindex="-1"></a><span class="co"># stepwise selection</span></span>
+<span id="cb31-2"><a href="an-overview-of-regression-with-toy-examples.html#cb31-2" tabindex="-1"></a>step<span class="ot">&lt;-</span><span class="fu">step</span>(fit.full, <span class="at">direction =</span> <span class="st">&quot;both&quot;</span>, <span class="at">test =</span> <span class="st">&quot;F&quot;</span>,<span class="at">trace=</span>F)</span>
+<span id="cb31-3"><a href="an-overview-of-regression-with-toy-examples.html#cb31-3" tabindex="-1"></a><span class="fu">summary</span>(step)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = gene_HOXB13 ~ gene_IL17BR + gene_WDR78 + gene_AKR7A3 + 
+##     gene_THAP3 + gene_C1orf94, data = toy_data_sub)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.0709 -1.3432 -0.4102  0.6950  5.5368 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -2.3548     0.2952  -7.978 1.07e-10 ***
+## gene_IL17BR   -0.6101     0.1907  -3.199  0.00231 ** 
+## gene_WDR78    -1.2034     0.4904  -2.454  0.01737 *  
+## gene_AKR7A3    0.8255     0.4141   1.993  0.05128 .  
+## gene_THAP3     0.5168     0.3332   1.551  0.12673    
+## gene_C1orf94   1.0333     0.4333   2.385  0.02063 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.946 on 54 degrees of freedom
+## Multiple R-squared:  0.2199, Adjusted R-squared:  0.1476 
+## F-statistic: 3.044 on 5 and 54 DF,  p-value: 0.01715</code></pre>
+
 </div>
 </div>
             </section>
