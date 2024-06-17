@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 4 GWAS Case Study-Data Preparation | 2024 CSHL course - GWAS Hands-on Analysis</title>
-  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 GWAS Case Study-Data Preparation | 2024 CSHL course - GWAS Hands-on Analysis" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="github-repo" content="rstudio/cshl_2024" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 4 GWAS Case Study-Data Preparation | 2024 CSHL course - GWAS Hands-on Analysis" />
   
-  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   
 
 <meta name="author" content="Danni Liu - Purdue University" />
@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">2024 CSHL Course- GWAS and EQTL Hands-on Analysis</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to the GWAS and eQTL Workshop</a>
@@ -869,11 +869,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this section, we will discover the distribution of these 3 traits using histogram. As there are missing values in the data, written as ‘NA’, we need to exclude them with !is.na when generating the histogram. The plots are generated for each of the 3 variables with hist function, xlab argument specifies the x-axis label and main specifies the plot title.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="gwas-case-study-data-preparation.html#cb37-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
 <span id="cb37-2"><a href="gwas-case-study-data-preparation.html#cb37-2" tabindex="-1"></a><span class="fu">hist</span>(pheno_mr<span class="sc">$</span>z4[<span class="sc">!</span><span class="fu">is.na</span>(pheno_mr<span class="sc">$</span>z4)],<span class="at">xlab=</span><span class="st">&quot;Z-4-oh-Tam&quot;</span>,<span class="at">main=</span><span class="st">&quot;histogram of Z-4-oh-Tam&quot;</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/hist-1.png" width="672" /></p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="gwas-case-study-data-preparation.html#cb38-1" tabindex="-1"></a><span class="fu">hist</span>(pheno_mr<span class="sc">$</span>tam[<span class="sc">!</span><span class="fu">is.na</span>(pheno_mr<span class="sc">$</span>tam)],<span class="at">xlab=</span><span class="st">&quot;tamoxifen&quot;</span>,<span class="at">main=</span><span class="st">&quot;histogram of tamoxifen&quot;</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/hist-2.png" width="672" /></p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="gwas-case-study-data-preparation.html#cb39-1" tabindex="-1"></a><span class="fu">hist</span>(pheno_mr<span class="sc">$</span>mr[<span class="sc">!</span><span class="fu">is.na</span>(pheno_mr<span class="sc">$</span>mr)],<span class="at">xlab=</span><span class="st">&quot;z-endoxifen ratio&quot;</span>,<span class="at">main=</span><span class="st">&quot;histogram of z-endoxifen ratio&quot;</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-22-3.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/hist-3.png" width="672" /></p>
 <p>From the above histograms, we can see that the distribution of these 3 traits are all above zero and slightly skewed. This could violate the normality assumption as current phenotype values are all positive. We might want to perform normalization before analysis.</p>
 </div>
 <div id="handling-the-missing-values-in-the-phenotypes-and-covariates" class="section level3 hasAnchor" number="4.3.4">

@@ -284,7 +284,7 @@ fwrite(pheno_mr[,"id"],"sampleID.txt",sep="\t",quote=F,row.name=F, col.name=T,na
 ### Histogram of each trait
 In this section, we will discover the distribution of these 3 traits using histogram. As there are missing values in the data, written as 'NA', we need to exclude them with !is.na when generating the histogram. The plots are generated for each of the 3 variables with hist function, xlab argument specifies the x-axis label and main specifies the plot title.
 
-```{r}
+```{r hist}
 # R codes- run in R Console
 hist(pheno_mr$z4[!is.na(pheno_mr$z4)],xlab="Z-4-oh-Tam",main="histogram of Z-4-oh-Tam")
 hist(pheno_mr$tam[!is.na(pheno_mr$tam)],xlab="tamoxifen",main="histogram of tamoxifen")
