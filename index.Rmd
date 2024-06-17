@@ -34,7 +34,7 @@ Click "File"-> "New Project". Select "Version Control" -> "Git". In the next win
 Fig1. Import and clone GitHub repository
 
 Step1 | Step2 | Step3
-:-------------------------:|:-------------------------:|:-------------------------:
+:------------------------:|:-------------------------:|:-------------------------:
 ![step1](./image/clone1.png)  |![step2](./image/clone2.png)|  ![step3](./image/clone3.png)
 
 ### Overview
