@@ -33,9 +33,12 @@ setwd("/path/to/cshl_2024/Data/eqtl")
 mydir<-getwd()
 ```
 
-Files: 
-- `SNP.txt`: rows are SNPs with row names as SNP IDs, and columns are sample IDs.
+Input files: 
+- `geno.txt`: rows are SNPs with row names as SNP IDs, and columns are sample IDs.
 - `gexp.txt`: rows are genes are and columns are sample IDs.
+- `covariate.txt`: covariates that can be included in the model if there is any
+- `snppos.txt`: a file containing the annotation of SNPs, containing SNP ID, chromosome, SNP location
+- `genepos.txt`: a file containing the annoation of genes, containing gene ID, chromosome, start and end location.
 
 
 ```{r}

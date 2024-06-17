@@ -36,7 +36,7 @@ Below are two public courses that gives a good introduction to LDSC:
 
 MAGMA is a statistical methods for gene-set analysis of multiple genetic markers. This method can be used when the individual marker's effects are too weak to be detected, such as in polygenic traits. It aims to analyze multiple markers simultaneously to estimate their joint effects. Please check the paper from [de Leewu et al.(2015)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004219).
 
-The analysis consists of two parts. The first part is gene analysis, which combines all SNPs within a gene region and examines the  overall association between each gene and phenotype using a multiple linear regression model. This step requires the raw genotype data if not already have the GWAS results. The second part is gene-set analysis, which tests whether genes within a defined gene-set is more associated with the pheotype than those outside of the set.
+The analysis consists of two parts. The first part is gene analysis, which combines all SNPs within a gene region and examines the overall association between each gene and phenotype using a multiple linear regression model. This step requires the raw genotype data if not already have the GWAS results. The second part is gene-set analysis, which tests whether genes within a defined gene-set is more associated with the pheotype than those outside of the set.
 
 For each gene $g$, we obtain the gene p-value $p_g$ from part one of gene analysis. Next, for the part two of gene-set analysis, we first transform the p-values $p_g$ to Z-value using:
 <center>  $z_g=\Phi^{-1}(1-p_g)$, where $\Phi^{-1}$ is the probit function </center> 

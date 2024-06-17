@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 An Overview of Regression with Toy Examples | 2024 CSHL course - GWAS Hands-on Analysis</title>
-  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 An Overview of Regression with Toy Examples | 2024 CSHL course - GWAS Hands-on Analysis" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="github-repo" content="rstudio/cshl_2024" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 2 An Overview of Regression with Toy Examples | 2024 CSHL course - GWAS Hands-on Analysis" />
   
-  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   
 
 <meta name="author" content="Danni Liu - Purdue University" />
@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">2024 CSHL Course- GWAS and EQTL Hands-on Analysis</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to the GWAS and eQTL Workshop</a>
@@ -337,7 +337,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-2"><a href="an-overview-of-regression-with-toy-examples.html#cb2-2" tabindex="-1"></a><span class="co">#install.packages(&quot;plyr&quot;)</span></span>
 <span id="cb2-3"><a href="an-overview-of-regression-with-toy-examples.html#cb2-3" tabindex="-1"></a><span class="co">#install.packages(&quot;ROCR&quot;)</span></span>
 <span id="cb2-4"><a href="an-overview-of-regression-with-toy-examples.html#cb2-4" tabindex="-1"></a><span class="co">#install.packages(&quot;ggplot2&quot;)</span></span>
-<span id="cb2-5"><a href="an-overview-of-regression-with-toy-examples.html#cb2-5" tabindex="-1"></a><span class="co"># install.packages(&quot;glmnet&quot;)</span></span>
+<span id="cb2-5"><a href="an-overview-of-regression-with-toy-examples.html#cb2-5" tabindex="-1"></a><span class="co">#install.packages(&quot;glmnet&quot;)</span></span>
 <span id="cb2-6"><a href="an-overview-of-regression-with-toy-examples.html#cb2-6" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="an-overview-of-regression-with-toy-examples.html#cb2-7" tabindex="-1"></a><span class="co">#if (!require(&quot;BiocManager&quot;, quietly = TRUE))</span></span>
 <span id="cb2-8"><a href="an-overview-of-regression-with-toy-examples.html#cb2-8" tabindex="-1"></a><span class="co">#    install.packages(&quot;BiocManager&quot;)</span></span>
@@ -736,7 +736,7 @@ Mathematically, the logistic regression equation can be defined as:</li>
 <span id="cb14-4"><a href="an-overview-of-regression-with-toy-examples.html#cb14-4" tabindex="-1"></a>prf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="at">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)</span>
 <span id="cb14-5"><a href="an-overview-of-regression-with-toy-examples.html#cb14-5" tabindex="-1"></a>prf1 <span class="ot">&lt;-</span> prf</span>
 <span id="cb14-6"><a href="an-overview-of-regression-with-toy-examples.html#cb14-6" tabindex="-1"></a><span class="fu">plot</span>(prf1,<span class="at">main=</span><span class="st">&quot;ROC for significant gene HOXB13&quot;</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/ROCcurve-1.png" width="672" /></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="an-overview-of-regression-with-toy-examples.html#cb15-1" tabindex="-1"></a><span class="co"># calculate the auc</span></span>
 <span id="cb15-2"><a href="an-overview-of-regression-with-toy-examples.html#cb15-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;auc&quot;</span>)</span>
 <span id="cb15-3"><a href="an-overview-of-regression-with-toy-examples.html#cb15-3" tabindex="-1"></a>auc <span class="ot">&lt;-</span> auc<span class="sc">@</span>y.values[[<span class="dv">1</span>]]</span>
@@ -775,7 +775,7 @@ We draw the same ROC curve and calculate AUC for NHLH1, what can you conclude fr
 <span id="cb19-4"><a href="an-overview-of-regression-with-toy-examples.html#cb19-4" tabindex="-1"></a>prf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="at">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)</span>
 <span id="cb19-5"><a href="an-overview-of-regression-with-toy-examples.html#cb19-5" tabindex="-1"></a>prf2 <span class="ot">&lt;-</span> prf</span>
 <span id="cb19-6"><a href="an-overview-of-regression-with-toy-examples.html#cb19-6" tabindex="-1"></a><span class="fu">plot</span>(prf2,<span class="at">main=</span><span class="st">&quot;ROC for non-significant gene NHLH1 &quot;</span>)</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/roc-1.png" width="672" /></p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="an-overview-of-regression-with-toy-examples.html#cb20-1" tabindex="-1"></a><span class="co"># calculate the auc</span></span>
 <span id="cb20-2"><a href="an-overview-of-regression-with-toy-examples.html#cb20-2" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="fu">performance</span>(pr, <span class="at">measure =</span> <span class="st">&quot;auc&quot;</span>)</span>
 <span id="cb20-3"><a href="an-overview-of-regression-with-toy-examples.html#cb20-3" tabindex="-1"></a>auc <span class="ot">&lt;-</span> auc<span class="sc">@</span>y.values[[<span class="dv">1</span>]]</span>
@@ -792,7 +792,7 @@ We draw the same ROC curve and calculate AUC for NHLH1, what can you conclude fr
 <span id="cb22-4"><a href="an-overview-of-regression-with-toy-examples.html#cb22-4" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;bottomright&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,</span>
 <span id="cb22-5"><a href="an-overview-of-regression-with-toy-examples.html#cb22-5" tabindex="-1"></a>       <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;ROC for significant gene HOXB13 (auc=0.796)&quot;</span>,<span class="st">&quot;ROC for non-significant gene NHLH1 (auc =0.47)&quot;</span>),</span>
 <span id="cb22-6"><a href="an-overview-of-regression-with-toy-examples.html#cb22-6" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">&#39;blue&#39;</span>,<span class="st">&#39;red&#39;</span>))</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/roc2-1.png" width="672" /></p>
 </div>
 <div id="linear-regression" class="section level2 hasAnchor" number="2.7">
 <h2><span class="header-section-number">2.7</span> Linear Regression<a href="an-overview-of-regression-with-toy-examples.html#linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
