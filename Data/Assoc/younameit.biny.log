@@ -1,4 +1,4 @@
-PLINK v1.90p 64-bit (11 Dec 2023)
+PLINK v1.90b7.2 64-bit (11 Dec 2023)
 Options in effect:
   --assoc
   --file ./Data/Assoc/5SNPs
@@ -6,13 +6,13 @@ Options in effect:
   --out ./Data/Assoc/younameit.biny
   --pheno ./Data/Assoc/biny.txt
 
-Hostname: Dannis-Mac-mini.local
-Working directory: /Users/oooliviaaa/Documents/cshl_2024
-Start time: Wed Jun 12 15:48:10 2024
+Hostname: BIGCARE
+Working directory: C:\Users\Zhang\Documents\GitHub\cshl_2024
+Start time: Sun Jun 16 20:19:16 2024
 
 Note: --noweb has no effect since no web check is implemented yet.
-Random number seed: 1718232490
-16384 MB RAM detected; reserving 8192 MB for main workspace.
+Random number seed: 1718583556
+32452 MB RAM detected; reserving 16226 MB for main workspace.
 Scanning .ped file... done.
 Performing single-pass .bed write (5 variants, 344 people).
 --file: ./Data/Assoc/younameit.biny-temporary.bed +
@@ -34,4 +34,4 @@ are missing.)
 Writing C/C --assoc report to ./Data/Assoc/younameit.biny.assoc ...
 done.
 
-End time: Wed Jun 12 15:48:10 2024
+End time: Sun Jun 16 20:19:16 2024

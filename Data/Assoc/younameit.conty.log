@@ -1,18 +1,19 @@
-PLINK v1.90p 64-bit (11 Dec 2023)
+PLINK v1.90b7.2 64-bit (11 Dec 2023)
 Options in effect:
-  --assoc
+  --covar ./Data/Assoc/conty_covar.txt
   --file ./Data/Assoc/5SNPs
+  --linear
   --noweb
   --out ./Data/Assoc/younameit.conty
   --pheno ./Data/Assoc/conty.txt
 
-Hostname: Dannis-Mac-mini.local
-Working directory: /Users/oooliviaaa/Documents/cshl_2024
-Start time: Wed Jun 12 15:48:10 2024
+Hostname: BIGCARE
+Working directory: C:\Users\Zhang\Documents\GitHub\cshl_2024
+Start time: Sun Jun 16 20:28:50 2024
 
 Note: --noweb has no effect since no web check is implemented yet.
-Random number seed: 1718232490
-16384 MB RAM detected; reserving 8192 MB for main workspace.
+Random number seed: 1718584130
+32452 MB RAM detected; reserving 16226 MB for main workspace.
 Scanning .ped file... done.
 Performing single-pass .bed write (5 variants, 344 people).
 --file: ./Data/Assoc/younameit.conty-temporary.bed +
@@ -25,11 +26,15 @@ Ambiguous sex IDs written to ./Data/Assoc/younameit.conty.nosex .
 Warning: Ignoring phenotypes of missing-sex samples.  If you don't want those
 phenotypes to be ignored, use the --allow-no-sex flag.
 Using 1 thread (no multithreaded calculations invoked).
+--covar: 1 covariate loaded.
+344 people were not seen in the covariate file.
 Before main variant filters, 344 founders and 0 nonfounders present.
 Calculating allele frequencies... done.
 Total genotyping rate is 0.976744.
 5 variants and 344 people pass filters and QC.
 Phenotype data is quantitative.
-Writing QT --assoc report to ./Data/Assoc/younameit.conty.qassoc ... done.
+Warning: Skipping --linear since # variables >= # samples.
+(Check your covariates--all samples with at least one missing covariate are
+excluded from this analysis.)
 
-End time: Wed Jun 12 15:48:10 2024
+End time: Sun Jun 16 20:28:50 2024

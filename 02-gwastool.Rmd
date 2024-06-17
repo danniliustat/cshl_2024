@@ -290,7 +290,7 @@ The following command performs **multiple quality controls**. (The output will p
 
 The output files will be **"younameit.map"** and **"younameit.ped"** which have been quality controlled by the criteria you specified.
 
-## Remove Closely Related Individuals
+### Remove Closely Related Individuals
 Input files: in folder `.QC`
 
 - 5SNPs.ped
@@ -353,7 +353,7 @@ Optionally, remove one member of the pair if close relatives are identified.
 # Windows user need to run in Powershell App
 head ./Data/QC/younameit.genome
 ```
-# An Imputation Example
+## An Imputation Example
 
 In many cases, raw sequence data may have missing values. Then, an imputation step will be neccessary. **IMPUTE2** is a popular software package for imputation. Below is a simple example for conducting imputation by IMPUTE2. For more information about IMPUTE2, please refer its website http://mathgen.stats.ox.ac.uk/impute/impute_v2.html and the associated publication http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1000529
 
@@ -378,11 +378,11 @@ Files used for example are saved in folder `./Data/impute2_example`.
 
 ```
 
-# Population Stratification Correction Using PLINK
+## Population Stratification Correction Using PLINK
 
 `PLINK`(only version 1.9 and after) can perform population stratefication using Principal Component Analysis. PCA explicitly model variations along continuous axes of PCs. Top principal components are generally used as covariates in the resulting correction to help correct for population stratification, minimizing spurious associations while maximizing power to detect true associations.
 
-## PCA on whole genome data using PLINK
+### PCA on whole genome data using PLINK
 PCA can be performed with `--pca`. By default, `--pca` extracts the top 20 principal components. But we can change the number of PCs by specifying in the commands. The following codes perform PCA and obtain the first 50 PCs.
 
 ```{bash eval=F}
@@ -419,27 +419,24 @@ a + ylab("Percentage variance explained") + theme_light()
 cumsum(pve$pve)
 ```
 
-To generate PC plot, we will read in the eigenvectors from **younameit.eigenvec** and check the first 2 PCs.
+A **PC plot** is a graphical representation to visualize the data in terms of the principal components. We usually look at the projection to the first several PCs which explain most of the variation. To generate PC plots, we will read in the eigenvectors from **younameit.eigenvec** and plot PC1 vs PC2, and PC3 vs PC4.
 
 ```{r}
 # R codes- run in R Console
 # read in eigenvectors
-pca <- read.table("./Data/PC/younameit.eigenvec", header=F)
-# sort out the pca data
-# remove nuisance column
-pca <- pca[,-1]
+pca <- read.table("./Data/PC/younameit.eigenvec", header=F,row.names = 1)
 # set names
 names(pca)[1] <- "ind"
 names(pca)[2:ncol(pca)] <- paste0("PC", 1:(ncol(pca)-1))
 # sort out the individual species and pops
 
 # plot pca
-pc12 <- ggplot(pca, aes(PC1, PC2)) + geom_point(size = 3) +
+pc12 <- ggplot(pca, aes(PC1, PC2)) + geom_point(size = 2) +
             scale_colour_manual(values = c("red", "blue")) +
             coord_equal() + theme_light() +
             xlab(paste0("PC1 (", signif(pve$pve[1], 3), "%)")) +    
             ylab(paste0("PC2 (", signif(pve$pve[2], 3), "%)"))
-pc34 <- ggplot(pca, aes(PC3, PC4)) + geom_point(size = 3) +
+pc34 <- ggplot(pca, aes(PC3, PC4)) + geom_point(size = 2) +
             scale_colour_manual(values = c("red", "blue")) +
             coord_equal() + theme_light() +
             xlab(paste0("PC3 (", signif(pve$pve[3], 3), "%)")) +    
@@ -448,34 +445,54 @@ library(patchwork)
 pc12 + pc34 +plot_layout(ncol=2)
 ```
 
-Usually, we use a cut-off of eigenvalue > 1. In this plot, this criteria results in an unreasonable high number of factors, because the eigenvalue for PC 50 is still > 1.
+If the data contains categorical variables, such as case/control, we can also visualize the PCs by coloring different groups. We don't have case/control in this example data, so I generate a random case/control variable to use as an example. The codes below randomly assign 30% of the samples as cases and rest as controls.
 
-## Test the Significance of Principle Components (PCs)
+```{r warning=F, message=F}
+set.seed(123)
+group<-rep("control",nrow(pca))
+case_idx<-sample(nrow(pca),0.3*nrow(pca))
+group[case_idx]<-"case"
 
-The following command creates a matrix from **genotype.pca** (in Linux)
+# plot pca by case/control
+pc12 <- ggplot(pca, aes(PC1, PC2,col = group)) + geom_point(size = 2) +
+            scale_colour_manual(values = c("red", "blue")) +
+            coord_equal() + theme_light() +
+            xlab(paste0("PC1 (", signif(pve$pve[1], 3), "%)")) +    
+            ylab(paste0("PC2 (", signif(pve$pve[2], 3), "%)"))
+pc34 <- ggplot(pca, aes(PC3, PC4,col = group)) + geom_point(size = 2) +
+            scale_colour_manual(values = c("red", "blue")) +
+            coord_equal() + theme_light() +
+            xlab(paste0("PC3 (", signif(pve$pve[3], 3), "%)")) +    
+            ylab(paste0("PC4 (", signif(pve$pve[4], 3), "%)"))
+library(patchwork)
+pc12 + pc34 +plot_layout(ncol=2)
 
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-tail -n+12 ./Data/PC/genotype_1k.pca > ./Data/PC/pc.txt
 ```
 
-The following commands employ linear regression to the test the significance of PCs. P values can be found in the last column of the table: `Pr(>|t|)`.
+### Test the Significance of Principle Components (PCs)
+
+The following commands employ linear regression to test the significance of PCs. P values can be found in the last column of the table: `Pr(>|t|)`.
 
 - phenotype file: r_met.txt
 
 ```{r}
 # R codes- run in R Console
 y=read.table("./Data/PC/r_met.txt") #read phenotype data
-pc=read.table("./Data/PC/pc.txt") #read pc data
 y=as.matrix(y) #create a matrix from phenotype data
-pc=as.matrix(pc) #create a matrix from pc data
-fit=lm(y~pc)
-summary(fit)
+pca=as.matrix(pca) #create a matrix from pc data
+pval<-NULL
+rsq<-NULL
+for (i in 2:ncol(pca)){
+  fit=lm(y~as.numeric(pca[,i]))
+  pval[i-1]<-summary(fit)$coefficients[2,4]
+  rsq[i-1]<-summary(fit)$r.squared
+}
+head(pval)
+head(rsq)
 
 ```
 
-# Simple Association Test 
+## Simple Association Test 
 
 PLINK is a free, open-source whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner, see http://zzz.bwh.harvard.edu/plink/.
 
@@ -531,7 +548,7 @@ The phenotype can be either a quantitative trait or an affection status column. 
 
 (All files and results in this section are saved in `./PC` folder.)
 
-## Quantitative Trait Association Test for Continuous Trait 
+### Quantitative Trait Association Test for Continuous Trait 
 
 Below is an example that demonstrates how to use PLINK to perform a quantitative trait association test for a toy dataset with a continuous trait and 5 SNPs:
 
@@ -548,14 +565,13 @@ The following commands perform the **simple association test**
 
 ```{bash eval=F}
 # both Mac and Windows can run in Terminal
-
 # Windows user
-./Tools/PLINK/plink_win64/plink.exe \
+./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/conty.txt --out ./Data/Assoc/younameit.conty
 ```
-```{bash}
+```{bash eval=F}
 # macOS user
-./Tools/PLINK/plink_mac/plink \
+./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/conty.txt --out ./Data/Assoc/younameit.conty
 ```
 
@@ -585,7 +601,7 @@ This will generate the output file **"younameit.conty.qassoc"** with following c
 head ./Data/Assoc/younameit.conty.qassoc
 ```
 
-## Case/Control Asssociation Test for Binary Trait
+### Case/Control Asssociation Test for Binary Trait
 
 Below is an example that demonstrates how to use PLINK to perform a case/control association test for a binary trait and 5 SNPs: 
 
@@ -608,12 +624,12 @@ The following commands perform the **simple association test**
 ```{bash eval=F}
 # both Mac and Windows can run in Terminal
 # Windows user
-./Tools/PLINK/plink_win64/plink.exe \
+./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/biny.txt --out ./Data/Assoc/younameit.biny
 ```
-```{bash}
+```{bash eval=F}
 # macOS user
-./Tools/PLINK/plink_mac/plink \
+./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/biny.txt --out ./Data/Assoc/younameit.biny
 ```
 
@@ -675,21 +691,18 @@ for (i in 1:p){
   fit[[i]]=lm(pheno[,i]~covar) #for each trait, fit a linear regression model of phenotype against covariates
   residpheno[,i]=resid(fit[[i]]) #obtain residual phenotype data
 }
-write.table(residpheno, "./Data/Assoc/resid_phenotype.txt", row.names=F, col.names=F, quote=F, sep=" ") #save residual phenotype data
+write.table(residpheno, "./Data/Assoc/resid_phenotype.txt", row.names=F, col.names=F, quote=F, sep="") #save residual phenotype data
 ```
-
-### Residual phenotype data after covariates adjustments (in UNIX):
 
 This code combines the above residual data and sample ID information to contruct the phenotype data for PLINK.
 
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-paste ./Data/Assoc/famID.txt ./Data/Assoc/sampleID.txt \
-./Data/Assoc/resid_phenotype.txt > ./Data/Assoc/resid_phenotype_assoc.txt
+```{r}
+# prepare phenotype data for PLINK by combining sample ID information
+famID<-read.table("./Data/Assoc/famID.txt")
+sampleID<-read.table("./Data/Assoc/sampleID.txt")
+df<-cbind(famID,sampleID,residpheno)
+write.table(df, "./Data/Assoc/resid_phenotype_assoc.txt", row.names=F, col.names=F, quote=F, sep=" ")
 ```
-
-Then we can use PLINK to perform the association test.
 
 ### Association test using plink
 
@@ -698,13 +711,12 @@ After adjusting the phenotype using a set of covariates, we use the residual as 
 ```{bash eval=F}
 # both Mac and Windows can run in Terminal
 # Windows user
-./Tools/PLINK/plink_win64/plink.exe \
---noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/resid_phenotype_assoc.txt \
---out ./Data/Assoc/younameit_resid
+./Tools/PLINK/plink_win64_20231211/plink.exe \
+--noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/resid_phenotype_assoc.txt --out ./Data/Assoc/younameit_resid
 ```
 ```{bash}
 # macOS user
-./Tools/PLINK/plink_mac/plink \
+./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/resid_phenotype_assoc.txt \
 --out ./Data/Assoc/younameit_resid
 ```
