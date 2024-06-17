@@ -41,745 +41,32 @@ Placeholder
 
 <!--chapter:end:01-intro.Rmd-->
 
+
 # GWAS Tools and Data Preprocessing Workflow with Toy Example 
 
-This notebook demonstrates a standard approach to conduct the genome wide association study (GWAS) using toy example datasets. The procedures consist of four steps:
+Placeholder
 
-- Quality Control
-- Imputation
-- Population Stratification Correction
-- Simple Association Test
-The data used for this example is a toy genotype data containing 5 random SNPs and a random phenotype data with covariates.
-
-We use both bash and R codes in this notebook. The type of programming language is labeled at the top of each code cell.
-
-> <span style="color: #0064a4;">  
-Special notes for Windows users: Windows has two command-line shells, Command shell and Windows Powershell. Command shell is specific to Windows system and can be run from "Command Prompt" App, but the language it uses is NOT the same as Bash! Powershell App is the app to run Bash commands in Windows. Therefore if you are Windows users and use RStudio for this course, you can't run bash codes such as "head" or "awk" from RStudio Terminal, you can **ONLY** run PLINK program codes. If you would like to try Bash codes, please open "Windows Powershell" app and follow the same steps to set the paths. Still, Powershell App won't run PLINK codes, so you'll have to switch between Powershell and RStudio Terminal.
-</span>
 
 ## Environment Setting
-
-Before we can run any analysis, we need to set the working directory path to the downloaded "cshl_2024" folder for both Terminal and Console in RStudio. Below are the codes to setup paths at both places. These paths have to be setup correctly at first, otherwise we can't locate the correct input files.
-
-```{r eval=F}
-# change the paths to where you saved "cshl_2024"
-## run in Terminal
-mydir="/path/to/cshl_2024"
-cd $mydir
-
-# R codes- run in R Console
-setwd("/path/to/cshl_2024")
-```
-
-
 ## GWAS Tools
-We will use two main program tools in this notebook, **PLINK** (version 1.9) and **IMPUTE2**.
-
-**PLINK** (version 1.9) is used for quality control and perform association test for large scale genotype data. You can find the .zip files suitable for your laptop system in "cshl_2024/Tools/PLINK" and unzip it to call the `plink` program in the folder.
-
-**IMPUTE2** is used for genotype imputation and haplotype phasing. You can download its program using this link. IMPUTE2 program is only available to run in Linux or macOS system. You can find the zipped installation file in "cshl_2024/Tools/IMPUTE2". If you want to perform imputation for your own data, you also need to download the required reference genome from the above link. But in this notebook will only use the example genome.
-
-We will also introduce a tool called **MAGMA** for gene-set analysis in later chapters.
-
-> <span style="color: #0064a4;">
-Important: If you want to run these programs on your laptop, please make sure you have unzipped the installation packages in "./cshl_2024/Tools" that is suitable for your laptop systerm. We will directly call PLINK and IMPUTE2 programs using abusolute or relative paths.
-</span>
-
-Instructions on installing these two tools can be found on in Chapter 1.
-
-After you cloned the repository "cshl_2024" folder, you can find the `Tools` folder contatining installation packages for different systems. Then, you can unzip the zip files and call the programs by specifying its absolute path. For example, for macOS users, you can unzip the installer by double clicking, and call PLINK using `/path/to/cshl_2024/Tools/PLINK/plink_mac_20231211/plink`; for Windows users, you need to unzip the package "plink_win64.zip" with right click->"Extract All...". Then you can call PLINK with `/path/to/cshl_2024/Tools/PLINK/plink_win64_20231211/plink.exe`.
-
-You should modify the above `/path/to/cshl_2024` to where your "cshl_2024" folder is.
-
-> <span style="color: #0064a4;">
-However, macOS users need to go through additional steps to authorize PLINK, IMPUTE2 and MAGMA programs before you can call them! But you can perform these authorization steps only when you need to call the programs. See below.
-</span>
-
-When you try to call PLINK, IMPUTE2 and MAGMA with the above commands, you might get a pop-up window with the following message “plink” cannot be opened because the developer cannot be verified. Select "Cancel" and we will authorize PLINK first. Please go to macOS "System Settings"->"Privacy & Security", and scroll down until you see a message "plink" was blocked from use because it is not from an identified developer. Click "Allow Anyway" and you will be prompt to enter your Mac username and password. Click "Unlock" and then "Allow Anyway" again, and the previous message will disappear. Then try to run the same codes again in RStudio Terminal. You will get another pop-up window saying macOS cannot verify the developer of “plink”. Are you sure you want to open it?, select "Open" then you can see PLINK or IMPUTE2 commands options show up in Terminal.
-
-
 ## Quality Control
-PLINK will generate a number of standard summary statistics that are useful for quality control (e.g. missing genotype rate, minor allele frequency, Hardy-Weinberg equilibrium test and non-Mendelian transmission rate). These can also be used as thresholds for subsequent analyses. For more detailed information about plink, please refer its website https://www.cog-genomics.org/plink/1.9/.
-
-The following is a list of some common options that can be used to filter out individuals or SNPs on the basis of the summary statistic measures:
-
-```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
-tabl <- "
-| Feature inclusion criteria |	As summary statistic | As inclusion criteria |
-|----------------------------|-----------------------|-----------------------|
-| Missingness per individual |`--missing`            |`--mind N`.            |
-| Missingness per marker	   | --missing	           | --geno N              |
-| Allele frequency	         | --freq	               | --maf N               |
-| Hardy-Weinberg equilibrium |--hardy	               | --hwe N               |
-"
-cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
-```
-
 ### An Example of Summary Statistics
 #### Input files
-Input files: in folder `./Data/QC`-- We will use a random selected 5 SNPs as an example data:
-
-- 5SNPs.ped
-- 5SNPs.map
-
-The PED file is a white-space delimited file.It contains no header line, and one line per sample with 6+2V fields where V is the number of variants. The first six columns are mandatory:
-
-     Family ID
-     Individual ID
-     Paternal ID
-     Maternal ID
-     Sex (1=male; 2=female; other=unknown)
-     Phenotype
-
-The seventh and eighth fields are allele calls for the first variant in the .map file ('0' = no call); the 9th and 10th are allele calls for the second variant; and so on.
-```{bash}
-# bash codes- run in Terminal
-# Windows user need to run in Powershell App 
-head ./Data/QC/5SNPs.ped
-```
-By default, each line of the MAP file describes a single marker and must contain exactly 4 columns:
-
-     chromosome (1-22, X, Y or 0 if unplaced)
-     rs# or snp identifier
-     Genetic distance (morgans)
-     Base-pair position (bp units)
-     
-```{bash}
-head ./Data/QC/5SNPs.map
-```
-Three types of summary statistics that we are going to calculate using `PLINK`:
-
-1. missingness checking
-2. allele frequencies
-3. hardy-weinberg
-
-All results generated from the following commands are saved in folder `./Data/QC`. You can open the files in this folder to view the data structure.
-
 #### Calculating missing rate
-
-The following commands compute the **missingness** for each SNP and each subject. (The output will print all calculation progress generated by `PLINK`.)
-
-1. **--noweb**, suppress the connection to internet for version check.
-2. **--file**, specify the input files.
-3. **--missing**,  calculate the number of missing and missing rate.
-4. **--out**, specify the output file name.
-
-```{bash eval=F}
-# both Mac and Windows can run in Terminal
-# modify the path to "plink" program
-
-# for windows users
-./Tools/PLINK/plink_win64_20231211/plink.exe \
---noweb --file ./Data/QC/5SNPs --missing --out ./Data/QC/younameit
-
-```
-
-```{bash eval=F}
-# for macoS users
-./Tools/PLINK/plink_mac_20231211/plink \
---noweb --file ./Data/QC/5SNPs --missing --out ./Data/QC/younameit
-
-```
-
-This option creates two output files in 'results' folder:
-
-1. **"younameit.imiss"**, missingness by individual.
-2. **"younameit.lmiss"**, missingness by SNP.
-
-For individuals ".imiss" file, the format is:
-
-     FID                Family ID
-     IID                Individual ID
-     MISS_PHENO         Missing phenotype? (Y/N)
-     N_MISS             Number of missing SNPs
-     N_GENO             Number of non-obligatory missing genotypes
-     F_MISS             Proportion of missing SNPs
-
-```{bash}
-# bash codes- run in Terminal
-# Windows user need to run in Powershell App 
-head ./Data/QC/younameit.imiss
-```
-
-For SNP "lmiss" file, the format is:
-
-     SNP                SNP identifier
-     CHR                Chromosome number
-     N_MISS             Number of individuals missing this SNP
-     N_GENO             Number of non-obligatory missing genotypes
-     F_MISS             Proportion of sample missing for this SNP
-
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App 
-head ./Data/QC/younameit.lmiss
-```
-
 #### Calculating allel frequencies
-
-The following command computes the **allele frequencies**. (The output will print all calculation progress generated by `PLINK`.)
-1. **--freq**, calculate the allele frequencies.
-
-```{bash eval=F}
-# both Mac and Windows can run in Terminal
-# modify the path to "plink" program
-
-# Windows user
-./Tools/PLINK/plink_win64_20231211/plink.exe \
---noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
-```
-```{bash eval=F}
-# macOS user
-./Tools/PLINK/plink_mac_20231211/plink \
---noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
-```
-
-This command will create a output file **"younameit.frq"** with six columns:
-
-     CHR       Chromosome
-     
-     SNP       SNP identifier
-     
-     A1        Allele 1 code (minor allele)
-     
-     A2        Allele 2 code (major allele)
-     
-     MAF       Minor allele frequency
-     
-     NCHROBS   Non-missing allele count
-
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-head ./Data/QC/younameit.frq
-
-```
-
 #### Hardy-Weinberg Equilibrium
-The following command computes the **Hardy-Weiberg exact test statistic**. (The output will print all calculation progress generated by `PLINK`.)
-1. **--hardy**, perform hardy-weinberg test.
-
-```{bash eval=F}
-# both Mac and Windows can run in Terminal
-# modify the path to "plink" program
-
-# Windows user
-./Tools/PLINK/plink_win64_20231211/plink.exe \
---noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
-```
-```{bash eval=F}
-# macOS user
-./Tools/PLINK/plink_mac_20231211/plink \
---noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
-```
-
-This command will create an output file **"younameit.hwe"** with the following columns:
-
-     CHR             Chromosome
-     
-     SNP             SNP identifier
-     
-     TEST            Code indicating whether the sample is a case or control
-     
-     A1              Minor allele code
-     
-     A2              Major allele code
-     
-     GENO            Genotype counts: 11/12/22 
-     
-     O(HET)          Observed heterozygosity
-     
-     E(HET)          Expected heterozygosity
-     
-     P               P-value for Hardy-Weinberg test
-
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-head ./Data/QC/younameit.hwe
-```
-
 ### An Example of Inclusion Thresholds for QC
-
-Input files: in folder `./QC`
-
-- 5SNPs.ped
-
-- 5SNPs.map
-
-The following command performs **multiple quality controls**. (The output will print all calculation progress generated by `PLINK`.)
-1. **--mind** 0.1, exclude the individuals with missing rate larger than 0.1. You can change 0.1 to other desired values.
-2. **--geno** 0.1, exclude the SNPs with missing rate larger than 0.1. You can change 0.1 to other desiered values.
-3. **--maf** 0.05, exclude the SNPs with minor allele frequency (MAF) smaller than 0.05. You can change 0.05 to other desiered values.
-4. **--hwe** 0.001, exclude the SNPs with P-values of Hardy-Weinberg test smaller than 0.001. You can change it to otehr desired values.
-5. **--recode**, generate a new dataset.
-
-```{bash eval=F}
-# both Mac and Windows can run in Terminal
-# modify the path to "plink" program
-
-# Windows user
-./Tools/PLINK/plink_win64_20231211/plink.exe \
---noweb --file ./Data/QC/5SNPs \
---mind 0.1 --geno 0.1 --maf 0.05 --hwe 0.001 --recode --out ./Data/QC/younameit
-```
-```{bash eval=F}
-# macOS user
-./Tools/PLINK/plink_mac_20231211/plink \
---noweb --file ./Data/QC/5SNPs \
---mind 0.1 --geno 0.1 --maf 0.05 --hwe 0.001 --recode --out ./Data/QC/younameit
-
-```
-
-The output files will be **"younameit.map"** and **"younameit.ped"** which have been quality controlled by the criteria you specified.
-
-## Remove Closely Related Individuals
-Input files: in folder `.QC`
-
-- 5SNPs.ped
-
-- 5SNPs.map
-
-The following command will calculate **indentical by descent (IBS) distances** between all individuals. 
-1. **--genome**, calculate IBS
-
-```{bash eval=F}
-# both Mac and Windows can run in Terminal
-# modify the path to "plink" program
-
-# Windows user
-./Tools/PLINK/plink_win64_20231211/plink.exe \
---noweb --file ./Data/QC/5SNPs --genome --out ./Data/QC/younameit
-```
-```{bash eval=F}
-# macOS user
-./Tools/PLINK/plink_mac_20231211/plink \
---noweb --file ./Data/QC/5SNPs --genome --out ./Data/QC/younameit
-```
-
-This will create the file **younameit.genome** which has the following fields:
-
-     FID1      Family ID for first individual
-     
-     IID1      Individual ID for first individual
-     
-     FID2      Family ID for second individual
-     
-     IID2      Individual ID for second individual
-     
-     RT        Relationship type given PED file
-     
-     EZ        Expected IBD sharing given PED file
-     
-     Z0        P(IBD=0)
-     
-     Z1        P(IBD=1)
-     
-     Z2        P(IBD=2)
-     
-     PI_HAT    P(IBD=2)+0.5*P(IBD=1) ( proportion IBD )
-     
-     PHE       Pairwise phenotypic code (1,0,-1 = AA, AU and UU pairs)
-     
-     DST       IBS distance (IBS2 + 0.5*IBS1) / ( N SNP pairs )
-     
-     PPC       IBS binomial test
-     
-     RATIO     Of HETHET : IBS 0 SNPs (expected value is 2)
-
-Scan the output file **"younameit.genome"** for any individuals with high **PI_HAT** values (e.g. greater than 0.05). 
-
-Optionally, remove one member of the pair if close relatives are identified.
-
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-head ./Data/QC/younameit.genome
-```
-# An Imputation Example
-
-In many cases, raw sequence data may have missing values. Then, an imputation step will be neccessary. **IMPUTE2** is a popular software package for imputation. Below is a simple example for conducting imputation by IMPUTE2. For more information about IMPUTE2, please refer its website http://mathgen.stats.ox.ac.uk/impute/impute_v2.html and the associated publication http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1000529
-
-Here is the example provided by **IMPUTE2 package**. The link is https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#ex1
-
-Files used for example are saved in folder `./Data/impute2_example`.
-
-```{bash eval=F}
-# bash codes- run in terminal
-# IMPUTE2 only works for macOS or Linux users, Windows users can't run it
-
-# macOS user only
-# modify the path to "impute2" program
-./Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2 \
--m ./Data/impute2_example/example.chr22.map \
--h ./Data/impute2_example/example.chr22.1kG.haps \
--l ./Data/impute2_example/example.chr22.1kG.legend \
--g ./Data/impute2_example/example.chr22.study.gens \
--strand_g ./Data/impute2_example/example.chr22.study.strand \
--int 20.4e6 20.5e6 -Ne 20000 \
--o ./Data/impute2_example/example.chr22.one.phased.impute2
-
-```
-
-# Population Stratification Correction Using PLINK
-
-`PLINK`(only version 1.9 and after) can perform population stratefication using Principal Component Analysis. PCA explicitly model variations along continuous axes of PCs. Top principal components are generally used as covariates in the resulting correction to help correct for population stratification, minimizing spurious associations while maximizing power to detect true associations.
-
-By default, --pca extracts the top 20 principal components. But we can change the number of PCs by specifying in the commands. The following codes perform PCA and obtain the first 50 PCs.
-
-```{bash eval=F}
-# both Mac and Windows can run in Terminal
-# modify the path to "plink" program
-
-# Windows user
-./Tools/PLINK/plink_win64_20231211/plink.exe \
---noweb --file ./Data/PC/1ksnp --pca 50 --out ./Data/PC/younameit
-```
-```{bash eval=F}
-# macOS user
-./Tools/PLINK/plink_mac_20231211/plink \
---noweb --file ./Data/PC/1ksnp --pca 50 --out ./Data/PC/younameit
-```
-
-The main outputs are **younameit.eigenval** and **younameit.eigenvec**, which store the eigenvalues and eigenvectors of the top 50 PCs. With these results, we can visualize population structure by generating scree plot and PC plots in R.
-
-A **scree plot** displays the variance explained by each component. We look for the "elbow" of the plot, i.e., point where line bends. Could do formal test on derivative of scree line, but common sense approach often works fine.
-
-We read in eigenvalues from the PCA results file **younameit.eigenval**, calculate the proportion of variance explained by each PC and generate elbow plot using `ggplot`.
-```{r}
-# R codes- run in R Console
-eigenval <- scan("./Data/PC/younameit.eigenval")
-
-# first convert to percentage variance explained
-pve <- data.frame(PC = 1:length(eigenval), pve = eigenval/sum(eigenval)*100)
-# make plot
-library(ggplot2)
-a <- ggplot(pve, aes(PC, pve)) + geom_point()+geom_line()
-a + ylab("Percentage variance explained") + theme_light()
-## maybe need top 10 PCs
-
-# calculate the cumulative sum of the percentage variance explained
-cumsum(pve$pve)
-#[1]   7.743514  14.022760  19.646525  25.135280  30.349309  35.262146  40.074294  44.818836  49.511040  54.183075
-#[11]  58.843948  63.475603  68.081387  72.670111  77.241894  81.804549  86.363656  90.917741  95.465328 100.000000
-
-
-```
-
-```{r}
-# R codes- run in R Console
-
-pca <- read.table("./Data/PC/younameit.eigenvec"), col_names = FALSE)
-# sort out the pca data
-# remove nuisance column
-pca <- pca[,-1]
-# set names
-names(pca)[1] <- "ind"
-names(pca)[2:ncol(pca)] <- paste0("PC", 1:(ncol(pca)-1))
-# sort out the individual species and pops
-
-
-# generate plot in R
-pc_eig <- read.table("./Data/PC/pc_eig.txt",header=F) # read in eigenvalue
-names(pc_eig) <- "eig"
-
-# generate scree plot-- eigenvalue vs # of PC
-plot(1:10, pc_eig$eig, type="b", xlab="# PCs", ylab="Eigenvalues",
-main="Scree plot")
-```
-
-Usually, we use a cut-off of eigenvalue > 1. In this plot, this criteria results in an unreasonable high number of factors, because the eigenvalue for PC 10 is still > 1.
-
-## Test the Significance of Principle Components (PCs)
-
-The following command creates a matrix from **genotype.pca** (in Linux)
-
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-tail -n+12 ./Data/PC/genotype_1k.pca > ./Data/PC/pc.txt
-```
-
-The following commands employ linear regression to the test the significance of PCs. P values can be found in the last column of the table: `Pr(>|t|)`.
-
-- phenotype file: r_met.txt
-
-```{r}
-# R codes- run in R Console
-y=read.table("./Data/PC/r_met.txt") #read phenotype data
-pc=read.table("./Data/PC/pc.txt") #read pc data
-y=as.matrix(y) #create a matrix from phenotype data
-pc=as.matrix(pc) #create a matrix from pc data
-fit=lm(y~pc)
-summary(fit)
-
-```
-
-# Simple Association Test 
-
-PLINK is a free, open-source whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner, see http://zzz.bwh.harvard.edu/plink/.
-
-The input files include PED file, MAP file, alternate phenotype file, and optional covariate file.
-
-The PED file is a white-space (space or tab) delimited file, the first six columns are mandatory:
-
-    Col 1: Family ID 
-
-    Col 2: Individual ID 
-
-    Col 3: Paternal ID 
-    
-    Col 4: Maternal ID 
-    
-    Col 5: Sex (1=male; 2=female; other character =unknown) 
-    
-    Col 6: Phenotype (The missing phenotype value for quantitative traits is, by default, -9)
-    
-    Col 7(*): Genotype (The missing genotype value is denoted as 0, by default)
-    
-Example: 
-
-    FAM001 1 0 0 1 3.4 A A G G A C C C 
-
-    FAM001 2 0 0 1 2.5 A A A G 0 0 A C
-    
-The MAP file has four columns:
-
-    Col 1: Chromosome (1-22, X, Y or 0 if unplaced)
-    
-    Col 2: rs# or SNP identifier 
-    
-    Col 3: Genetic distance (morgans) 
-    
-    Col 4: Base-pair position (bp units)
-    
-To specify an alternate phenotype for analysis, i.e. other than the one in the .ped file, use the option --pheno. The alternate phenotype file has three columns: 
-
-     Col 1: Family ID
-     
-     Col 2: Individual ID
-     
-     Col 3: Phenotype
-
-Example: 
-
-     F1     1110     2.30   22.22  2  
-     
-     F2     2202     34.12  18.23  1  
-     
-The phenotype can be either a quantitative trait or an affection status column. PLINK will automatically detect which type it is  based on whether a value other than 0, 1, 2 or the missing genotype code is observed.
-
-(All files and results in this section are saved in `./PC` folder.)
-
-## Quantitative Trait Association Test for Continuous Trait 
-
-Below is an example that demonstrates how to use PLINK to perform a quantitative trait association test for a toy dataset with a continuous trait and 5 SNPs:
-
-+ Genotype data:
-  + 5SNPs.ped
-  + 5SNPs.map
-+ Phenotype data: 
-    + conty.txt
-
-The following commands perform the **simple association test**
-
-1. **--assoc**, perform case/control or QTL association. You can also use **--fisher** to do Fisher's exact (allelic) test or **--model** to do Cochran-Armitage and full-model C/C association.
-2. **--pheno**, specify the phenotype file.
-
-```{bash eval=F}
-# both Mac and Windows can run in Terminal
-
-# Windows user
-./Tools/PLINK/plink_win64/plink.exe \
---noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/conty.txt --out ./Data/Assoc/younameit.conty
-```
-```{bash}
-# macOS user
-./Tools/PLINK/plink_mac/plink \
---noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/conty.txt --out ./Data/Assoc/younameit.conty
-```
-
-This will generate the output file **"younameit.conty.qassoc"** with following columns:
-
-    CHR      Chromosome number
-
-    SNP      SNP identifier
-
-    BP       Physical position (base-pair)
-
-    NMISS    Number of non-missing genotypes
-
-    BETA     Regression coefficient
-
-    SE       Standard error
-
-    R2       Regression r-squared
-
-    T        Wald test (based on t-distribution)
-
-    P        Wald test asymptotic p-value
-    
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-head ./Data/Assoc/younameit.conty.qassoc
-```
-
-## Case/Control Asssociation Test for Binary Trait
-
-Below is an example that demonstrates how to use PLINK to perform a case/control association test for a binary trait and 5 SNPs: 
-
-- Genotype data:
-
-  + 5SNPs.ped
-
-  + 5SNPs.map
-  
-
-- Phenotype data: 
-
-  + biny.txt
-  
-The following commands perform the **simple association test**
-
-1. **--assoc**, perform case/control or QTL association. You can also use **--fisher** to do Fisher's exact (allelic) test or **--model** to do Cochran-Armitage and full-model C/C association.
-2. **--pheno**, specify the phenotype file.
-
-```{bash eval=F}
-# both Mac and Windows can run in Terminal
-# Windows user
-./Tools/PLINK/plink_win64/plink.exe \
---noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/biny.txt --out ./Data/Assoc/younameit.biny
-```
-```{bash}
-# macOS user
-./Tools/PLINK/plink_mac/plink \
---noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/biny.txt --out ./Data/Assoc/younameit.biny
-```
-
-The output is **"younameit.biny.assoc"**, which contains the fields:
-
-     CHR     Chromosome
-     SNP     SNP ID
-     BP      Physical position (base-pair)
-     A1      Minor allele name (based on whole sample)
-     F_A     Frequency of this allele in cases
-     F_U     Frequency of this allele in controls
-     A2      Major allele name
-     CHISQ   Basic allelic test chi-square (1df)
-     P       Asymptotic p-value for this test
-     OR      Estimated odds ratio (for A1, i.e. A2 is reference)
-     
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-head ./Data/Assoc/younameit.biny.assoc
-```
-
+### Remove Closely Related Individuals
+## An Imputation Example
+## Population Stratification Correction Using PLINK
+### PCA on whole genome data using PLINK
+### Test the Significance of Principle Components (PCs)
+## Simple Association Test 
+### Quantitative Trait Association Test for Continuous Trait 
+### Case/Control Asssociation Test for Binary Trait
 ## Quantitative Trait Association Test for Continuous Trait with Covariates
-
-Below is an example that demonstrates how to use PLINK to perform a quantitative trait test for a continuous trait and 5 SNPs with 3 covariates:
-
-1. Genotype data:
-  + 5SNPs.ped
-  + 5SNPs.map
-2. Phenotype data:
-  + conty_pheno.txt
-3. Covariates:
-  + conty_covar.txt
-
-Before the association test, we adjust the phenotypes to remove the effects of covariates. For the continous phenotype, we employ linear regression to adjust the phenotype. Then, we use the residual as the new phenotype in the association test.
-
 ### Covariates adjustments (using R):
-
-```{r}
-## R codes- run in R Console
-# Read phenotype data and covariates data
-pheno=read.table("./Data/Assoc/conty_pheno.txt") #read phenotype data
-covar=read.table("./Data/Assoc/conty_covar.txt") #read covariates data
-pheno=as.matrix(pheno) #create a matrix from the phenotype data 
-covar=as.matrix(covar) #create a matrix from the covariates data
-n=dim(pheno)[1] #sample size
-p=dim(pheno)[2] #number of traits
-```
-
-Covariates adjustment is done by fitting a linear regression model and obtain residuals as new phenotype data for association test.
-
-The following codes construct the linear model for each of the traits using `lm` function.The resulted residual data is saved for analysis.
-
-```{r}
-# R codes- run in R Console
-fit=list() #create an empty list
-residpheno=matrix(0, n, p) #create an empty matrix
-for (i in 1:p){
-  fit[[i]]=lm(pheno[,i]~covar) #for each trait, fit a linear regression model of phenotype against covariates
-  residpheno[,i]=resid(fit[[i]]) #obtain residual phenotype data
-}
-write.table(residpheno, "./Data/Assoc/resid_phenotype.txt", row.names=F, col.names=F, quote=F, sep=" ") #save residual phenotype data
-```
-
-### Residual phenotype data after covariates adjustments (in UNIX):
-
-This code combines the above residual data and sample ID information to contruct the phenotype data for PLINK.
-
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-paste ./Data/Assoc/famID.txt ./Data/Assoc/sampleID.txt \
-./Data/Assoc/resid_phenotype.txt > ./Data/Assoc/resid_phenotype_assoc.txt
-```
-
-Then we can use PLINK to perform the association test.
-
 ### Association test using plink
-
-After adjusting the phenotype using a set of covariates, we use the residual as new phenotype for the association test. `PLINK` was used again to perform assiciation test. 
-
-```{bash eval=F}
-# both Mac and Windows can run in Terminal
-# Windows user
-./Tools/PLINK/plink_win64/plink.exe \
---noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/resid_phenotype_assoc.txt \
---out ./Data/Assoc/younameit_resid
-```
-```{bash}
-# macOS user
-./Tools/PLINK/plink_mac/plink \
---noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/resid_phenotype_assoc.txt \
---out ./Data/Assoc/younameit_resid
-```
-
-```{bash}
-# bash codes- run in terminal
-# Windows user need to run in Powershell App
-### check association results
-head ./Data/Assoc/younameit_resid.qassoc
-```
-
-This output file **"younameit.qassoc"** has the following columns:
-
-    CHR      Chromosome number
-
-    SNP      SNP identifier
-
-    BP       Physical position (base-pair)
-
-    NMISS    Number of non-missing genotypes
-
-    BETA     Regression coefficient
-
-    SE       Standard error
-
-    R2       Regression r-squared
-
-    T        Wald test (based on t-distribution)
-
-    P        Wald test asymptotic p-value
-    
-In the next section, we will start analyzing real data from a case study. The procedures might not be exactly the same here, as real data require more proprocessing steps before it can be used for association study.
-
-
-
 
 <!--chapter:end:02-gwastool.Rmd-->
 
@@ -883,23 +170,354 @@ Placeholder
 ## MAGMA (for Gene-Level Analysis)
 ### Prepare Annotation File
 ### Use MAGMA for Gene-Set Analysis
+### Compare the Manhattan plots
 
 <!--chapter:end:07-post_GWAS.Rmd-->
 
-
 # Perform eQTL Analysis
 
-Placeholder
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "./Data/eqtl")
+getwd
+```
 
+We will use "MatrixEQTL" package in R. To install the package use the codes: `install.packages("MatrixEQTL")`
+
+```{r eval=T, message=FALSE, warnings=FALSE}
+# R codes- run in R Console
+#load R packages
+library(data.table)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(MASS)
+library(MatrixEQTL)
+```
+
+
+```{bash eval=F}
+# change the path below to where you saved "bigcare-main" folder
+## run in R Terminal
+#mydir="/path/to/bigcare-main/Data/case_data"
+mydir="./Data/eqtl"
+cd $mydir
+```
+
+```{r eval=F}
+# R codes- run in R Console
+#setwd("/path/to/bigcare-main/Data/case_data")
+setwd("./Data/eqtl")
+mydir<-getwd()
+```
+
+Files: 
+- `SNP.txt`: rows are SNPs with row names as SNP IDs, and columns are sample IDs.
+- `gexp.txt`: rows are genes are and columns are sample IDs.
+
+
+```{r}
+snps <- read.table("geno.txt",header=T,row.names = 1)
+expr <-read.table("gexp.txt",header=T,row.names = 1)
+```
+
+```{r}
+dim(expr)
+head(expr)[1:12]
+```
+
+```{r}
+dim(snps)
+head(snps)[1:12]
+```
+
+
+```{r}
+maf<-read.table("geno_maf.txt")$V1
+
+truehist(maf, main = "Histogram of MAF values.", col = "steelblue")
+lines(density(maf), lty = 2, col = "darkorange", lwd = 3)
+```
 
 ## Filtering SNPs by MAF
+In an eQTL study often a minimum MAF is required. Since MAF essentially reflects how often an allele has been observed in a population, it also defines how often the gene expression levels have been observed for heterozygous and homozygous alleles.
+
+Calculate the number of heterozygous and homozygous observations expected for SNPs with a MAF of 5%, 10% and 15% given Hardy-Weinberg equilibrium. What are useful MAF thresholds for SNPs to include in an eQTL analysis?
+
+```{r}
+p = c(0.05, 0.1, 0.15)
+q = 1-p
+# Calulate frequency of minor allele being present in homozygous and heterozygous state
+f_hom = p^2
+f_het = 2*p*q
+# Expected number of observations in a sample size of 10000
+sample_size = 500
+round(f_hom * sample_size)
+
+round(f_het * sample_size)
+```
+
 ## Gene expression profiling
+Now that we have an idea of what is stored in the genotype data frame let’s take a look at the expression data. For eQTL analyses it is important for the gene expression to be normally distributed among samples, therefore RNA-seq data has to be transformed by, for example quantile normalization.
+
+Let’s check the distribution of gene expression levels across samples for the first gene in our expr data frame.
+
+```{r}
+gname = rownames(expr)[1]
+truehist(as.numeric(filter(expr, rownames(expr) == gname)[-1]), main = paste("Gene expression profile for gene:",gname), xlab = "Expression level", col = "darkorange")
+lines(density(as.numeric(filter(expr, rownames(expr) == gname)[-1])), lty = 2, col = "steelblue", lwd = 3)
+```
+
+Now we’ll plot the expression levels of the first gene against the first SNP, 10th gene against the 10th SNP, 10th gene against the 1th SNP, as well as the 10th gene against the 6th SNP, depending on the genotypes of the samples by using simple dot plots. We’ll add a bit of random noise (jitter) to the genotype data to make it all look more comprehensible.
+
+```{r}
+par(mfrow=c(1,4))
+
+plot(jitter(as.numeric(snps[1,]), factor = 0.5), as.numeric(expr[1,]),
+     xlab = rownames(snps)[1], ylab = rownames(expr)[1], col = "steelblue",
+     main = paste(rownames(expr)[1], "vs", rownames(snps)[1]), xlim= c(-0.5,2.5), xaxt="n")
+axis(1, at =c (0,1,2), labels = c("0", "1", "2"))
+plot(jitter(as.numeric(snps[10,]), factor = 0.5), as.numeric(expr[10,]),
+     xlab = rownames(snps)[10], ylab = rownames(expr)[10], col = "steelblue",
+     main = paste(rownames(expr)[10], "vs", rownames(snps)[10]), xlim= c(-0.5,2.5), xaxt="n")
+axis(1, at =c (0,1,2), labels = c("0", "1", "2"))
+plot(jitter(as.numeric(snps[1,]), factor = 0.5), as.numeric(expr[10,]),
+     xlab = rownames(snps)[1], ylab = rownames(expr)[10], col = "steelblue",
+     main = paste(rownames(expr)[10], "vs", rownames(snps)[1]), xlim= c(-0.5,2.5), xaxt="n")
+axis(1, at =c (0,1,2), labels = c("0", "1", "2"))
+plot(jitter(as.numeric(snps[6,]), factor = 0.5), as.numeric(expr[10,]),
+     xlab = rownames(snps)[6], ylab = rownames(expr)[10], col = "steelblue",
+     main = paste(rownames(expr)[10], "vs", rownames(snps)[6]), xlim= c(-0.5,2.5), xaxt="n")
+axis(1, at =c (0,1,2), labels = c("0", "1", "2"))
+```
+
 ## Covariates
+
+We can also add covariates to the analysis.
+```{r}
+covar<-read.table("covariates.txt",header=T,sep="\t")
+dim(covar)
+head(covar)
+```
+
+But due to the requirement of the `MatrixEQTL` package, categorical covariates need to be recoded as 0,1,2...
+```{r}
+covar_recode<-covar                                                                  
+covar_recode$gender[covar_recode$gender=="male"]<-1
+covar_recode$gender[covar_recode$gender=="female"]<-0
+covar_recode$race[covar_recode$race=="white"]<-1
+covar_recode$race[covar_recode$race=="black or african american"]<-0
+write.table(t(covar_recode),"covar_recode.txt",quote=F, sep=" ",row.names=T,col.names=F)
+```
+
+
 ## Using principle components as covariates
+Further we will explore the use of principle components of genotype as covariates in linear models of gene expression to account for unknown sources of variation from genotype. 
+
+```{r}
+pca <- prcomp(t(snps), center=TRUE, scale = TRUE)
+sum(pca$sdev[1:5]^2)/sum(pca$sdev^2) # percentage of variance explained by first 5 PCs
+screeplot(pca,type="lines") 
+```
+
 ## eQTL analysis
+Now that we’ve covered the basics let’s focus on real world expression and genotyping data. We’ll be using R’s `MatrixEQTL` package which is designed for fast eQTL analysis on large genomic data sets. `MatrixEQTL` can test for association between genotype and gene expression using linear regression with either additive or ANOVA genotype effects. The models can include covariates to account for factors as population stratification, gender, and clinical variables. It also supports models with heteroscedastic and/or correlated errors, false discovery rate estimation and separate treatment of local (cis) and distant (trans) eQTLs. You can learn more about MatrixEQTL [here](http://www.bios.unc.edu/research/genomic_software/Matrix_eQTL/).
+
 ### cis-eQTL and trans-eQTL analysis
+To perform an eQTL analysis we not only need to know the genotype and gene expression values for every sample, but also the genomic positions of genes and SNPs. This is necessary to define which SNPs should be tested against which genes. For cis-eQTL analyses, SNPs in proximity to the gene are chosen and for trans-eQTL analyses SNPs further away, or on different chromosomes, are taken into account. The window in cis-eQTL analysis is commonly chosen to be 500kb-1Mb measured from gene’s TSS.
+
+In addition, the main `MatrixEQTL` function `Matrix_eQTL_main` requires several extra parameters for cis/trans analysis:
+
+- `pvOutputThreshold.cis` : p-value threshold for cis-eQTLs.
+- `output_file_name.cis` : detected cis-eQTLs are saved in this file.
+- `cisDist` – maximum distance at which gene-SNP pair is considered local.
+- `snpspos` : data frame with information about SNP locations, must have 3 columns - SNP name, chromosome, and position. See sample SNP location file.
+- `genepos` : data frame with information about gene locations, must have 4 columns - the name, chromosome, and positions of the left and right ends. See sample gene location file.
+
+We first setup the input files and parameters for eQTL analysis:
+```{r}
+# eQTL mapping, cis/trans, no pcs
+suppressMessages(library(MatrixEQTL))
+
+SNP_file_name <-  "geno.txt";
+snps_location_file_name <- "snppos.txt";
+expression_file_name <- "gexp.txt";
+gene_location_file_name <- "genepos.txt";
+covariates_file_name <- "covar_recode.txt";
+cis_threshold <- 0.01
+trans_threshold <- 0.01
+cis_dist <- 1e6
+  
+# Output file name
+output_file_name_cis = tempfile();
+output_file_name_tra = tempfile();
+  
+## Settings
+# Linear model to use, modelANOVA, modelLINEAR, or modelLINEAR_CROSS
+useModel = modelLINEAR; # modelANOVA, modelLINEAR, or modelLINEAR_CROSS
+
+# Only associations significant at this level will be saved
+pvOutputThreshold_cis = cis_threshold; 
+pvOutputThreshold_tra = trans_threshold;
+  
+# Set to character() for no covariates
+# covariates_file_name = character();
+  
+# Error covariance matrix
+# Set to numeric() for identity.
+errorCovariance = numeric();
+  
+# Distance for local gene-SNP pairs
+cisDist = cis_dist
+```
+
+
+```{r}
+## Load genotype data
+snps = SlicedData$new();
+snps$fileDelimiter = " "; # the TAB character
+snps$fileOmitCharacters = "NA"; # denote missing values;
+snps$fileSkipRows = 1; # one row of column labels
+snps$fileSkipColumns = 1; # one column of row labels
+snps$fileSliceSize = 2000; # read file in slices of 2,000 rows
+snps$LoadFile(SNP_file_name);
+  
+## Load gene expression data
+gene = SlicedData$new();
+gene$fileDelimiter = " "; # the TAB character
+gene$fileOmitCharacters = "NA"; # denote missing values;
+gene$fileSkipRows = 1; # one row of column labels
+gene$fileSkipColumns = 1; # one column of row labels
+gene$fileSliceSize = 2000; # read file in slices of 2,000 rows
+gene$LoadFile(expression_file_name);
+  
+## Load covariates
+cvrt = SlicedData$new();
+cvrt$fileDelimiter = " "; # the TAB character
+cvrt$fileOmitCharacters = "NA"; # denote missing values;
+cvrt$fileSkipRows = 1; # one row of column labels
+cvrt$fileSkipColumns = 1; # one column of row labels
+if(length(covariates_file_name)>0) {
+  cvrt$LoadFile(covariates_file_name);
+}
+  
+## Run the analysis
+snpspos = read.table(snps_location_file_name, header = TRUE, stringsAsFactors = FALSE);
+genepos = read.table(gene_location_file_name, header = TRUE, stringsAsFactors = FALSE);
+  
+me = Matrix_eQTL_main(
+  snps = snps,
+  gene = gene,
+  cvrt = cvrt,
+  output_file_name = output_file_name_tra,
+  pvOutputThreshold = pvOutputThreshold_tra,
+  useModel = useModel,
+  errorCovariance = errorCovariance,
+  verbose = FALSE,
+  output_file_name.cis = output_file_name_cis,
+  pvOutputThreshold.cis = pvOutputThreshold_cis,
+  snpspos = snpspos,
+  genepos = genepos,
+  cisDist = cisDist,
+  pvalue.hist = TRUE,
+  min.pv.by.genesnp = FALSE,
+  noFDRsaveMemory = FALSE);
+  
+me_qq = Matrix_eQTL_main(
+  snps = snps,
+  gene = gene,
+  cvrt = cvrt,
+  output_file_name = output_file_name_tra,
+  pvOutputThreshold = pvOutputThreshold_tra,
+  useModel = useModel,
+  errorCovariance = errorCovariance,
+  verbose = FALSE,
+  output_file_name.cis = output_file_name_cis,
+  pvOutputThreshold.cis = pvOutputThreshold_cis,
+  snpspos = snpspos,
+  genepos = genepos,
+  cisDist = cisDist,
+  pvalue.hist = "qqplot",
+  min.pv.by.genesnp = FALSE,
+  noFDRsaveMemory = FALSE)
+  
+unlink(output_file_name_tra);
+unlink(output_file_name_cis);
+  
+cat('Analysis done in: ', me$time.in.sec, ' seconds', '\n');
+```
+
+```{r}
+head(me$cis$eqtls)
+```
+
+```{r}
+head(me$trans$eqtls)
+```
+
+```{r eval=T,echo=F, fig.cap='Histogram of p-values for cis- and trans-eQTL', out.width='100%', fig.asp=1.2, fig.align='center'}
+## Make the histogram of local and distant p-values
+# y-axis is density, which is rescaled frequency to make the sum of area of bars equal to 1
+plot(me)
+
+# to look at original frequency, use this code
+# hist(me$cis$eqtls$pvalue)
+# hist(me$trans$eqtls$pvalue)
+```
+
+```{r}
+## Make the qq-plot of local and distant p-values
+plot(me_qq)  
+```
 ## Multiple testing correction
+Whenever multiple statistical tests are performed, a multiple testing correction has to be performed. This is necessary because many hypotheses are tested. Therefore each calculated association p-value has to be corrected for multiple testing. MatrixEQTL does this for you automatically and returns the corrected p-value as a false discovery rate (FDR). Common thresholds on FDR are 5% or 10%.
+
 ## Gene regional Manhanttan plots 
+Manhattan plots are a way to depict association p-values of multiple SNPs at once. They are also very common in GWAS. Manhattan plots are a rather convinient modality for interpretation of eQTL signals in terms of LD.
+
+Let’s now generate a manhattan plot for gene ENSG00000172404.4, plotting the base-pair position on the x-axis and the −log10(pvalue)
+ of the SNP in the y axis. Manhattan plots usually depict all tested SNPs, not only the ones passing a certain p-value threshold. Therefore we’ll first obtain all the association p-values for all tested SNPs for gene ENSG00000172404.4.
+```{r}
+gene_id = "CHD5"
+
+gene_values = read.table(expression_file_name, row.names=1, header=TRUE)
+single_gene_exp = SlicedData$new()
+single_gene_exp$CreateFromMatrix(as.matrix(gene_values[gene_id, , drop=FALSE]))
+single_gene_exp
+```
+```{r}
+snpspos = read.table(snps_location_file_name, 
+                     header = TRUE, 
+                     stringsAsFactors = FALSE)
+
+genepos = read.table(gene_location_file_name, 
+                     header = TRUE, 
+                     stringsAsFactors = FALSE)
+
+single_cis_eqtl_res = Matrix_eQTL_main(snps, 
+                                       single_gene_exp,
+                                       verbose = FALSE,
+                                       output_file_name.cis = NULL,
+                                       output_file_name = NULL,
+                                       pvOutputThreshold.cis=1, 
+                                       snpspos = snpspos,
+                                       genepos = genepos)
+
+manh_data = merge(single_cis_eqtl_res$cis$eqtls, snpspos, by.x = "snps", by.y = "snpid")
+manh_data = manh_data [,c("pos", "chr", "pvalue", "snps")]
+head(manh_data)
+```
+```{r}
+# Plot the Manhattanplot
+with(manh_data ,plot(pos, -log10(pvalue), xlab = "genomic position (bp)",
+main=paste(gene_id, "associated SNPs")))
+# Highlight the lead SNP
+with(manh_data[which.min(manh_data$pvalue),,drop=FALSE] ,
+points(pos, -log10(pvalue), pch=20, col="red"))
+# Add a label to the lead SNP
+with(manh_data[which.min(manh_data$pvalue),,drop=FALSE],
+text(pos + diff(range(manh_data$pos))*0.2, -log10(pvalue), labels = snps))
+```
 
 <!--chapter:end:08-eqtl.Rmd-->
 

@@ -21,23 +21,23 @@ library(MatrixEQTL)
 
 
 ```{bash eval=F}
-# change the path below to where you saved "bigcare-main" folder
+# change the path below to where you saved "cshl_2024" folder
 ## run in R Terminal
-#mydir="/path/to/bigcare-main/Data/case_data"
+#mydir="/path/to/cshl_2024/Data/eqtl"
 mydir="./Data/eqtl"
 cd $mydir
 ```
 
 ```{r eval=F}
 # R codes- run in R Console
-#setwd("/path/to/bigcare-main/Data/case_data")
+#setwd("/path/to/cshl_2024/Data/eqtl")
 setwd("./Data/eqtl")
 mydir<-getwd()
 ```
 
 Files: 
 - `SNP.txt`: rows are SNPs with row names as SNP IDs, and columns are sample IDs.
-- `gexp.txt`: rows are genes are and columns are 
+- `gexp.txt`: rows are genes are and columns are sample IDs.
 
 
 ```{r}
@@ -62,6 +62,7 @@ maf<-read.table("geno_maf.txt")$V1
 truehist(maf, main = "Histogram of MAF values.", col = "steelblue")
 lines(density(maf), lty = 2, col = "darkorange", lwd = 3)
 ```
+
 ## Filtering SNPs by MAF
 In an eQTL study often a minimum MAF is required. Since MAF essentially reflects how often an allele has been observed in a population, it also defines how often the gene expression levels have been observed for heterozygous and homozygous alleles.
 
@@ -115,12 +116,15 @@ axis(1, at =c (0,1,2), labels = c("0", "1", "2"))
 ```
 
 ## Covariates
+
+We can also add covariates to the analysis.
 ```{r}
 covar<-read.table("covariates.txt",header=T,sep="\t")
 dim(covar)
 head(covar)
 ```
-Need to recode categorical variables as 0,1
+
+But due to the requirement of the `MatrixEQTL` package, categorical covariates need to be recoded as 0,1,2...
 ```{r}
 covar_recode<-covar                                                                  
 covar_recode$gender[covar_recode$gender=="male"]<-1
@@ -132,34 +136,33 @@ write.table(t(covar_recode),"covar_recode.txt",quote=F, sep=" ",row.names=T,col.
 
 
 ## Using principle components as covariates
-Further we will explore the use of principle components as covariates in linear models of gene expression to account for unknown sources of variation from genotype. 
+Further we will explore the use of principle components of genotype as covariates in linear models of gene expression to account for unknown sources of variation from genotype. 
 
 ```{r}
 pca <- prcomp(t(snps), center=TRUE, scale = TRUE)
 sum(pca$sdev[1:5]^2)/sum(pca$sdev^2) # percentage of variance explained by first 5 PCs
 screeplot(pca,type="lines") 
 ```
+
 ## eQTL analysis
-Now that we’ve covered the basics let’s focus on real world expression and genotyping data. We’ll be using R’s MatrixEQTL package which is designed for fast eQTL analysis on large genomic data sets. MatrixEQTL can test for association between genotype and gene expression using linear regression with either additive or ANOVA genotype effects. The models can include covariates to account for factors as population stratification, gender, and clinical variables. It also supports models with heteroscedastic and/or correlated errors, false discovery rate estimation and separate treatment of local (cis) and distant (trans) eQTLs. You can learn more about MatrixEQTL [here](http://www.bios.unc.edu/research/genomic_software/Matrix_eQTL/).
+Now that we’ve covered the basics let’s focus on real world expression and genotyping data. We’ll be using R’s `MatrixEQTL` package which is designed for fast eQTL analysis on large genomic data sets. `MatrixEQTL` can test for association between genotype and gene expression using linear regression with either additive or ANOVA genotype effects. The models can include covariates to account for factors as population stratification, gender, and clinical variables. It also supports models with heteroscedastic and/or correlated errors, false discovery rate estimation and separate treatment of local (cis) and distant (trans) eQTLs. You can learn more about MatrixEQTL [here](http://www.bios.unc.edu/research/genomic_software/Matrix_eQTL/).
 
 ### cis-eQTL and trans-eQTL analysis
-To perform an eQTL analysis we don’t only need to know the genotype and gene expression values for every sample, but also the genomic positions of genes and SNPs. This is necessary to define which SNPs should be tested against which genes. For cis-eQTL analyses SNPs in proximity to the gene are chosen and for trans-eQTL analyses SNPs further away, or on different chromosomes, are taken into account. The window in cis-eQTL analysis is commonly chosen to be 500kb-1Mb measured from gene’s TSS.
+To perform an eQTL analysis we not only need to know the genotype and gene expression values for every sample, but also the genomic positions of genes and SNPs. This is necessary to define which SNPs should be tested against which genes. For cis-eQTL analyses, SNPs in proximity to the gene are chosen and for trans-eQTL analyses SNPs further away, or on different chromosomes, are taken into account. The window in cis-eQTL analysis is commonly chosen to be 500kb-1Mb measured from gene’s TSS.
 
-Cis- and trans- eQTL analysis
-Matrix eQTL can distinguish local (cis-) and distant (trans-) eQTLs and perform separate correction for multiple comparisons for those groups. The second sample code shows how to run such analysis. The main Matrix eQTL function Matrix_eQTL_main requires several extra parameters for cis/trans analysis:
+In addition, the main `MatrixEQTL` function `Matrix_eQTL_main` requires several extra parameters for cis/trans analysis:
 
-- pvOutputThreshold.cis – p-value threshold for cis-eQTLs.
-- output_file_name.cis – detected cis-eQTLs are saved in this file.
-- cisDist – maximum distance at which gene-SNP pair is considered local.
-- snpspos – data frame with information about SNP locations, must have 3 columns - SNP name, chromosome, and position. See sample SNP location file.
-- genepos – data frame with information about gene locations, must have 4 columns - the name, chromosome, and positions of the left and right ends. See sample gene location file.
+- `pvOutputThreshold.cis` : p-value threshold for cis-eQTLs.
+- `output_file_name.cis` : detected cis-eQTLs are saved in this file.
+- `cisDist` – maximum distance at which gene-SNP pair is considered local.
+- `snpspos` : data frame with information about SNP locations, must have 3 columns - SNP name, chromosome, and position. See sample SNP location file.
+- `genepos` : data frame with information about gene locations, must have 4 columns - the name, chromosome, and positions of the left and right ends. See sample gene location file.
 
-
+We first setup the input files and the above parameters for eQTL analysis:
 ```{r}
 # eQTL mapping, cis/trans, no pcs
 suppressMessages(library(MatrixEQTL))
 
-  
 SNP_file_name <-  "geno.txt";
 snps_location_file_name <- "snppos.txt";
 expression_file_name <- "gexp.txt";
@@ -172,12 +175,10 @@ cis_dist <- 1e6
 # Output file name
 output_file_name_cis = tempfile();
 output_file_name_tra = tempfile();
-# output_file_name_cis = "/Users/igorhut/Documents/eQTL/tools_comparison_R_proj/output_voja_cis_eqtls_1.txt";
-# output_file_name_tra = "/Users/igorhut/Documents/eQTL/tools_comparison_R_proj/output_voja_trans_eqtls_1.txt";
   
 ## Settings
 # Linear model to use, modelANOVA, modelLINEAR, or modelLINEAR_CROSS
-useModel = modelLINEAR; # modelANOVA, modelLINEAR, or modelLINEAR_CROSS
+useModel = modelLINEAR; 
 
 # Only associations significant at this level will be saved
 pvOutputThreshold_cis = cis_threshold; 
@@ -192,7 +193,11 @@ errorCovariance = numeric();
   
 # Distance for local gene-SNP pairs
 cisDist = cis_dist
-  
+```
+
+The following codes performs both cis- and tran-eQTL analysis using the above setup files and parameters. The analysis is run by calling `Matrix_eQTL_main`, but the input data files need to be stored in required data object structure before it can be called to perform the analysis. The following codes first tell R how to read in the files correctly by specifying delimeters, etc. Then, both the input files and setting parameters were fed to the `Matrix_eQTL_main` options.
+
+```{r}
 ## Load genotype data
 snps = SlicedData$new();
 snps$fileDelimiter = " "; # the TAB character
@@ -242,7 +247,8 @@ me = Matrix_eQTL_main(
   pvalue.hist = TRUE,
   min.pv.by.genesnp = FALSE,
   noFDRsaveMemory = FALSE);
-  
+
+## for generating QQ plot  
 me_qq = Matrix_eQTL_main(
   snps = snps,
   gene = gene,
@@ -267,6 +273,8 @@ unlink(output_file_name_cis);
 cat('Analysis done in: ', me$time.in.sec, ' seconds', '\n');
 ```
 
+Check the results from both cis- and tran-eQTL analysis.
+
 ```{r}
 head(me$cis$eqtls)
 ```
@@ -289,14 +297,16 @@ plot(me)
 ## Make the qq-plot of local and distant p-values
 plot(me_qq)  
 ```
+
 ## Multiple testing correction
-Whenever multiple statistical tests are performed, a multiple testing correction has to be performed. This is necessary because many hypotheses are tested. Therefore each calculated association p-value has to be corrected for multiple testing. MatrixEQTL does this for you automatically and returns the corrected p-value as a false discovery rate (FDR). Common thresholds on FDR are 5% or 10%.
+Whenever multiple statistical tests are performed, a multiple testing correction has to be performed. This is necessary because many hypotheses are tested. Therefore each calculated association p-value has to be corrected for multiple testing. `MatrixEQTL` does this for you automatically and returns the corrected p-value as a false discovery rate (`FDR`). Common thresholds on FDR are 5% or 10%.
 
 ## Gene regional Manhanttan plots 
 Manhattan plots are a way to depict association p-values of multiple SNPs at once. They are also very common in GWAS. Manhattan plots are a rather convinient modality for interpretation of eQTL signals in terms of LD.
 
 Let’s now generate a manhattan plot for gene ENSG00000172404.4, plotting the base-pair position on the x-axis and the −log10(pvalue)
  of the SNP in the y axis. Manhattan plots usually depict all tested SNPs, not only the ones passing a certain p-value threshold. Therefore we’ll first obtain all the association p-values for all tested SNPs for gene ENSG00000172404.4.
+ 
 ```{r}
 gene_id = "CHD5"
 
@@ -305,6 +315,7 @@ single_gene_exp = SlicedData$new()
 single_gene_exp$CreateFromMatrix(as.matrix(gene_values[gene_id, , drop=FALSE]))
 single_gene_exp
 ```
+
 ```{r}
 snpspos = read.table(snps_location_file_name, 
                      header = TRUE, 
@@ -327,6 +338,7 @@ manh_data = merge(single_cis_eqtl_res$cis$eqtls, snpspos, by.x = "snps", by.y = 
 manh_data = manh_data [,c("pos", "chr", "pvalue", "snps")]
 head(manh_data)
 ```
+
 ```{r}
 # Plot the Manhattanplot
 with(manh_data ,plot(pos, -log10(pvalue), xlab = "genomic position (bp)",

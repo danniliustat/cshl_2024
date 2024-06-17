@@ -61,17 +61,15 @@ The MAGMA installation packages are already downloaded inside `Tools/MAGMA`.
 ### Prepare Annotation File
 First set the working directory:
 ```{bash eval=F}
-# change the path below to where you saved "bigcare-main" folder
+# change the path below to where you saved "cshl_2024" folder
 ## run in R Terminal
-#mydir="/path/to/bigcare-main/Data/case_data"
-mydir="./Data/magma"
+mydir="/path/to/cshl_2024/Data/magma"
 cd $mydir
 ```
 
 ```{r eval=F}
 # R codes- run in R Console
-#setwd("/path/to/bigcare-main/Data/case_data")
-setwd("./Data/magma")
+setwd("/path/to/cshl_2024/Data/magma")
 mydir<-getwd()
 ```
 

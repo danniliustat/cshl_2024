@@ -17,17 +17,15 @@ library(png)
 ```
 
 ```{bash eval=F}
-# change the path below to where you saved "bigcare-main" folder
+# change the path below to where you saved "cshl_2024" folder
 ## run in R Terminal
-#mydir="/path/to/bigcare-main/Data/case_data"
-mydir="./Data/case_interaction"
+mydir="/path/to/cshl_2024/Data/case_interaction"
 cd $mydir
 ```
 
 ```{r eval=F}
 # R codes- run in R Console
-#setwd("/path/to/bigcare-main/Data/case_data")
-setwd("./Data/case_interaction")
+setwd("/path/to/cshl_2024/Data/case_interaction")
 mydir<-getwd()
 ```
 
