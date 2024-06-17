@@ -140,7 +140,7 @@ Let's first use `head` to print only the first several lines of the data and sho
 #platform
 # head GPL16104-1240.txt
 ```
-![GPL data](geno_GPL.png) 
+![GPL data](./image/geno_GPL.png) 
 
 ```{bash}
 # bash codes- run in terminal
@@ -234,7 +234,7 @@ In the code below, we use `as.character` to change the first column `title` to a
 
 **The codes below will generate a list of warning message saying that “NAs introduced by coercion”. This is because our phenotype data contains missing values. You don't have to worry of this as we will impute this missings in next section.**
 
-```{r}
+```{r warning=F,message=F,error=F}
 # R codes- run in R Console
 #change to numeric, warning because of NA
 phenotype <- cbind(phenotype[,1], apply(phenotype[,2:15],2,as.numeric))
@@ -390,7 +390,6 @@ write.table(residpheno, "resid_phenotype0.txt", row.names=F, col.names=F, quote=
 PLINK can be downloaded to your own computer [here](https://zzz.bwh.harvard.edu/plink/download.shtml). We already have this tool installed in our environment, so the codes below load the `plink` with `module load` directly.
 
 ### Step 1: prepare PLINK ped file
-## Step 1: prepare PLINK ped file
 
 The PED file is a white-space (space or tab) delimited file: the first six columns are mandatory:
 
@@ -600,7 +599,6 @@ paste famID.txt samID.txt resid_phenotype0.txt > phenotype_plink.txt
 3. Alternative phenotype file: phenotype_plink.txt
 
 ***
-About imputation!!!!!
 
 
 

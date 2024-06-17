@@ -209,11 +209,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.5" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#prepare-plink-data"><i class="fa fa-check"></i><b>4.5</b> Prepare PLINK data</a>
 <ul>
 <li class="chapter" data-level="4.5.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file"><i class="fa fa-check"></i><b>4.5.1</b> Step 1: prepare PLINK ped file</a></li>
-</ul></li>
-<li class="chapter" data-level="4.6" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-1-prepare-plink-ped-file-1"><i class="fa fa-check"></i><b>4.6</b> Step 1: prepare PLINK ped file</a>
-<ul>
-<li class="chapter" data-level="4.6.1" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-2-prepare-plink-map-file"><i class="fa fa-check"></i><b>4.6.1</b> Step 2: prepare PLINK map file</a></li>
-<li class="chapter" data-level="4.6.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-3-prepare-plink-alternate-phenotype-file-in-linux"><i class="fa fa-check"></i><b>4.6.2</b> Step 3 : prepare PLINK alternate phenotype file (in Linux)</a></li>
+<li class="chapter" data-level="4.5.2" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-2-prepare-plink-map-file"><i class="fa fa-check"></i><b>4.5.2</b> Step 2: prepare PLINK map file</a></li>
+<li class="chapter" data-level="4.5.3" data-path="gwas-case-study-data-preparation.html"><a href="gwas-case-study-data-preparation.html#step-3-prepare-plink-alternate-phenotype-file-in-linux"><i class="fa fa-check"></i><b>4.5.3</b> Step 3 : prepare PLINK alternate phenotype file (in Linux)</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="gwas-with-continuous-trait.html"><a href="gwas-with-continuous-trait.html"><i class="fa fa-check"></i><b>5</b> GWAS with Continuous Trait</a>
@@ -834,7 +831,7 @@ However, macOS users need to go through additional steps to authorize PLINK, IMP
 ## Copyright 2008 Bryan Howie, Peter Donnelly, and Jonathan Marchini
 ## Please see the LICENCE file included with this program for conditions of use.
 ## 
-## The seed for the random number generator is 1657984626.
+## The seed for the random number generator is 1699296232.
 ## 
 ## Command-line input: ./Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2 -m ./Data/impute2_example/example.chr22.map -h ./Data/impute2_example/example.chr22.1kG.haps -l ./Data/impute2_example/example.chr22.1kG.legend -g ./Data/impute2_example/example.chr22.study.gens -strand_g ./Data/impute2_example/example.chr22.study.strand -int 20.4e6 20.5e6 -Ne 20000 -o ./Data/impute2_example/example.chr22.one.phased.impute2
 ## 
@@ -1051,16 +1048,16 @@ However, macOS users need to go through additional steps to authorize PLINK, IMP
 ## When the masked study genotypes were imputed with reference data from Panel 0, the concordance between original and imputed genotypes was as follows:
 ## 
 ##   Interval  #Genotypes %Concordance         Interval  %Called %Concordance
-##   [0.0-0.1]          0          0.0         [ &gt;= 0.0]   100.0         97.5
-##   [0.1-0.2]          0          0.0         [ &gt;= 0.1]   100.0         97.5
-##   [0.2-0.3]          0          0.0         [ &gt;= 0.2]   100.0         97.5
-##   [0.3-0.4]          0          0.0         [ &gt;= 0.3]   100.0         97.5
-##   [0.4-0.5]          0          0.0         [ &gt;= 0.4]   100.0         97.5
-##   [0.5-0.6]         11        100.0         [ &gt;= 0.5]   100.0         97.5
-##   [0.6-0.7]          5        100.0         [ &gt;= 0.6]    99.6         97.5
-##   [0.7-0.8]          6         83.3         [ &gt;= 0.7]    99.5         97.5
-##   [0.8-0.9]         38         86.8         [ &gt;= 0.8]    99.3         97.5
-##   [0.9-1.0]       2925         97.6         [ &gt;= 0.9]    98.0         97.6
+##   [0.0-0.1]          0          0.0         [ &gt;= 0.0]   100.0         97.4
+##   [0.1-0.2]          0          0.0         [ &gt;= 0.1]   100.0         97.4
+##   [0.2-0.3]          0          0.0         [ &gt;= 0.2]   100.0         97.4
+##   [0.3-0.4]          0          0.0         [ &gt;= 0.3]   100.0         97.4
+##   [0.4-0.5]          0          0.0         [ &gt;= 0.4]   100.0         97.4
+##   [0.5-0.6]          8         87.5         [ &gt;= 0.5]   100.0         97.4
+##   [0.6-0.7]          8         75.0         [ &gt;= 0.6]    99.7         97.4
+##   [0.7-0.8]          5        100.0         [ &gt;= 0.7]    99.5         97.5
+##   [0.8-0.9]         41         85.4         [ &gt;= 0.8]    99.3         97.5
+##   [0.9-1.0]       2923         97.7         [ &gt;= 0.9]    97.9         97.7
 ## 
 ## Have a nice day!</code></pre>
 </div>

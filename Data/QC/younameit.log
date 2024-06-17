@@ -7,10 +7,10 @@ Options in effect:
 
 Hostname: Danni.local
 Working directory: /Users/zhanglab/Documents/cshl_2024
-Start time: Mon Jun 17 14:09:28 2024
+Start time: Mon Jun 17 14:50:26 2024
 
 Note: --noweb has no effect since no web check is implemented yet.
-Random number seed: 1718647768
+Random number seed: 1718650226
 16384 MB RAM detected; reserving 8192 MB for main workspace.
 Scanning .ped file... done.
 Performing single-pass .bed write (5 variants, 344 people).
@@ -28,4 +28,4 @@ Note: No phenotypes present.
 IBD calculations complete.
 Finished writing ./Data/QC/younameit.genome .
 
-End time: Mon Jun 17 14:09:28 2024
+End time: Mon Jun 17 14:50:26 2024
