@@ -353,6 +353,7 @@ Optionally, remove one member of the pair if close relatives are identified.
 # Windows user need to run in Powershell App
 head ./Data/QC/younameit.genome
 ```
+
 ## An Imputation Example
 
 In many cases, raw sequence data may have missing values. Then, an imputation step will be neccessary. **IMPUTE2** is a popular software package for imputation. Below is a simple example for conducting imputation by IMPUTE2. For more information about IMPUTE2, please refer its website http://mathgen.stats.ox.ac.uk/impute/impute_v2.html and the associated publication http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1000529
@@ -421,7 +422,7 @@ cumsum(pve$pve)
 
 A **PC plot** is a graphical representation to visualize the data in terms of the principal components. We usually look at the projection to the first several PCs which explain most of the variation. To generate PC plots, we will read in the eigenvectors from **younameit.eigenvec** and plot PC1 vs PC2, and PC3 vs PC4.
 
-```{r}
+```{r fig.cap='PC plot of genotype', out.width='150%', fig.asp=.5, fig.align='center'}
 # R codes- run in R Console
 # read in eigenvectors
 pca <- read.table("./Data/PC/younameit.eigenvec", header=F,row.names = 1)
@@ -447,7 +448,7 @@ pc12 + pc34 +plot_layout(ncol=2)
 
 If the data contains categorical variables, such as case/control, we can also visualize the PCs by coloring different groups. We don't have case/control in this example data, so I generate a random case/control variable to use as an example. The codes below randomly assign 30% of the samples as cases and rest as controls.
 
-```{r warning=F, message=F}
+```{r warning=F, message=F,fig.cap='PC plot of genotype, colored by case/control', out.width='150%', fig.asp=.5, fig.align='center'}
 set.seed(123)
 group<-rep("control",nrow(pca))
 case_idx<-sample(nrow(pca),0.3*nrow(pca))

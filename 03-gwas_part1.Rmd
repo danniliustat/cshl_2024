@@ -5,35 +5,30 @@ knitr::opts_knit$set(root.dir = "./Data/case_data")
 getwd
 ```
 
-Here we introduce a hands-on practice of a case study on genome-wide association study with **continuous traits**. This breast cancer study of Polish Caucasion cohort aims to identify new CYP2D6 DNA variants associated with impaired metabolism of tamoxifen toward endoxifen, and can be used to predicting efficacy of tamoxifen treatment. In this notebook, we will use their preprocessed **192 DNA samples** selected from the Polish Caucasian cohort to show you a typical GWAS workflow. The selection of these 192 samples is based on ratio of the sum of two tamoxifen active metabolite ((Z)-endoxifen and (Z)-4-OH-Tam) plasma concentrations to the sum of the concentrations of tamoxifen and the remaining measured compounds. As a result, 96 samples were from patients with the highest ratio, and 96 were from those with the lowest ratio. Please refer to the following paper if you are interested in details of this data.
+Here we introduce a hands-on practice of a case study on genome-wide association study with **continuous traits**. This breast cancer study of Polish Caucasion cohort aims to identify new CYP2D6 DNA variants associated with impaired metabolism of tamoxifen toward endoxifen, and can be used to predicting efficacy of tamoxifen treatment. In this chapter, we will use their preprocessed **192 DNA samples** selected from the Polish Caucasian cohort to show you a typical GWAS workflow. The selection of these 192 samples is based on ratio of the sum of two tamoxifen active metabolite ((Z)-endoxifen and (Z)-4-OH-Tam) plasma concentrations to the sum of the concentrations of tamoxifen and the remaining measured compounds. As a result, 96 samples were from patients with the highest ratio, and 96 were from those with the lowest ratio. Please refer to the following paper if you are interested in details of this data.
 
 **Reference paper:** Hennig EE, Piatkowska M, Goryca K, Pospiech E, Paziewska A, Karczmarski J, Kluska A, Brewczynska E, Ostrowski J "[Non-CYP2D6 variants selected by GWAS improved the prediction of impaired tamoxifen metabolism in breast cancer patients](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6722498/)." J Clin Med. 2019 Aug; 8(8): 1087. doi: 10.3390/jcm8081087
 
 > <span style="color: red;"> **Important:** Raw Whole Genome Sequencing data can be very large, more than 1Gb. We will show you the codes about how to download and preprocess the raw genotype data from start. But to run the analysis on laptop with limited memory, we provide the subsetted genotype data with only the first 1000 SNPs for you to practice. </span>
-
-> <span style="color: #0064a4;">
-Special notes for Windows users: Windows has two command-line shells, Command shell and Windows Powershell. Command shell is specific to Windows system and can be run from RStudio Terminal or in "Command Prompt" App, but the language it uses is NOT the same as Bash! Powershell App is the only place to run Bash commands in Windows. Therefore if you are Windows users and use RStudio for this course, you can't run bash codes such as "head" or "awk" from RStudio Terminal, you can **ONLY** run PLINK program codes. If you would like to try Bash codes, please open "Windows Powershell" app and follow the same steps to set the paths. Still, Powershell App won't run PLINK codes, so you'll have to switch between Powershell and RStudio Terminal.</span>
 
 ## Environment setting and packages
 
 Before we can run any analysis, we need to set the working path in both R and bash and install the necessary R packages. To setup the working directory, make sure you run the following codes in R.
 
 ```{bash eval=F}
-# change the path below to where you saved "bigcare-main" folder
+# change the path below to where you saved "cshl_2024" folder
 ## run in R Terminal
-#mydir="/path/to/bigcare-main/Data/case_data"
-mydir="./Data/case_data"
+mydir="/path/to/cshl_2024/Data/case_data"
 cd $mydir
 ```
 
 ```{r eval=F}
 # R codes- run in R Console
-#setwd("/path/to/bigcare-main/Data/case_data")
-setwd("./Data/case_data")
+setwd("/path/to/cshl_2024/Data/case_data")
 mydir<-getwd()
 ```
 
-The packages we will use in this notebook include: data.table, GEOquery (from Biocondector), GenABEL, qqman, png and QCGWAS. You will need to install these packages by yourself in R. The codes to install these packages are list below and are commented out with `#`.
+The packages we will use in this chapter include: data.table, GEOquery (from Biocondector), GenABEL, qqman, png and QCGWAS. You will need to install these packages by yourself in R. The codes to install these packages are list below and are commented out with `#`.
 
 ```{r}
 # R codes- run in R Console
@@ -80,8 +75,7 @@ The following code can download the pheonotype and genotype data.
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
-# data_path=/path/to/bigcare-main/Data/case_data
+# data_path=/path/to/cshl_2024/Data/case_data
 # wget ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE129nnn/GSE129162/matrix/GSE129162_series_matrix.txt.gz -P $data_path
 # gunzip $data_path/*gz #this code replaces the .gz file with an uncompressed file
 ```
@@ -98,8 +92,7 @@ The following code is what we used to download and unzip the genotype data. You 
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
-# data_path=/path/to/bigcare-main/Data/case_data
+# data_path=/path/to/cshl_2024/Data/case_data
 # wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE129nnn/GSE129162/suppl/GSE129162%5FPlate%5F1%5FFull%5FData%5FTable%2Etxt%2Egz -P $data_path
 # wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE129nnn/GSE129162/suppl/GSE129162%5FPlate%5F2%5FFull%5FData%5FTable%2Etxt%2Egz -P $data_path
 # gunzip $data_path/*gz
@@ -144,7 +137,6 @@ Let's first use `head` to print only the first several lines of the data and sho
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 #platform
 # head GPL16104-1240.txt
 ```
@@ -152,14 +144,11 @@ Let's first use `head` to print only the first several lines of the data and sho
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 # genotype
 head -n 5 GSE129162_1k_geno1.txt
-
 ```
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 head sampleID.txt
 ```
 
@@ -423,7 +412,6 @@ This code extract the sample ID from file `sampleID.txt`. `NR>=2` means we start
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 ### Individual ID: sampleID.txt (in Linux)
 awk 'NR>=2 {print}' sampleID.txt > samID.txt
 head samID.txt
@@ -456,7 +444,6 @@ From column 7 and onwards, we need to prepare the genotype data. The following c
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 head -n 2 GSE129162_1k_geno1.txt
 ```
 
@@ -466,7 +453,6 @@ The code below is a bash code. `NR>=2` means we start print the data from 2nd ro
 
 ```{bash}
 ### bash codes- run in terminal
-# Windows user need to run in Powershell App 
 ### Genotype only 
 ## from Row 2, print every 4th columns starting from column 11
 awk 'NR>=2 {for(i=11;i<=NF; i+=4) {printf "%s ", $i} printf "\n"}' \
@@ -512,7 +498,6 @@ It is very important that in PED file, **all marker should be biallelic.** The g
 Here, we will achieve this by using the bash command `sed`. We will run using the subsetted genotype data "genodata_1k.txt".
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 # Replace 'A' with 'A ', 'B' with 'G ', NC(NoCall) with '0 ' in genodata (in Linux)
 sed -i -e 's/A/A /g' genodata_1k.txt
 sed -i -e 's/B/G /g' genodata_1k.txt
@@ -523,7 +508,6 @@ Finally, we are ready to generate the PED file. We combine the files we generate
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 ### PED file (in Linux)
 paste -d' ' \
 famID.txt samID.txt patID.txt matID.txt gender.txt pheno.txt genodata_1k.txt > genotype_1k.ped
@@ -544,7 +528,6 @@ In the platform data, because SNP information starts at line 6, we use `tail -n+
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 head GPL16104-1240.txt
 
 ### Row 31 (in Linux)
@@ -559,7 +542,6 @@ Then, the list of SNPs in original genotype data was extracted and matched with 
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 ### SNP ID in discovery set (in Linux)
 awk 'NR>=2 {print $2}' GSE129162_1k_geno1.txt > SNPID.txt
 
@@ -606,7 +588,6 @@ The code below prepares the phenotype data that will be submitted to PLINK. We u
 
 ```{bash}
 # bash codes- run in terminal
-# Windows user need to run in Powershell App 
 paste famID.txt samID.txt resid_phenotype0.txt > phenotype_plink.txt
 ```
 
