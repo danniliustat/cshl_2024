@@ -1,3 +1,47 @@
+--- 
+title: "2024 CSHL course - GWAS Hands-on Analysis"
+author: "Danni Liu - Purdue University"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: rstudio/cshl_2024
+description: "This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL."
+---
+
+# Welcome to the GWAS and eQTL Workshop
+
+Placeholder
+
+
+### Overview
+### Folder structure:
+### Programming Languages: 
+### Required GWAS Tools
+
+<!--chapter:end:index.Rmd-->
+
+
+# An Overview of Regression with Toy Examples
+
+Placeholder
+
+
+## Environment Setting and Packages
+## Toy Example Data
+## Logistic Regression
+## ROC curve and AUC for HOXB13
+## Practice
+## Comparison of HOXB13 ROC curve and NHLH1 ROC curve
+## Linear Regression
+### Linear regression of HOXB13 vs. IL17BR
+## Variable selection--Forward, backward and stepwise selection
+
+<!--chapter:end:01-intro.Rmd-->
+
 # GWAS Tools and Data Preprocessing Workflow with Toy Example 
 
 This notebook demonstrates a standard approach to conduct the genome wide association study (GWAS) using toy example datasets. The procedures consist of four steps:
@@ -752,4 +796,133 @@ This output file **"younameit.qassoc"** has the following columns:
 In the next section, we will start analyzing real data from a case study. The procedures might not be exactly the same here, as real data require more proprocessing steps before it can be used for association study.
 
 
+
+
+<!--chapter:end:02-gwastool.Rmd-->
+
+
+# GWAS Case Study-Data Preparation
+
+Placeholder
+
+
+## Environment setting and packages
+## Accessing data
+### Data availability
+### Data files documentation
+## Preprocessing Phenotype Data
+### Extracting phenotype data
+### Summary of Phenotypes Data
+### Histogram of each trait
+### Handling the missing values in the phenotypes and covariates
+### Checking normality assumptions for each trait
+### Normalize phenotype data
+## Covariates Adjustment
+## Prepare PLINK data
+### Step 1: prepare PLINK ped file
+## Step 1: prepare PLINK ped file
+### Step 2: prepare PLINK map file
+### Step 3 : prepare PLINK alternate phenotype file (in Linux)
+
+<!--chapter:end:03-gwas_part1.Rmd-->
+
+
+# GWAS with Continuous Trait
+
+Placeholder
+
+
+## Manhattan Plot and Q-Q Plot
+### Generate manhattan plot
+### Generate Q-Q plot
+## Multiple-Test Correction
+### Prepare R input files (in Linux)
+### Significant SNPs after a multiple-test correction of FDR (using R)
+## Regional Association Plot
+### Obtain regional SNPs (using R)
+## Distribution of Z-endoxifen ratio for rs8138080
+### Obtain phenotype data (Z-endoxifen ratio) (using R)
+### Obtain genotype for significant SNPs (using R)
+### Create Box plot (using R)
+## Proportion of Variation Explained by rs8138080
+### Recode genotype of significant SNPs (using R)
+### Calculate marginal $R^2$ (using R)
+## PRACTICE TIME
+### Practice 1
+### Practice 2
+
+<!--chapter:end:04-gwas_part2.Rmd-->
+
+
+# GWAS with Binary Trait
+
+Placeholder
+
+
+## Data Preparation
+## Genome-Wide Case/Control Association Test (in PLINK)
+## Manhattan Plot and Q-Q Plot
+## Generate Manhattan plot
+## Generate Q-Q plot
+## Multiple-Test Correction
+## Top 10 SNPs
+
+<!--chapter:end:05-gwas_part3.Rmd-->
+
+
+# GxG and GxE Interactions, Power and Sample Size Calculation
+
+Placeholder
+
+
+## Prepare Files
+## Test for Epistasis (GxG)
+## Gene-Environment Interaction (GxE)
+## Power and sample size calculation for GWAS
+### Power calculation with binary outcome:
+#### Case study with continuous outcome:
+#### Continuous study with continuous GxE interaction:
+### Sample size calculation
+#### Case study with binary outcome:
+#### Case study with continuous outcome
+#### Binary study with binary GxE interactions
+
+<!--chapter:end:06-gwas_gxe.Rmd-->
+
+
+# LDSC and Gene-Set Analysis
+
+Placeholder
+
+
+## LDSC (Linkage Disequilibrium Score Regression)
+## MAGMA (for Gene-Level Analysis)
+### Prepare Annotation File
+### Part 1: Gene Analysis
+### Part 2: Gene-Set Analysis
+
+<!--chapter:end:07-post_GWAS.Rmd-->
+
+
+# Perform eQTL Analysis
+
+Placeholder
+
+
+## Filtering SNPs by MAF
+## Gene expression profiling
+## Covariates
+## Using principle components as covariates
+## eQTL analysis
+### cis-eQTL and trans-eQTL analysis
+## Multiple testing correction
+## Gene regional Manhanttan plots 
+
+<!--chapter:end:08-eqtl.Rmd-->
+
+`r if (knitr:::is_html_output()) '
+# References {-}
+'`
+
+<!--chapter:end:09-reference.Rmd-->
 
