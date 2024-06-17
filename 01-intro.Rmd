@@ -166,7 +166,6 @@ plot(prf2,main="ROC for non-significant gene NHLH1 ")
 auc <- performance(pr, measure = "auc")
 auc <- auc@y.values[[1]]
 auc # 0.47
-
 ```
 
 ## Comparison of HOXB13 ROC curve and NHLH1 ROC curve
