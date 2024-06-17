@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 GWAS Tools and Data Preprocessing Workflow with Toy Example | 2024 CSHL course - GWAS Hands-on Analysis</title>
-  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 GWAS Tools and Data Preprocessing Workflow with Toy Example | 2024 CSHL course - GWAS Hands-on Analysis" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="github-repo" content="rstudio/cshl_2024" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 3 GWAS Tools and Data Preprocessing Workflow with Toy Example | 2024 CSHL course - GWAS Hands-on Analysis" />
   
-  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   
 
 <meta name="author" content="Danni Liu - Purdue University" />
@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">2024 CSHL Course- GWAS and EQTL Hands-on Analysis</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to the GWAS and eQTL Workshop</a>
@@ -834,7 +834,7 @@ However, macOS users need to go through additional steps to authorize PLINK, IMP
 ## Copyright 2008 Bryan Howie, Peter Donnelly, and Jonathan Marchini
 ## Please see the LICENCE file included with this program for conditions of use.
 ## 
-## The seed for the random number generator is 976729688.
+## The seed for the random number generator is 1555293856.
 ## 
 ## Command-line input: ./Tools/IMPUTE2/impute_v2.3.2_MacOSX_Intel/impute2 -m ./Data/impute2_example/example.chr22.map -h ./Data/impute2_example/example.chr22.1kG.haps -l ./Data/impute2_example/example.chr22.1kG.legend -g ./Data/impute2_example/example.chr22.study.gens -strand_g ./Data/impute2_example/example.chr22.study.strand -int 20.4e6 20.5e6 -Ne 20000 -o ./Data/impute2_example/example.chr22.one.phased.impute2
 ## 
@@ -1051,16 +1051,16 @@ However, macOS users need to go through additional steps to authorize PLINK, IMP
 ## When the masked study genotypes were imputed with reference data from Panel 0, the concordance between original and imputed genotypes was as follows:
 ## 
 ##   Interval  #Genotypes %Concordance         Interval  %Called %Concordance
-##   [0.0-0.1]          0          0.0         [ &gt;= 0.0]   100.0         97.5
-##   [0.1-0.2]          0          0.0         [ &gt;= 0.1]   100.0         97.5
-##   [0.2-0.3]          0          0.0         [ &gt;= 0.2]   100.0         97.5
-##   [0.3-0.4]          0          0.0         [ &gt;= 0.3]   100.0         97.5
-##   [0.4-0.5]          0          0.0         [ &gt;= 0.4]   100.0         97.5
-##   [0.5-0.6]          9        100.0         [ &gt;= 0.5]   100.0         97.5
-##   [0.6-0.7]          5        100.0         [ &gt;= 0.6]    99.7         97.5
-##   [0.7-0.8]          3        100.0         [ &gt;= 0.7]    99.5         97.5
-##   [0.8-0.9]         46         84.8         [ &gt;= 0.8]    99.4         97.5
-##   [0.9-1.0]       2922         97.7         [ &gt;= 0.9]    97.9         97.7
+##   [0.0-0.1]          0          0.0         [ &gt;= 0.0]   100.0         97.4
+##   [0.1-0.2]          0          0.0         [ &gt;= 0.1]   100.0         97.4
+##   [0.2-0.3]          0          0.0         [ &gt;= 0.2]   100.0         97.4
+##   [0.3-0.4]          0          0.0         [ &gt;= 0.3]   100.0         97.4
+##   [0.4-0.5]          0          0.0         [ &gt;= 0.4]   100.0         97.4
+##   [0.5-0.6]          6        100.0         [ &gt;= 0.5]   100.0         97.4
+##   [0.6-0.7]          6         50.0         [ &gt;= 0.6]    99.8         97.4
+##   [0.7-0.8]          7         85.7         [ &gt;= 0.7]    99.6         97.5
+##   [0.8-0.9]         42         85.7         [ &gt;= 0.8]    99.4         97.5
+##   [0.9-1.0]       2924         97.7         [ &gt;= 0.9]    98.0         97.7
 ## 
 ## Have a nice day!</code></pre>
 </div>
@@ -1118,7 +1118,7 @@ However, macOS users need to go through additional steps to authorize PLINK, IMP
 <span id="cb43-7"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb43-7" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb43-8"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb43-8" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(pve, <span class="fu">aes</span>(PC, pve)) <span class="sc">+</span> <span class="fu">geom_point</span>()<span class="sc">+</span><span class="fu">geom_line</span>()</span>
 <span id="cb43-9"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb43-9" tabindex="-1"></a>a <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Percentage variance explained&quot;</span>) <span class="sc">+</span> <span class="fu">theme_light</span>()</span></code></pre></div>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/screeplot-1.png" width="672" /></p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb44-1" tabindex="-1"></a><span class="co"># calculate the cumulative sum of the percentage variance explained</span></span>
 <span id="cb44-2"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb44-2" tabindex="-1"></a><span class="fu">cumsum</span>(pve<span class="sc">$</span>pve)</span></code></pre></div>
 <pre><code>##  [1]   4.179504   8.190458  11.831947  15.246016  18.367473  21.416914
@@ -1152,8 +1152,8 @@ However, macOS users need to go through additional steps to authorize PLINK, IMP
 <span id="cb46-19"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb46-19" tabindex="-1"></a>            <span class="fu">ylab</span>(<span class="fu">paste0</span>(<span class="st">&quot;PC4 (&quot;</span>, <span class="fu">signif</span>(pve<span class="sc">$</span>pve[<span class="dv">4</span>], <span class="dv">3</span>), <span class="st">&quot;%)&quot;</span>))</span>
 <span id="cb46-20"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb46-20" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb46-21"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb46-21" tabindex="-1"></a>pc12 <span class="sc">+</span> pc34 <span class="sc">+</span><span class="fu">plot_layout</span>(<span class="at">ncol=</span><span class="dv">2</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-23"></span>
-<img src="cshl_2024_files/figure-html/unnamed-chunk-23-1.png" alt="PC plot of genotype" width="150%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:PCplot"></span>
+<img src="cshl_2024_files/figure-html/PCplot-1.png" alt="PC plot of genotype" width="150%" />
 <p class="caption">
 Figure 3.1: PC plot of genotype
 </p>
@@ -1177,8 +1177,8 @@ Figure 3.1: PC plot of genotype
 <span id="cb47-16"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb47-16" tabindex="-1"></a>            <span class="fu">ylab</span>(<span class="fu">paste0</span>(<span class="st">&quot;PC4 (&quot;</span>, <span class="fu">signif</span>(pve<span class="sc">$</span>pve[<span class="dv">4</span>], <span class="dv">3</span>), <span class="st">&quot;%)&quot;</span>))</span>
 <span id="cb47-17"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb47-17" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb47-18"><a href="gwas-tools-and-data-preprocessing-workflow-with-toy-example.html#cb47-18" tabindex="-1"></a>pc12 <span class="sc">+</span> pc34 <span class="sc">+</span><span class="fu">plot_layout</span>(<span class="at">ncol=</span><span class="dv">2</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-24"></span>
-<img src="cshl_2024_files/figure-html/unnamed-chunk-24-1.png" alt="PC plot of genotype, colored by case/control" width="150%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:PCplot2"></span>
+<img src="cshl_2024_files/figure-html/PCplot2-1.png" alt="PC plot of genotype, colored by case/control" width="150%" />
 <p class="caption">
 Figure 3.2: PC plot of genotype, colored by case/control
 </p>

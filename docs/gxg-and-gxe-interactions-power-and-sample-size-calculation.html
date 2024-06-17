@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 GxG and GxE Interactions, Power and Sample Size Calculation | 2024 CSHL course - GWAS Hands-on Analysis</title>
-  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 GxG and GxE Interactions, Power and Sample Size Calculation | 2024 CSHL course - GWAS Hands-on Analysis" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta property="og:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   <meta name="github-repo" content="rstudio/cshl_2024" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 7 GxG and GxE Interactions, Power and Sample Size Calculation | 2024 CSHL course - GWAS Hands-on Analysis" />
   
-  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS." />
+  <meta name="twitter:description" content="This is the course material for the 2024 CSHL hands-on session in GWAS and eQTL." />
   
 
 <meta name="author" content="Danni Liu - Purdue University" />
@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">2024 CSHL Course- GWAS and EQTL Hands-on Analysis</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to the GWAS and eQTL Workshop</a>
@@ -617,7 +617,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `Power` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/powerplot-1.png" width="672" /></p>
 <div id="case-study-with-continuous-outcome" class="section level4 hasAnchor" number="7.4.1.1">
 <h4><span class="header-section-number">7.4.1.1</span> Case study with continuous outcome:<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#case-study-with-continuous-outcome" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>For continuous phenotype, we need to obtain the phenotype SD instead of case rate. The codes below read in the phenotype data from Chapter 3 and calculate the standard deviation for all metabolites.</p>
@@ -685,7 +685,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `Power` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/pp2-1.png" width="672" /></p>
 </div>
 <div id="continuous-study-with-continuous-gxe-interaction" class="section level4 hasAnchor" number="7.4.1.2">
 <h4><span class="header-section-number">7.4.1.2</span> Continuous study with continuous GxE interaction:<a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#continuous-study-with-continuous-gxe-interaction" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -707,7 +707,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `Power` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/pp3-1.png" width="672" /></p>
 </div>
 </div>
 <div id="sample-size-calculation" class="section level3 hasAnchor" number="7.4.2">
@@ -732,7 +732,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/ss1-1.png" width="672" /></p>
 <pre><code>## Warning: Use of `temp2$N_total` is discouraged.
 ## ℹ Use `N_total` instead.
 ## Use of `temp2$Test.Model` is discouraged.
@@ -741,7 +741,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/ss1-2.png" width="672" /></p>
 <p>As a general rule, under the same assumptions, the dominant model needs the smallest sample size to achieve adequate statistical power, whereas the recessive model is the one that requires the largest number of participants.</p>
 <p>We could check the dominant and additive model only and ignore the recessive model.</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb59-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
@@ -759,7 +759,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/ss2-1.png" width="672" /></p>
 <pre><code>## Warning: Use of `temp2$N_total` is discouraged.
 ## ℹ Use `N_total` instead.
 ## Use of `temp2$Test.Model` is discouraged.
@@ -768,7 +768,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/ss2-2.png" width="672" /></p>
 <p>For both additive and dominant models, a sample size of about 200 individuals is sufficient to detect an OR of 3 if we test for additive or dominant genetic effects.</p>
 </div>
 <div id="case-study-with-continuous-outcome-1" class="section level4 hasAnchor" number="7.4.2.2">
@@ -790,7 +790,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/ss3-1.png" width="672" /></p>
 <pre><code>## Warning: Use of `temp2$N_total` is discouraged.
 ## ℹ Use `N_total` instead.
 ## Use of `temp2$Test.Model` is discouraged.
@@ -799,7 +799,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-26-2.png" width="672" />
+<p><img src="cshl_2024_files/figure-html/ss3-2.png" width="672" />
 #### Binary study with binary GxE interactions</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-1" tabindex="-1"></a><span class="co"># R codes- run in R Console</span></span>
 <span id="cb75-2"><a href="gxg-and-gxe-interactions-power-and-sample-size-calculation.html#cb75-2" tabindex="-1"></a>sse <span class="ot">&lt;-</span> <span class="fu">genpwr.calc</span>(<span class="at">calc =</span> <span class="st">&quot;ss&quot;</span>, <span class="at">model =</span> <span class="st">&quot;logistic&quot;</span>,</span>
@@ -817,7 +817,7 @@ provided that two of the three above variables are entered into the appropriate 
 ## ℹ Use `N_total` instead.</code></pre>
 <pre><code>## Warning: Use of `temp2$Test.Model` is discouraged.
 ## ℹ Use `Test.Model` instead.</code></pre>
-<p><img src="cshl_2024_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="cshl_2024_files/figure-html/ss4-1.png" width="672" /></p>
 
 </div>
 </div>

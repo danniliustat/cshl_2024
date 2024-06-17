@@ -405,7 +405,7 @@ The main outputs are **younameit.eigenval** and **younameit.eigenvec**, which st
 A **scree plot** displays the variance explained by each component. We look for the "elbow" of the plot, i.e., point where line bends. Could do formal test on derivative of scree line, but common sense approach often works fine.
 
 We read in eigenvalues from the PCA results file **younameit.eigenval**, calculate the proportion of variance explained by each PC and generate elbow plot using `ggplot`.
-```{r screeplot warning=F, message=F}
+```{r screeplot,warning=F, message=F}
 # R codes- run in R Console
 eigenval <- scan("./Data/PC/younameit.eigenval")
 
@@ -422,7 +422,7 @@ cumsum(pve$pve)
 
 A **PC plot** is a graphical representation to visualize the data in terms of the principal components. We usually look at the projection to the first several PCs which explain most of the variation. To generate PC plots, we will read in the eigenvectors from **younameit.eigenvec** and plot PC1 vs PC2, and PC3 vs PC4.
 
-```{r PCplot fig.cap='PC plot of genotype', out.width='150%', fig.asp=.5, fig.align='center'}
+```{r PCplot,fig.cap='PC plot of genotype', out.width='150%', fig.asp=.5, fig.align='center'}
 # R codes- run in R Console
 # read in eigenvectors
 pca <- read.table("./Data/PC/younameit.eigenvec", header=F,row.names = 1)
@@ -448,7 +448,7 @@ pc12 + pc34 +plot_layout(ncol=2)
 
 If the data contains categorical variables, such as case/control, we can also visualize the PCs by coloring different groups. We don't have case/control in this example data, so I generate a random case/control variable to use as an example. The codes below randomly assign 30% of the samples as cases and rest as controls.
 
-```{r PCplot2 warning=F, message=F,fig.cap='PC plot of genotype, colored by case/control', out.width='150%', fig.asp=.5, fig.align='center'}
+```{r PCplot2,warning=F, message=F,fig.cap='PC plot of genotype, colored by case/control', out.width='150%', fig.asp=.5, fig.align='center'}
 set.seed(123)
 group<-rep("control",nrow(pca))
 case_idx<-sample(nrow(pca),0.3*nrow(pca))
