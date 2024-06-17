@@ -1,11 +1,11 @@
-Welcome to MAGMA v1.10 (custom)
+Welcome to MAGMA v1.10 (win/s)
 Using flags:
 	--annotate
 	--snp-loc genotype_1k.bim
 	--gene-loc NCBI37.3.gene.loc
 	--out genotype_1k
 
-Start time is 01:54:49, Friday 14 Jun 2024
+Start time is 20:57:17, Sunday 16 Jun 2024
 
 Starting annotation...
 Reading gene locations from file NCBI37.3.gene.loc... 
@@ -37,7 +37,7 @@ Reading gene locations from file NCBI37.3.gene.loc...
 Reading SNP locations from file genotype_1k.bim... 
 	984 SNP locations read from file
 	of those, 706 (71.75%) mapped to at least one gene
-Writing annotation to file genotype_1k.genes.annot
+Writing annotation to file genotype_1k.genes.annot.txt
 	for chromosome  1, 1960 genes are empty (out of 2016)
 	for chromosome  2, 1184 genes are empty (out of 1226)
 	for chromosome  3, 1023 genes are empty (out of 1050)
@@ -65,4 +65,4 @@ Writing annotation to file genotype_1k.genes.annot
 	at least one SNP mapped to each of a total of 555 genes (out of 19427)
 
 
-End time is 01:54:49, Friday 14 Jun 2024 (elapsed: 00:00:00)
+End time is 20:57:17, Sunday 16 Jun 2024 (elapsed: 00:00:00)

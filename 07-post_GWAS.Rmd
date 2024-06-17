@@ -36,8 +36,8 @@ Below are two public courses that gives a good introduction to LDSC:
 
 MAGMA is a statistical methods for gene-set analysis of multiple genetic markers. This method can be used when the individual marker's effects are too weak to be detected, such as in polygenic traits. It aims to analyze multiple markers simultaneously to estimate their joint effects. Please check the paper from [de Leewu et al.(2015)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004219).
 
-For each gene $g$, we first transform them to Z-value:
-<center>  $z_g=\Phi^{-1}(1-p_g)$ </center> 
+To perform the gene-set analysis, for each gene $g$, we have the gene p-value $p_g$ computed from gene analysis. We first transform the p-values $p_g$ to Z-value:
+<center>  $z_g=\Phi^{-1}(1-p_g)$, where $\Phi^{-1}$ is the probit function </center> 
 
 For gene set analysis, we test whether genes exhibit a stronger association with the phenotype of interest compared to other genes within a specific gene-set $s$ :
 
@@ -50,12 +50,16 @@ $\epsilon$: residual
 
 Then, MAGMA uses a t-test to test whether genes inside the test is more associated with the phenotype $\beta_s>0$, against null $\beta_s=0$.
 
-It can be downloaded from [MAGMA website](https://cncr.nl/research/magma/) and can be installed under multiple systems. You can check their manual [HERE](https://ctg.cncr.nl/software/MAGMA/doc/manual_v1.09.pdf).
+The MAGMA program can be downloaded from [MAGMA website](https://cncr.nl/research/magma/) and can be installed under multiple systems. You can check their manual [HERE](https://ctg.cncr.nl/software/MAGMA/doc/manual_v1.09.pdf).
 
 Additionally, their website also provides a list of public GWAS summary statistics data for you to download and practice. Please check them [HERE](https://ctg.cncr.nl/software/summary_statistics).
 
 The MAGMA installation packages are already downloaded inside `Tools/MAGMA`. 
 
+
+
+### Prepare Annotation File
+First set the working directory:
 ```{bash eval=F}
 # change the path below to where you saved "bigcare-main" folder
 ## run in R Terminal
@@ -71,27 +75,27 @@ setwd("./Data/magma")
 mydir<-getwd()
 ```
 
-### Prepare Annotation File
-
 MAGMA directly runs on PLINK binary format files. We had `.ped` and `.map` files before. Let's convert them to binary format `.bed`, `.bim` and `.fam` using PLINK.
 
 ```{bash eval=F}
 ## # both Mac and Windows can run in Terminal
 # windows users
-../../Tools/PLINK/plink_win64/plink.exe \
+../../Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ../case_data/genotype_1k --out genotype_1k
 ```
-```{bash message=FALSE, warnings=FALSE}
+```{bash eval=F,message=FALSE, warnings=FALSE}
 # macOS users
-../../Tools/PLINK/plink_mac/plink \
+../../Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ../case_data/genotype_1k --out genotype_1k
 ```
 
 Before we run the MAGMA for gene level analysis, we have to create a annotation file that map the SNPs to gene.
-```{bash}
+```{bash eval=F}
 ## both Mac and Windows can run in Terminal
 # windows users
-
+../../Tools/MAGMA/magma_windows/magma --annotate --snp-loc genotype_1k.bim \
+        --gene-loc NCBI37.3.gene.loc \
+        --out genotype_1k
 ```
 ```{bash message=FALSE, warnings=FALSE}
 # mac users
@@ -103,9 +107,13 @@ Before we run the MAGMA for gene level analysis, we have to create a annotation 
 ### Use MAGMA for Gene-Set Analysis
 
 
-```{bash eval=F}
+```{bash eval=F,results='hide',message=FALSE, warnings=FALSE}
 ## both Mac and Windows can run in Terminal
 # windows users
+../../Tools/MAGMA/magma_windows/magma --bfile genotype_1k \
+        --pheno file=phenotype_plink.txt \
+        --gene-annot genotype_1k.genes.annot \
+        --out younameit
 ```
 
 ```{bash results='hide',message=FALSE, warnings=FALSE}
@@ -142,7 +150,7 @@ manhattan(qassoc, col=c("dimgray", "darkgoldenrod1"), suggestiveline=T, genomewi
 dev.off()
 ```
 
-compare the plot
+### Compare the Manhattan plots
 We can load the plot from MAGMA
 ```{r}
 img <- readPNG("Manhattan_Plot_for_magma.png")
