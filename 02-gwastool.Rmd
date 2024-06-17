@@ -6,12 +6,12 @@ This notebook demonstrates a standard approach to conduct the genome wide associ
 - Imputation
 - Population Stratification Correction
 - Simple Association Test
+
 The data used for this example is a toy genotype data containing 5 random SNPs and a random phenotype data with covariates.
 
 We use both bash and R codes in this notebook. The type of programming language is labeled at the top of each code cell.
 
-> <span style="color: #0064a4;">  
-Special notes for Windows users: Windows has two command-line shells, Command shell and Windows Powershell. Command shell is specific to Windows system and can be run from "Command Prompt" App, but the language it uses is NOT the same as Bash! Powershell App is the app to run Bash commands in Windows. Therefore if you are Windows users and use RStudio for this course, you can't run bash codes such as "head" or "awk" from RStudio Terminal, you can **ONLY** run PLINK program codes. If you would like to try Bash codes, please open "Windows Powershell" app and follow the same steps to set the paths. Still, Powershell App won't run PLINK codes, so you'll have to switch between Powershell and RStudio Terminal.
+> <span style="color: #0064a4;">  Special notes for Windows users: Windows has two command-line shells, Command shell and Windows Powershell. Command shell is specific to Windows system and can be run from "Command Prompt" App, but the language it uses is NOT the same as Bash! Powershell App is the app to run Bash commands in Windows. Therefore if you are Windows users and use RStudio for this course, please refer to Chapter 1 for setting up RStudio Terminal for running bash codes or ask for help.
 </span>
 
 ## Environment Setting
@@ -131,7 +131,7 @@ The following commands compute the **missingness** for each SNP and each subject
 
 ```
 
-```{bash eval=F}
+```{bash eval=T}
 # for macoS users
 ./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs --missing --out ./Data/QC/younameit
@@ -185,7 +185,7 @@ The following command computes the **allele frequencies**. (The output will prin
 ./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
 ```
-```{bash eval=F}
+```{bash eval=T}
 # macOS user
 ./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs --freq --out ./Data/QC/younameit
@@ -224,7 +224,7 @@ The following command computes the **Hardy-Weiberg exact test statistic**. (The 
 ./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
 ```
-```{bash eval=F}
+```{bash eval=T}
 # macOS user
 ./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs --hardy --out ./Data/QC/younameit
@@ -280,7 +280,7 @@ The following command performs **multiple quality controls**. (The output will p
 --noweb --file ./Data/QC/5SNPs \
 --mind 0.1 --geno 0.1 --maf 0.05 --hwe 0.001 --recode --out ./Data/QC/younameit
 ```
-```{bash eval=F}
+```{bash eval=T}
 # macOS user
 ./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs \
@@ -308,7 +308,7 @@ The following command will calculate **indentical by descent (IBS) distances** b
 ./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/QC/5SNPs --genome --out ./Data/QC/younameit
 ```
-```{bash eval=F}
+```{bash eval=T}
 # macOS user
 ./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/QC/5SNPs --genome --out ./Data/QC/younameit
@@ -361,7 +361,7 @@ Here is the example provided by **IMPUTE2 package**. The link is https://mathgen
 
 Files used for example are saved in folder `./Data/impute2_example`.
 
-```{bash eval=F}
+```{bash eval=T}
 # bash codes- run in terminal
 # IMPUTE2 only works for macOS or Linux users, Windows users can't run it
 
@@ -393,7 +393,7 @@ PCA can be performed with `--pca`. By default, `--pca` extracts the top 20 princ
 ./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/PC/1ksnp --pca 50 --out ./Data/PC/younameit
 ```
-```{bash eval=F}
+```{bash eval=T}
 # macOS user
 ./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/PC/1ksnp --pca 50 --out ./Data/PC/younameit
@@ -569,7 +569,7 @@ The following commands perform the **simple association test**
 ./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/conty.txt --out ./Data/Assoc/younameit.conty
 ```
-```{bash eval=F}
+```{bash eval=T}
 # macOS user
 ./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/conty.txt --out ./Data/Assoc/younameit.conty
@@ -627,7 +627,7 @@ The following commands perform the **simple association test**
 ./Tools/PLINK/plink_win64_20231211/plink.exe \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/biny.txt --out ./Data/Assoc/younameit.biny
 ```
-```{bash eval=F}
+```{bash eval=T}
 # macOS user
 ./Tools/PLINK/plink_mac_20231211/plink \
 --noweb --file ./Data/Assoc/5SNPs --assoc --pheno ./Data/Assoc/biny.txt --out ./Data/Assoc/younameit.biny

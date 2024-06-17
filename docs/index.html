@@ -335,7 +335,8 @@ PLINK installation ZIP file can be found in “/cshl_2024/Tools/PLINK/plink_mac_
 👉 <strong>macOS needs to authorize programs before use:</strong><br />
 When you try to call PLINK, IMPUTE2 or MAGMA with the above commands, you might get a pop-up window with the following message <code>“plink” cannot be opened because the developer cannot be verified</code>.(Fig2) Select “Cancel” and we will authorize the software first.<br />
 Please go to macOS “System Settings”-&gt;“Privacy &amp; Security”, and scroll down until you see a message <code>"plink" was blocked from use because it is not from an identified developer</code>.(Fig3) Click “Allow Anyway” and you will be prompt to enter your Mac username and password. Click “Unlock” and then “Allow Anyway” again, and the previous message will disappear.<br />
-Then try to run the same codes again in RStudio Terminal. You will get another pop-up window saying <code>macOS cannot verify the developer of “plink”. Are you sure you want to open it?</code>,(Fig4) select “Open” then you can see PLINK, IMPUTE2 or MAGMA commands options shown up in Terminal.</span></p>
+Then try to run the same codes again in RStudio Terminal. You will get another pop-up window saying <code>macOS cannot verify the developer of “plink”. Are you sure you want to open it?</code>,(Fig4) select “Open” then you can see PLINK, IMPUTE2 or MAGMA commands options shown up in Terminal.<br />
+If you can’t find where to authorize the softwares in macOS Settings, you can run <code>chmod 755</code> in Terminal to authorize them. For example to authorize PLINK, run <code>chmod 755 /path/to/cshl_2024/Tools/PLINK/plink_mac_20231211/plink</code></span></p>
 </blockquote></li>
 </ul>
 <table>

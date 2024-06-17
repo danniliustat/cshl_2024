@@ -6,13 +6,13 @@ Options in effect:
   --out ./Data/Assoc/younameit_resid
   --pheno ./Data/Assoc/resid_phenotype_assoc.txt
 
-Hostname: BIGCARE
-Working directory: C:\Users\Zhang\Documents\GitHub\cshl_2024
-Start time: Sun Jun 16 20:43:26 2024
+Hostname: Danni.local
+Working directory: /Users/zhanglab/Documents/cshl_2024
+Start time: Sun Jun 16 21:53:52 2024
 
 Note: --noweb has no effect since no web check is implemented yet.
-Random number seed: 1718585006
-32452 MB RAM detected; reserving 16226 MB for main workspace.
+Random number seed: 1718589232
+16384 MB RAM detected; reserving 8192 MB for main workspace.
 Scanning .ped file... done.
 Performing single-pass .bed write (5 variants, 344 people).
 --file: ./Data/Assoc/younameit_resid-temporary.bed +
@@ -32,4 +32,4 @@ Total genotyping rate is 0.976744.
 Phenotype data is quantitative.
 Writing QT --assoc report to ./Data/Assoc/younameit_resid.qassoc ... done.
 
-End time: Sun Jun 16 20:43:26 2024
+End time: Sun Jun 16 21:53:52 2024
