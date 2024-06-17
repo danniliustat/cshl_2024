@@ -595,7 +595,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb43-2"><a href="perform-eqtl-analysis.html#cb43-2" tabindex="-1"></a><span class="fu">unlink</span>(output_file_name_cis);</span>
 <span id="cb43-3"><a href="perform-eqtl-analysis.html#cb43-3" tabindex="-1"></a>  </span>
 <span id="cb43-4"><a href="perform-eqtl-analysis.html#cb43-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&#39;Analysis done in: &#39;</span>, me<span class="sc">$</span>time.in.sec, <span class="st">&#39; seconds&#39;</span>, <span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>);</span></code></pre></div>
-<pre><code>## Analysis done in:  0.673  seconds</code></pre>
+<pre><code>## Analysis done in:  0.559  seconds</code></pre>
 <p>Check the results from both cis- and tran-eQTL analysis.</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="perform-eqtl-analysis.html#cb45-1" tabindex="-1"></a><span class="fu">head</span>(me<span class="sc">$</span>cis<span class="sc">$</span>eqtls)</span></code></pre></div>
 <pre><code>##          snps   gene statistic       pvalue          FDR       beta
@@ -613,14 +613,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4  1_15945755    TCEA3  12.87702  1.963422e-32 5.639342e-28 0.6521932
 ## 5  1_23079372     ERI3  12.37956  2.036575e-30 4.679561e-26 1.1308205
 ## 6 1_113973708 RABGAP1L  12.00316  6.445364e-29 1.234158e-24 0.8240020</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="perform-eqtl-analysis.html#cb49-1" tabindex="-1"></a><span class="do">## Make the histogram of local and distant p-values</span></span>
+<span id="cb49-2"><a href="perform-eqtl-analysis.html#cb49-2" tabindex="-1"></a><span class="co"># y-axis is density, which is rescaled frequency to make the sum of area of bars equal to 1</span></span>
+<span id="cb49-3"><a href="perform-eqtl-analysis.html#cb49-3" tabindex="-1"></a><span class="fu">plot</span>(me)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:pval"></span>
 <img src="cshl_2024_files/figure-html/pval-1.png" alt="Histogram of p-values for cis- and trans-eQTL" width="100%" />
 <p class="caption">
 Figure 9.1: Histogram of p-values for cis- and trans-eQTL
 </p>
 </div>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="perform-eqtl-analysis.html#cb49-1" tabindex="-1"></a><span class="do">## Make the qq-plot of local and distant p-values</span></span>
-<span id="cb49-2"><a href="perform-eqtl-analysis.html#cb49-2" tabindex="-1"></a><span class="fu">plot</span>(me_qq)  </span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="perform-eqtl-analysis.html#cb50-1" tabindex="-1"></a><span class="co"># to look at original frequency, use this code</span></span>
+<span id="cb50-2"><a href="perform-eqtl-analysis.html#cb50-2" tabindex="-1"></a><span class="co"># hist(me$cis$eqtls$pvalue)</span></span>
+<span id="cb50-3"><a href="perform-eqtl-analysis.html#cb50-3" tabindex="-1"></a><span class="co"># hist(me$trans$eqtls$pvalue)</span></span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="perform-eqtl-analysis.html#cb51-1" tabindex="-1"></a><span class="do">## Make the qq-plot of local and distant p-values</span></span>
+<span id="cb51-2"><a href="perform-eqtl-analysis.html#cb51-2" tabindex="-1"></a><span class="fu">plot</span>(me_qq)  </span></code></pre></div>
 <p><img src="cshl_2024_files/figure-html/qq-1.png" width="672" /></p>
 </div>
 </div>
@@ -633,12 +639,12 @@ Figure 9.1: Histogram of p-values for cis- and trans-eQTL
 <p>Manhattan plots are a way to depict association p-values of multiple SNPs at once. They are also very common in GWAS. Manhattan plots are a rather convinient modality for interpretation of eQTL signals in terms of LD.</p>
 <p>Let’s now generate a manhattan plot for gene ENSG00000172404.4, plotting the base-pair position on the x-axis and the −log10(pvalue)
 of the SNP in the y axis. Manhattan plots usually depict all tested SNPs, not only the ones passing a certain p-value threshold. Therefore we’ll first obtain all the association p-values for all tested SNPs for gene ENSG00000172404.4.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="perform-eqtl-analysis.html#cb50-1" tabindex="-1"></a>gene_id <span class="ot">=</span> <span class="st">&quot;CHD5&quot;</span></span>
-<span id="cb50-2"><a href="perform-eqtl-analysis.html#cb50-2" tabindex="-1"></a></span>
-<span id="cb50-3"><a href="perform-eqtl-analysis.html#cb50-3" tabindex="-1"></a>gene_values <span class="ot">=</span> <span class="fu">read.table</span>(expression_file_name, <span class="at">row.names=</span><span class="dv">1</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
-<span id="cb50-4"><a href="perform-eqtl-analysis.html#cb50-4" tabindex="-1"></a>single_gene_exp <span class="ot">=</span> SlicedData<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb50-5"><a href="perform-eqtl-analysis.html#cb50-5" tabindex="-1"></a>single_gene_exp<span class="sc">$</span><span class="fu">CreateFromMatrix</span>(<span class="fu">as.matrix</span>(gene_values[gene_id, , <span class="at">drop=</span><span class="cn">FALSE</span>]))</span>
-<span id="cb50-6"><a href="perform-eqtl-analysis.html#cb50-6" tabindex="-1"></a>single_gene_exp</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="perform-eqtl-analysis.html#cb52-1" tabindex="-1"></a>gene_id <span class="ot">=</span> <span class="st">&quot;CHD5&quot;</span></span>
+<span id="cb52-2"><a href="perform-eqtl-analysis.html#cb52-2" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="perform-eqtl-analysis.html#cb52-3" tabindex="-1"></a>gene_values <span class="ot">=</span> <span class="fu">read.table</span>(expression_file_name, <span class="at">row.names=</span><span class="dv">1</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb52-4"><a href="perform-eqtl-analysis.html#cb52-4" tabindex="-1"></a>single_gene_exp <span class="ot">=</span> SlicedData<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb52-5"><a href="perform-eqtl-analysis.html#cb52-5" tabindex="-1"></a>single_gene_exp<span class="sc">$</span><span class="fu">CreateFromMatrix</span>(<span class="fu">as.matrix</span>(gene_values[gene_id, , <span class="at">drop=</span><span class="cn">FALSE</span>]))</span>
+<span id="cb52-6"><a href="perform-eqtl-analysis.html#cb52-6" tabindex="-1"></a>single_gene_exp</span></code></pre></div>
 <pre><code>## SlicedData object. For more information type: ?SlicedData
 ## Number of columns: 446 
 ## Number of rows: 1 
@@ -648,28 +654,28 @@ of the SNP in the y axis. Manhattan plots usually depict all tested SNPs, not on
 ## CHD5    -1.501415   -0.9932854    0.7771261   0.05612592     -1.60777
 ##      TCGA.69.7760 TCGA.86.8669 TCGA.55.6642 TCGA.78.7152 TCGA.73.4670
 ## CHD5    0.6192464    -0.161492    0.9675196    0.3648407   -0.8173966</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="perform-eqtl-analysis.html#cb52-1" tabindex="-1"></a>snpspos <span class="ot">=</span> <span class="fu">read.table</span>(snps_location_file_name, </span>
-<span id="cb52-2"><a href="perform-eqtl-analysis.html#cb52-2" tabindex="-1"></a>                     <span class="at">header =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb52-3"><a href="perform-eqtl-analysis.html#cb52-3" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb52-4"><a href="perform-eqtl-analysis.html#cb52-4" tabindex="-1"></a></span>
-<span id="cb52-5"><a href="perform-eqtl-analysis.html#cb52-5" tabindex="-1"></a>genepos <span class="ot">=</span> <span class="fu">read.table</span>(gene_location_file_name, </span>
-<span id="cb52-6"><a href="perform-eqtl-analysis.html#cb52-6" tabindex="-1"></a>                     <span class="at">header =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb52-7"><a href="perform-eqtl-analysis.html#cb52-7" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb52-8"><a href="perform-eqtl-analysis.html#cb52-8" tabindex="-1"></a></span>
-<span id="cb52-9"><a href="perform-eqtl-analysis.html#cb52-9" tabindex="-1"></a>single_cis_eqtl_res <span class="ot">=</span> <span class="fu">Matrix_eQTL_main</span>(snps, </span>
-<span id="cb52-10"><a href="perform-eqtl-analysis.html#cb52-10" tabindex="-1"></a>                                       single_gene_exp,</span>
-<span id="cb52-11"><a href="perform-eqtl-analysis.html#cb52-11" tabindex="-1"></a>                                       <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb52-12"><a href="perform-eqtl-analysis.html#cb52-12" tabindex="-1"></a>                                       <span class="at">output_file_name.cis =</span> <span class="cn">NULL</span>,</span>
-<span id="cb52-13"><a href="perform-eqtl-analysis.html#cb52-13" tabindex="-1"></a>                                       <span class="at">output_file_name =</span> <span class="cn">NULL</span>,</span>
-<span id="cb52-14"><a href="perform-eqtl-analysis.html#cb52-14" tabindex="-1"></a>                                       <span class="at">pvOutputThreshold.cis=</span><span class="dv">1</span>, </span>
-<span id="cb52-15"><a href="perform-eqtl-analysis.html#cb52-15" tabindex="-1"></a>                                       <span class="at">snpspos =</span> snpspos,</span>
-<span id="cb52-16"><a href="perform-eqtl-analysis.html#cb52-16" tabindex="-1"></a>                                       <span class="at">genepos =</span> genepos)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="perform-eqtl-analysis.html#cb54-1" tabindex="-1"></a>snpspos <span class="ot">=</span> <span class="fu">read.table</span>(snps_location_file_name, </span>
+<span id="cb54-2"><a href="perform-eqtl-analysis.html#cb54-2" tabindex="-1"></a>                     <span class="at">header =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb54-3"><a href="perform-eqtl-analysis.html#cb54-3" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb54-4"><a href="perform-eqtl-analysis.html#cb54-4" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="perform-eqtl-analysis.html#cb54-5" tabindex="-1"></a>genepos <span class="ot">=</span> <span class="fu">read.table</span>(gene_location_file_name, </span>
+<span id="cb54-6"><a href="perform-eqtl-analysis.html#cb54-6" tabindex="-1"></a>                     <span class="at">header =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb54-7"><a href="perform-eqtl-analysis.html#cb54-7" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb54-8"><a href="perform-eqtl-analysis.html#cb54-8" tabindex="-1"></a></span>
+<span id="cb54-9"><a href="perform-eqtl-analysis.html#cb54-9" tabindex="-1"></a>single_cis_eqtl_res <span class="ot">=</span> <span class="fu">Matrix_eQTL_main</span>(snps, </span>
+<span id="cb54-10"><a href="perform-eqtl-analysis.html#cb54-10" tabindex="-1"></a>                                       single_gene_exp,</span>
+<span id="cb54-11"><a href="perform-eqtl-analysis.html#cb54-11" tabindex="-1"></a>                                       <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb54-12"><a href="perform-eqtl-analysis.html#cb54-12" tabindex="-1"></a>                                       <span class="at">output_file_name.cis =</span> <span class="cn">NULL</span>,</span>
+<span id="cb54-13"><a href="perform-eqtl-analysis.html#cb54-13" tabindex="-1"></a>                                       <span class="at">output_file_name =</span> <span class="cn">NULL</span>,</span>
+<span id="cb54-14"><a href="perform-eqtl-analysis.html#cb54-14" tabindex="-1"></a>                                       <span class="at">pvOutputThreshold.cis=</span><span class="dv">1</span>, </span>
+<span id="cb54-15"><a href="perform-eqtl-analysis.html#cb54-15" tabindex="-1"></a>                                       <span class="at">snpspos =</span> snpspos,</span>
+<span id="cb54-16"><a href="perform-eqtl-analysis.html#cb54-16" tabindex="-1"></a>                                       <span class="at">genepos =</span> genepos)</span></code></pre></div>
 <pre><code>## 1 of 1 genes matched</code></pre>
 <pre><code>## 1233 of 1233 SNPs matched</code></pre>
 <pre><code>## 100.00% done, 36 cis-eQTLs, 4 trans-eQTLs</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="perform-eqtl-analysis.html#cb56-1" tabindex="-1"></a>manh_data <span class="ot">=</span> <span class="fu">merge</span>(single_cis_eqtl_res<span class="sc">$</span>cis<span class="sc">$</span>eqtls, snpspos, <span class="at">by.x =</span> <span class="st">&quot;snps&quot;</span>, <span class="at">by.y =</span> <span class="st">&quot;snpid&quot;</span>)</span>
-<span id="cb56-2"><a href="perform-eqtl-analysis.html#cb56-2" tabindex="-1"></a>manh_data <span class="ot">=</span> manh_data [,<span class="fu">c</span>(<span class="st">&quot;pos&quot;</span>, <span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pvalue&quot;</span>, <span class="st">&quot;snps&quot;</span>)]</span>
-<span id="cb56-3"><a href="perform-eqtl-analysis.html#cb56-3" tabindex="-1"></a><span class="fu">head</span>(manh_data)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="perform-eqtl-analysis.html#cb58-1" tabindex="-1"></a>manh_data <span class="ot">=</span> <span class="fu">merge</span>(single_cis_eqtl_res<span class="sc">$</span>cis<span class="sc">$</span>eqtls, snpspos, <span class="at">by.x =</span> <span class="st">&quot;snps&quot;</span>, <span class="at">by.y =</span> <span class="st">&quot;snpid&quot;</span>)</span>
+<span id="cb58-2"><a href="perform-eqtl-analysis.html#cb58-2" tabindex="-1"></a>manh_data <span class="ot">=</span> manh_data [,<span class="fu">c</span>(<span class="st">&quot;pos&quot;</span>, <span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pvalue&quot;</span>, <span class="st">&quot;snps&quot;</span>)]</span>
+<span id="cb58-3"><a href="perform-eqtl-analysis.html#cb58-3" tabindex="-1"></a><span class="fu">head</span>(manh_data)</span></code></pre></div>
 <pre><code>##       pos chr     pvalue      snps
 ## 1 6124032   1 0.94742508 1_6124032
 ## 2 6135133   1 0.66565394 1_6135133
@@ -677,15 +683,15 @@ of the SNP in the y axis. Manhattan plots usually depict all tested SNPs, not on
 ## 4 6142185   1 0.02712406 1_6142185
 ## 5 6144162   1 0.26531540 1_6144162
 ## 6 6144343   1 0.71987569 1_6144343</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="perform-eqtl-analysis.html#cb58-1" tabindex="-1"></a><span class="co"># Plot the Manhattanplot</span></span>
-<span id="cb58-2"><a href="perform-eqtl-analysis.html#cb58-2" tabindex="-1"></a><span class="fu">with</span>(manh_data ,<span class="fu">plot</span>(pos, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">xlab =</span> <span class="st">&quot;genomic position (bp)&quot;</span>,</span>
-<span id="cb58-3"><a href="perform-eqtl-analysis.html#cb58-3" tabindex="-1"></a><span class="at">main=</span><span class="fu">paste</span>(gene_id, <span class="st">&quot;associated SNPs&quot;</span>)))</span>
-<span id="cb58-4"><a href="perform-eqtl-analysis.html#cb58-4" tabindex="-1"></a><span class="co"># Highlight the lead SNP</span></span>
-<span id="cb58-5"><a href="perform-eqtl-analysis.html#cb58-5" tabindex="-1"></a><span class="fu">with</span>(manh_data[<span class="fu">which.min</span>(manh_data<span class="sc">$</span>pvalue),,<span class="at">drop=</span><span class="cn">FALSE</span>] ,</span>
-<span id="cb58-6"><a href="perform-eqtl-analysis.html#cb58-6" tabindex="-1"></a><span class="fu">points</span>(pos, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">pch=</span><span class="dv">20</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>))</span>
-<span id="cb58-7"><a href="perform-eqtl-analysis.html#cb58-7" tabindex="-1"></a><span class="co"># Add a label to the lead SNP</span></span>
-<span id="cb58-8"><a href="perform-eqtl-analysis.html#cb58-8" tabindex="-1"></a><span class="fu">with</span>(manh_data[<span class="fu">which.min</span>(manh_data<span class="sc">$</span>pvalue),,<span class="at">drop=</span><span class="cn">FALSE</span>],</span>
-<span id="cb58-9"><a href="perform-eqtl-analysis.html#cb58-9" tabindex="-1"></a><span class="fu">text</span>(pos <span class="sc">+</span> <span class="fu">diff</span>(<span class="fu">range</span>(manh_data<span class="sc">$</span>pos))<span class="sc">*</span><span class="fl">0.2</span>, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">labels =</span> snps))</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="perform-eqtl-analysis.html#cb60-1" tabindex="-1"></a><span class="co"># Plot the Manhattanplot</span></span>
+<span id="cb60-2"><a href="perform-eqtl-analysis.html#cb60-2" tabindex="-1"></a><span class="fu">with</span>(manh_data ,<span class="fu">plot</span>(pos, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">xlab =</span> <span class="st">&quot;genomic position (bp)&quot;</span>,</span>
+<span id="cb60-3"><a href="perform-eqtl-analysis.html#cb60-3" tabindex="-1"></a><span class="at">main=</span><span class="fu">paste</span>(gene_id, <span class="st">&quot;associated SNPs&quot;</span>)))</span>
+<span id="cb60-4"><a href="perform-eqtl-analysis.html#cb60-4" tabindex="-1"></a><span class="co"># Highlight the lead SNP</span></span>
+<span id="cb60-5"><a href="perform-eqtl-analysis.html#cb60-5" tabindex="-1"></a><span class="fu">with</span>(manh_data[<span class="fu">which.min</span>(manh_data<span class="sc">$</span>pvalue),,<span class="at">drop=</span><span class="cn">FALSE</span>] ,</span>
+<span id="cb60-6"><a href="perform-eqtl-analysis.html#cb60-6" tabindex="-1"></a><span class="fu">points</span>(pos, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">pch=</span><span class="dv">20</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>))</span>
+<span id="cb60-7"><a href="perform-eqtl-analysis.html#cb60-7" tabindex="-1"></a><span class="co"># Add a label to the lead SNP</span></span>
+<span id="cb60-8"><a href="perform-eqtl-analysis.html#cb60-8" tabindex="-1"></a><span class="fu">with</span>(manh_data[<span class="fu">which.min</span>(manh_data<span class="sc">$</span>pvalue),,<span class="at">drop=</span><span class="cn">FALSE</span>],</span>
+<span id="cb60-9"><a href="perform-eqtl-analysis.html#cb60-9" tabindex="-1"></a><span class="fu">text</span>(pos <span class="sc">+</span> <span class="fu">diff</span>(<span class="fu">range</span>(manh_data<span class="sc">$</span>pos))<span class="sc">*</span><span class="fl">0.2</span>, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">labels =</span> snps))</span></code></pre></div>
 <p><img src="cshl_2024_files/figure-html/manh-1.png" width="672" /></p>
 
 </div>

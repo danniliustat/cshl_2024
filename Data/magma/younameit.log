@@ -4,7 +4,7 @@ Using flags:
 	--set-annot gene_set.txt
 	--out younameit
 
-Start time is 13:30:17, Monday 17 Jun 2024
+Start time is 13:57:53, Monday 17 Jun 2024
 
 Reading file younameit.genes.raw... 
 	451 genes read from file
@@ -32,4 +32,4 @@ Performing regression analysis...
 	writing gene information to file younameit.gsa.genes.out
 	writing gene analysis results per significant result (after multiple testing correction, at alpha = 0.05) to file younameit.gsa.sets.genes.out
 
-End time is 13:30:17, Monday 17 Jun 2024 (elapsed: 00:00:00)
+End time is 13:57:53, Monday 17 Jun 2024 (elapsed: 00:00:00)
