@@ -123,7 +123,7 @@ head(qassoc3)
 
 We are ready to generate the Manhattan plots. Manhattan plots are generated using `manhattan` function, and are saved as png files.
 
-```{r}
+```{r mahattan}
 # R codes- run in R Console
 dev.off()
 traits=c("z-4-oh-Tam","tamoxifen","z-endoxifen_ratio") #name of four traits
@@ -133,13 +133,15 @@ i=1
 png(filename=paste0("Manhattan_Plot_for_", traits[i], ".png"), type="cairo")
 manhattan(qassoc1, col=c("dimgray", "darkgoldenrod1"), suggestiveline=F, genomewideline=F)
 dev.off()
-
+```
+```{r mahattan2}
 # trait 2: tamoxifen
 i=2
 png(filename=paste0("Manhattan_Plot_for_", traits[i], ".png"), type="cairo")
 manhattan(qassoc2, col=c("dimgray", "darkgoldenrod1"), suggestiveline=F, genomewideline=F)
 dev.off()
-
+```
+```{r mahattan3}
 # trait 3: z-endoxifen ratio
 i=3
 png(filename=paste0("Manhattan_Plot_for_", traits[i], ".png"), type="cairo")
@@ -149,19 +151,19 @@ dev.off()
 
 We will directly read the Manhattan plots from saved files. From these manhattan plots, we can observe several significant SNPs or peaks that stand out over others. Specifically, there is one extremely significant SNP for z-endoxifen ratio in chromosome 22. (chr26 here means mitochondrial DNA.)
 
-```{r}
+```{r mah1}
 # R codes- run in R Console
 img <- readPNG("Manhattan_Plot_for_z-4-oh-Tam.png")
 grid::grid.raster(img)
 ```
 
-```{r}
+```{r mah2}
 # R codes- run in R Console
 img <- readPNG("Manhattan_Plot_for_tamoxifen.png")
 grid::grid.raster(img)
 ```
 
-```{r}
+```{r mah3}
 # R codes- run in R Console
 img <- readPNG("Manhattan_Plot_for_z-endoxifen_ratio.png")
 grid::grid.raster(img)
@@ -201,19 +203,19 @@ dev.off()
 
 Then, we read the generated Q-Q plot for each of the three traits. Plot of Z-4-OH-TAM shows a slight deviation at the tail. Tamoxifen has a little more deviation, and the points that forms a straight short line at the tail are very likely to have some correlation, such as they are from the same chromosome. However, plot pf Z-endoxifen ratio shows a even better result with a long tail, meaning that we might expect many significant markers associated with Z-endoxifen ratio when we look at the test results.
 
-```{r}
+```{r qq1}
 # R codes- run in R Console
 img1 <- readPNG("Q-Q_Plot_for_z-4-oh-Tam.png")
 grid::grid.raster(img1)
 ```
 
-```{r}
+```{r qq2}
 # R codes- run in R Console
 img2 <- readPNG("Q-Q_Plot_for_tamoxifen.png")
 grid::grid.raster(img2)
 ```
 
-```{r}
+```{r qq3}
 # R codes- run in R Console
 img3 <- readPNG("Q-Q_Plot_for_z-endoxifen_ratio.png")
 grid::grid.raster(img3)
@@ -353,7 +355,7 @@ make.fancy.locus.plot("rs8138080", "rs8138080", "22", locus, 25, 1.709e-15)
 dev.off()
 ```
 
-```{r}
+```{r regmah}
 # R codes- run in R Console
 img_fancy <- readPNG("assocplot_rs8138080.png")
 grid::grid.raster(img_fancy)
@@ -385,7 +387,7 @@ qassoc.adjusted$P<-qassoc_sub$P
 
 Next, we are able to call the `plot_regional` function to generate regional plot for our specified chromosome number and region. This function uses the base plot function in R instead of ggplot. The `col` option enables a conditional coloring by highlighting the significant SNPs as yellow. Finally, the function directly saves the figure to PNG under current directory in "regional_association_plot.png". You can specify the cutoff value for the SNPs you want to label in the plot with `name_cutoff_p`. By default, this option is NULL and there is no label.
 
-```{r}
+```{r reg1}
 # R codes- run in R Console
 # generate plot
 dev.off()
@@ -398,7 +400,7 @@ plot_regional(qassoc.adjusted, chr=22, start_pos=41000000,end_pos=51000000,
 #plot_regional(qassoc.region, chr=22, start_pos=41000000,end_pos=51000000,name_cutoff_p=NULL) #no label 
 ```
 
-```{r}
+```{r reg11}
 # R codes- run in R Console
 regional_plot <- readPNG("regional_association_plot.png")
 grid::grid.raster(regional_plot)
@@ -441,7 +443,7 @@ awk '{print $1901 $1902}' < genotype_1k.ped > rs8138080.txt
 ### Create Box plot (using R)
 The following code generate the box plot for the phenotype z-endoxifen ratio by the genotypes of SNP rs8138080.
 
-```{r}
+```{r box}
 # R codes- run in R Console
 pheno=read.table("z_endoxifen_ratio.txt") #read phenotype data of Z-endoxifen ratio
 geno=read.table("rs8138080.txt", sep="\t") #read genotype data of rs8138080
