@@ -6,15 +6,15 @@ output:
 # An Overview of Regression with Toy Examples
 
 > <span style="color: #0064a4;">  
-**Note:** In order to run codes in this notebook, please make sure you have coloned the "cshl_2024" repository from GitHub and have RStudio installed on your laptop.
+**Note:** In order to run codes in this chapter, please make sure you have coloned the "cshl_2024" repository from GitHub and have RStudio installed on your laptop.
 </span>
 
-This notebook demonstrates two basic statistical regression models using toy examples.
+This chapter demonstrates two basic statistical regression models using toy examples.
 
 - case/control study by logistic regression
 - quantitative trait study by linear regression
 
-We use only R codes in this notebook.
+We use only R codes in this chapter.
 
 ## Environment Setting and Packages
 
@@ -25,13 +25,14 @@ Before we can run any analysis, we need to set the working directory path in RSt
 setwd("/path/to/cshl_2024")
 ```
 
-In this notebook, we will use R packages "data.table", "GEOquery", "plyr" and "ROCR". You can install the R base packages using `install.packages()`. "GEOquery" is a BioConductor package that needs to be installed with BioManager. The codes below show you how to install these packages in R. They are commented out with # here, so if you want to run them on your own laptop, please remove # before the codes.
+In this chapter, we will use R packages "data.table", "GEOquery", "plyr" and "ROCR". You can install the R base packages using `install.packages()`. "GEOquery" is a BioConductor package that needs to be installed with BioManager. The codes below show you how to install these packages in R. They are commented out with # here, so if you want to run them on your own laptop, please remove # before the codes.
 
 ```{r eval=F, warning=F,error=F}
 #install.packages("data.table")
 #install.packages("plyr")
 #install.packages("ROCR")
 #install.packages("ggplot2")
+# install.packages("glmnet")
 
 #if (!require("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
@@ -49,20 +50,22 @@ library(GEOquery)
 library(plyr)
 library(ROCR)
 library(knitr)
+library(glmnet)
 ```
 
 ## Toy Example Data
-To illustrate the statistical methods, we will use a small dataset of 60 samples with both continuous and binary variables. This dataset is a microarray expression data downloaded from GSE1378. It contains 60 patients with ER-positive primary breast cancer treated with tamoxifen monotherapy for 5 years. We only extracted the recurrent status and gene expression of 3 genes to this toy example data. You can load this extracted data as below with fread function:
+To illustrate the statistical methods, we will use a small dataset of 60 samples with both continuous and binary variables. This dataset is a microarray expression data downloaded from GSE1378. It contains 60 patients with ER-positive primary breast cancer treated with tamoxifen monotherapy for 5 years. We only extracted the recurrent status and gene expression of 20 genes to this toy example data. You can load this extracted data as below with fread function:
 
 ```{r}
-toy_data <- fread("./Data/toy_example_data.txt")
+toy_data <- fread("./Data/toy_example_data_20gene.txt")
+dim(toy_data)
 ```
 
-We could take a view at the data. `head` function prints the first 6 rows of the dataset. `summary1 function provides summary statistics of the numeric variables. Column status is a binary variable indicating whether the sample is recurrence or non-recurrence. The last three columns are expression of three genes HOXB13, IL17BR and NHLH1, so they are continuous.
+We could take a view at the data. `head` function prints the first 6 rows of the dataset. `summary` function provides summary statistics of the numeric variables. Column status is a binary variable indicating whether the sample is recurrence or non-recurrence. The later columns are expression of 20 genes, so they are continuous. We can get a summary of the first 7 columns.
 
 ```{r results='asis'}
-kable(head(toy_data))
-kable(summary(toy_data))
+kable(head(toy_data[,1:7]))
+kable(summary(toy_data[,1:7]))
 ```
 
 We can also get a summary of the continuous expression variables by status groups. Below, we used `ddply` function to group the data by status and calculate count, mean and sd of the 3 genes in each group. As shown in the output data.frame, the count column indicates that there are 32 samples in non-recur and 28 in recur group respectively.
@@ -82,7 +85,7 @@ The codes below show you how to recode status into a binary variable censor. Fir
 index <- which(toy_data$status=="Status=recur")
 toy_data$censor <- rep(0,60)
 toy_data$censor[index] <- 1
-kable(head(toy_data))
+kable(head(toy_data[,1:7]))
 
 ```
 
@@ -198,4 +201,32 @@ summary(fit.lm) # print the summary of the fitted regression
 ```
 
 The p-value for IL17BR is 0.0135<0.05, so there is a significant association between expression of HOXB13 and IL17BR.
+
+
+## Variable selection--Forward, backward and stepwise selection
+
+Variable selection, or feature selection, is an important process in model building to identify the most important variables that contribute to the predictive power of the model. There are several methods for variable selection, including stepwise regression (forward and backward), and regularization methods like Lasso and Ridge regression. 
+
+The function `step` performs either the forward, backward or stepwise selection by specifying the type in `direction=` option. We start by fitting the full model using `lm`, and apply `step` function to perform the selection. Because we specified `tace=F`, the function only returns the final model after variable selection. Check the final model from each type of selection below.
+
+```{r}
+toy_data_sub<-toy_data[,5:24] # only subset the 20 genes
+fit.full<-lm(gene_HOXB13~.,data=toy_data_sub)
+summary(fit.full)
+```
+
+```{r}
+#forward selection
+forw<-step(fit.full, direction = "forward", test = "F",trace=F)
+summary(forw)
+
+#backward selection
+back<-step(fit.full, direction = "backward", test = "F",trace=F)
+summary(back)
+
+# stepwise selection
+step<-step(fit.full, direction = "both", test = "F",trace=F)
+summary(step)
+
+```
 
