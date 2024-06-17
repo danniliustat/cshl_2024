@@ -1,0 +1,10 @@
+Welcome to MAGMA v1.10 (custom)
+Using flags:
+	--help
+
+Start time is 01:54:56, Monday 17 Jun 2024
+
+
+ERROR - parsing arguments: unknown flag --help
+
+Terminating program.
